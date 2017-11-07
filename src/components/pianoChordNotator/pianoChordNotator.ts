@@ -7,12 +7,12 @@ module app.components {
             this.pianoId = 'piano-' + pianoIdCounter++;
         }
         public pianoId: string;
-        public allKeys = AllKeys;
+        public whiteKeys = WhiteKeys;
         public beginKey = Key.c3;
         public endKey = Key.c4;
 
         public getRemainingKeys(key: Key) {
-            let index = AllKeys.indexOf(key);
+            let index = WhiteKeys.indexOf(key);
             if (index === -1) {
                 throw new Error(`Unknown key: '${key}`);
             }
@@ -34,6 +34,16 @@ module app.components {
                 img.src = dataUrl;
                 document.body.appendChild(img);
             });
+        }
+
+        public addLowerKey() {
+            let index = WhiteKeys.indexOf(this.beginKey);
+            this.beginKey = WhiteKeys[index - 1];
+        }
+
+        public addHigherKey() {
+            let index = WhiteKeys.indexOf(this.endKey);
+            this.endKey = WhiteKeys[index + 1];
         }
     }
     angular.module('app').component('pianoChordNotator', {

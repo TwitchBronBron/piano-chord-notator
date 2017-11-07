@@ -30,7 +30,7 @@ module app.components {
     }
     angular.module('app').component('pianoKey', {
         bindings: {
-            key: '<'
+            key: '@'
         }
     });
 }

@@ -248,6 +248,20 @@ var app;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(PianoComponent.prototype, "beginsWithBlackKey", {
+                get: function () {
+                    return app.BlackKeys.indexOf(this.beginKey) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "endsWithBlackKey", {
+                get: function () {
+                    return app.BlackKeys.indexOf(this.endKey) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
             /**
              * Try to calculate the key range. Otherwise set to undefined
              */
@@ -302,13 +316,13 @@ var app;
         var pianoIdCounter = 1;
         var PianoChordNotatorComponent = /** @class */ (function () {
             function PianoChordNotatorComponent() {
-                this.allKeys = app.AllKeys;
+                this.whiteKeys = app.WhiteKeys;
                 this.beginKey = app.Key.c3;
                 this.endKey = app.Key.c4;
                 this.pianoId = 'piano-' + pianoIdCounter++;
             }
             PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
-                var index = app.AllKeys.indexOf(key);
+                var index = app.WhiteKeys.indexOf(key);
                 if (index === -1) {
                     throw new Error("Unknown key: '" + key);
                 }
@@ -328,6 +342,14 @@ var app;
                     img.src = dataUrl;
                     document.body.appendChild(img);
                 });
+            };
+            PianoChordNotatorComponent.prototype.addLowerKey = function () {
+                var index = app.WhiteKeys.indexOf(this.beginKey);
+                this.beginKey = app.WhiteKeys[index - 1];
+            };
+            PianoChordNotatorComponent.prototype.addHigherKey = function () {
+                var index = app.WhiteKeys.indexOf(this.endKey);
+                this.endKey = app.WhiteKeys[index + 1];
             };
             return PianoChordNotatorComponent;
         }());
@@ -382,7 +404,7 @@ var app;
         components.PianoKeyComponent = PianoKeyComponent;
         angular.module('app').component('pianoKey', {
             bindings: {
-                key: '<'
+                key: '@'
             }
         });
     })(components = app.components || (app.components = {}));

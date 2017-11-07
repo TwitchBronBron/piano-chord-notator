@@ -38,6 +38,15 @@ module app.components {
         }
         private _keyRange: Key[];
 
+        public get beginsWithBlackKey() {
+            return BlackKeys.indexOf(this.beginKey) > -1;
+        }
+
+        public get endsWithBlackKey() {
+            return BlackKeys.indexOf(this.endKey) > -1;
+        }
+
+
         /**
          * Try to calculate the key range. Otherwise set to undefined
          */
@@ -45,7 +54,7 @@ module app.components {
             if (this._beginKey && this._endKey) {
                 this._keyRange = this.getKeyRange(this._beginKey, this._endKey);
             } else {
-                (this._keyRange as any) = undefined; 
+                (this._keyRange as any) = undefined;
             }
         }
 

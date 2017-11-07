@@ -22,6 +22,19 @@ piano {
       margin-right: -25px;
       position: absolute; }
 
+piano-chord-notator {
+  display: block;
+  padding-bottom: 5px; }
+  piano-chord-notator piano {
+    display: inline-block; }
+  piano-chord-notator .add-button-container {
+    height: 300px;
+    width: 30px;
+    padding-top: 135px;
+    vertical-align: middle;
+    display: inline-block;
+    vertical-align: top; }
+
 piano-key {
   display: inline-block;
   position: relative;
@@ -74,17 +87,5 @@ piano-key {
     position: absolute;
     left: 20px;
     bottom: 20px; }
-
-piano-chord-notator {
-  display: block;
-  padding-bottom: 5px; }
-  piano-chord-notator piano {
-    display: inline-block; }
-  piano-chord-notator .add-button-container {
-    height: 300px;
-    width: 30px;
-    display: inline-block;
-    vertical-align: top;
-    border: 1px solid black; }
 
 /*# sourceMappingURL=app.css.map */

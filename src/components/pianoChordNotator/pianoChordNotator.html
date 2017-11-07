@@ -1,14 +1,14 @@
 <div class="toolbar">
-    <select ng-model="vm.beginKey" ng-options="key as key for key in vm.allKeys"></select>
+    <select ng-model="vm.beginKey" ng-options="key as key for key in vm.whiteKeys"></select>
     <select ng-model="vm.endKey" ng-options="key as key for key in vm.getRemainingKeys(vm.beginKey)"></select>
 
     <button ng-click="vm.export()">Download</button>
 </div>
 <div class="add-button-container">
-    <button>+</button>
+    <button ng-click="vm.addLowerKey()">+</button>
 </div>
 <piano id="{{vm.pianoId}}" begin-key="{{vm.beginKey}}" end-key="{{vm.endKey}}"></piano>
 <div class="add-button-container">
-    <button>+</button>
+    <button ng-click="vm.addHigherKey()">+</button>
 </div>
 <div class="clearfix"></div>
