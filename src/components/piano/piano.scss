@@ -1,0 +1,11 @@
+piano {
+    display: block;
+    piano-key {
+        float: left;
+        &.black-key {
+            margin-left: -30px;
+            margin-right: -30px;
+            position:relative;
+        }
+    }
+}

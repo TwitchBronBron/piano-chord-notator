@@ -1,0 +1,1 @@
+{"version":3,"sources":["components/piano/piano.html","components/pianoKey/pianoKey.html"],"names":[],"mappings":"uEAAA;ACAA","file":"templates.js","sourcesContent":["<piano-key ng-repeat=\"key in vm.keyRange\" key=\"key\"></piano-key>","<div  ng-class=\"vm.isWhiteKey? 'white-key': 'black-key'\">\r\n</div>\r\n"]}
