@@ -205,44 +205,9 @@ var app;
 (function (app) {
     var components;
     (function (components) {
-        var pianoIdCounter = 1;
-        var PianoChordNotatorComponent = /** @class */ (function () {
-            function PianoChordNotatorComponent() {
-                this.pianoId = 'piano-' + pianoIdCounter++;
-            }
-            PianoChordNotatorComponent.prototype.export = function () {
-                var element = document.getElementById(this.pianoId);
-                html2canvas(document.body).then(function (canvas) {
-                    var dataUrl = canvas.toDataURL('image/png');
-                    var a = document.createElement('a');
-                    a.href = dataUrl;
-                    a.innerHTML = 'Click to download';
-                    a.download = 'export.png';
-                    a.target = '_blank';
-                    document.body.appendChild(a);
-                    var img = document.createElement('img');
-                    img.src = dataUrl;
-                    document.body.appendChild(img);
-                });
-            };
-            return PianoChordNotatorComponent;
-        }());
-        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
-        angular.module('app').component('pianoChordNotator', {
-            bindings: {
-                key: '<'
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
         var PianoComponent = /** @class */ (function () {
-            function PianoComponent() {
+            function PianoComponent($element) {
+                this.$element = $element;
             }
             Object.defineProperty(PianoComponent.prototype, "beginKey", {
                 get: function () {
@@ -315,7 +280,7 @@ var app;
                 if (beginIndex > endIndex) {
                     throw new Error('begin key must be lower than end key');
                 }
-                return app.AllKeys.slice(beginIndex, endIndex);
+                return app.AllKeys.slice(beginIndex, endIndex + 1);
             };
             return PianoComponent;
         }());
@@ -324,6 +289,52 @@ var app;
             bindings: {
                 beginKey: '@',
                 endKey: '@'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var pianoIdCounter = 1;
+        var PianoChordNotatorComponent = /** @class */ (function () {
+            function PianoChordNotatorComponent() {
+                this.allKeys = app.AllKeys;
+                this.beginKey = app.Key.c3;
+                this.endKey = app.Key.c4;
+                this.pianoId = 'piano-' + pianoIdCounter++;
+            }
+            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
+                var index = app.AllKeys.indexOf(key);
+                if (index === -1) {
+                    throw new Error("Unknown key: '" + key);
+                }
+                return app.AllKeys.slice(index);
+            };
+            PianoChordNotatorComponent.prototype.export = function () {
+                var element = document.getElementById(this.pianoId);
+                html2canvas(element).then(function (canvas) {
+                    var dataUrl = canvas.toDataURL('image/png');
+                    var a = document.createElement('a');
+                    a.href = dataUrl;
+                    a.innerHTML = 'Click to download';
+                    a.download = 'export.png';
+                    a.target = '_blank';
+                    document.body.appendChild(a);
+                    var img = document.createElement('img');
+                    img.src = dataUrl;
+                    document.body.appendChild(img);
+                });
+            };
+            return PianoChordNotatorComponent;
+        }());
+        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
+        angular.module('app').component('pianoChordNotator', {
+            bindings: {
+                key: '<'
             }
         });
     })(components = app.components || (app.components = {}));

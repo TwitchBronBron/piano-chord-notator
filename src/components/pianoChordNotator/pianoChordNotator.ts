@@ -7,10 +7,20 @@ module app.components {
             this.pianoId = 'piano-' + pianoIdCounter++;
         }
         public pianoId: string;
+        public allKeys = AllKeys;
+        public beginKey = Key.c3;
+        public endKey = Key.c4;
 
+        public getRemainingKeys(key: Key) {
+            let index = AllKeys.indexOf(key);
+            if (index === -1) {
+                throw new Error(`Unknown key: '${key}`);
+            }
+            return AllKeys.slice(index);
+        }
         public export() {
             let element = document.getElementById(this.pianoId);
-            html2canvas(document.body).then(function (canvas: HTMLCanvasElement) {
+            html2canvas(element).then(function (canvas: HTMLCanvasElement) {
                 let dataUrl = canvas.toDataURL('image/png');
 
                 let a = document.createElement('a');

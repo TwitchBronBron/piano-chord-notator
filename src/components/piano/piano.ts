@@ -1,7 +1,7 @@
 module app.components {
     export class PianoComponent {
         constructor(
-
+            public $element: ng.IAugmentedJQuery
         ) {
         }
 
@@ -45,9 +45,10 @@ module app.components {
             if (this._beginKey && this._endKey) {
                 this._keyRange = this.getKeyRange(this._beginKey, this._endKey);
             } else {
-                (this._keyRange as any) = undefined;
+                (this._keyRange as any) = undefined; 
             }
         }
+
         /**
          * Given a begin and end key, get the list of keys that fall between (including the provided keys)
          * @param beginKey
@@ -70,7 +71,7 @@ module app.components {
                 throw new Error('begin key must be lower than end key');
             }
 
-            return AllKeys.slice(beginIndex, endIndex);
+            return AllKeys.slice(beginIndex, endIndex + 1);
         }
     }
 

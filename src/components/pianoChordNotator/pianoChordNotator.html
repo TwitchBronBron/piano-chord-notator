@@ -1,3 +1,14 @@
-<piano id="{{vm.pianoId}}" begin-key="C3" end-key="C4"></piano>
-<button ng-click="vm.export()">Download</button>
+<div class="toolbar">
+    <select ng-model="vm.beginKey" ng-options="key as key for key in vm.allKeys"></select>
+    <select ng-model="vm.endKey" ng-options="key as key for key in vm.getRemainingKeys(vm.beginKey)"></select>
+
+    <button ng-click="vm.export()">Download</button>
+</div>
+<div class="add-button-container">
+    <button>+</button>
+</div>
+<piano id="{{vm.pianoId}}" begin-key="{{vm.beginKey}}" end-key="{{vm.endKey}}"></piano>
+<div class="add-button-container">
+    <button>+</button>
+</div>
 <div class="clearfix"></div>

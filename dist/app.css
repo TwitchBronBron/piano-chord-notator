@@ -5,27 +5,33 @@
   clear: both; }
 
 piano {
-  display: block; }
-  piano piano-key {
-    float: left; }
-    piano piano-key.black-key {
-      margin-left: -30px;
-      margin-right: -30px;
-      position: relative; }
-
-piano-chord-notator {
   display: block;
-  padding-bottom: 5px; }
+  padding-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 0px;
+  overflow: hidden; }
+  piano piano-key {
+    display: inline-block;
+    vertical-align: top; }
+    piano piano-key.white-key {
+      margin: 0 1px; }
+    piano piano-key.black-key {
+      text-align: top;
+      margin-left: -25px;
+      margin-right: -25px;
+      position: absolute; }
 
 piano-key {
   display: inline-block;
-  position: relative; }
+  position: relative;
+  /*
+    * The number indicating what finger should be placed on this key
+    */ }
   piano-key.white-key {
     display: inline-block;
-    margin: 0 2px;
     width: 70px;
     height: 300px;
-    max-width: 85px;
     background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
     background: -moz-linear-gradient(-30deg, #f8f8f8, #ffffff);
     background: -o-linear-gradient(-30deg, #f8f8f8, #ffffff);
@@ -45,13 +51,15 @@ piano-key {
     border-style: solid;
     border-color: #666 #222 #111 #555;
     height: 160px;
-    margin-left: 00px;
     width: 50px;
     z-index: 10; }
     piano-key.black-key:active {
-      border-bottom-width: 3px;
-      top: 0; }
-    piano-key.black-key.black-key .finger-number {
+      border-left-width: 1px;
+      border-right-width: 1px;
+      border-bottom-width: 3px; }
+      piano-key.black-key:active .finger-number {
+        left: 9px; }
+    piano-key.black-key .finger-number {
       border-color: white;
       color: white;
       left: 7px;
@@ -66,5 +74,17 @@ piano-key {
     position: absolute;
     left: 20px;
     bottom: 20px; }
+
+piano-chord-notator {
+  display: block;
+  padding-bottom: 5px; }
+  piano-chord-notator piano {
+    display: inline-block; }
+  piano-chord-notator .add-button-container {
+    height: 300px;
+    width: 30px;
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid black; }
 
 /*# sourceMappingURL=app.css.map */

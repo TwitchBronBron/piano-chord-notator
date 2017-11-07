@@ -1,4 +1,14 @@
 piano-chord-notator {
     display: block;
-    padding-bottom:5px;
+    padding-bottom: 5px;
+    piano {
+        display: inline-block;
+    }
+    .add-button-container {
+        height: 300px;
+        width: 30px;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid black;
+    }
 }

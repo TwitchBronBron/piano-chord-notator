@@ -1,11 +1,21 @@
 piano {
     display: block;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0px;
+    overflow: hidden;
     piano-key {
-        float: left;
+        &.white-key {
+            margin: 0 1px;
+        }
+        display: inline-block;
+        vertical-align: top;
         &.black-key {
-            margin-left: -30px;
-            margin-right: -30px;
-            position:relative;
+            text-align: top;
+            margin-left: -25px;
+            margin-right: -25px;
+            position: absolute;
         }
     }
 }
