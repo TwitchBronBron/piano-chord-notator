@@ -22,7 +22,9 @@ gulp.task('js', function () {
 
 gulp.task('lib-js', function () {
     return gulp.src([
-        'node_modules/angular/angular.min.js'
+        'node_modules/angular/angular.min.js',
+        // 'lib/html2canvas.min.js'
+        'lib/html2canvas-box-shadow-support.min.js'
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('lib.js'))
