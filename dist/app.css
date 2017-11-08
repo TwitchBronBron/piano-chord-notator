@@ -9,8 +9,7 @@ piano {
   padding-bottom: 15px;
   padding-left: 10px;
   padding-right: 10px;
-  padding-top: 0px;
-  overflow: hidden; }
+  padding-top: 0px; }
   piano piano-key {
     display: inline-block;
     vertical-align: top; }
@@ -45,17 +44,17 @@ piano-key {
     display: inline-block;
     width: 70px;
     height: 300px;
-    background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
-    background: -moz-linear-gradient(-30deg, #f8f8f8, #ffffff);
-    background: -o-linear-gradient(-30deg, #f8f8f8, #ffffff);
     background: linear-gradient(-30deg, #f8f8f8, #ffffff);
     box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5);
     height: 300px; }
     piano-key.white-key:active {
-      box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px #000000, -3px 4px 6px rgba(0, 0, 0, 0.5);
+      box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #fffffff1, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px #000000, -3px 4px 6px rgba(0, 0, 0, 0.5);
       position: relative;
-      top: -5px;
-      height: 295px; }
+      top: -5px; }
+  piano-key.white-key.selected {
+    background: linear-gradient(-30deg, #5ef9fc, #40f9fc, #9cfcff); }
+  piano-key.black-key.selected {
+    background: linear-gradient(-20deg, #0077a1, #000000, #0077a1); }
   piano-key.black-key {
     content: "";
     box-shadow: inset 0px -1px 2px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);
@@ -77,15 +76,66 @@ piano-key {
       color: white;
       left: 7px;
       bottom: 10px; }
-  piano-key .finger-number {
-    border-radius: 50%;
-    border: 2px solid black;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    padding-top: 5px;
+  piano-key .selected-finger {
     position: absolute;
     left: 20px;
     bottom: 20px; }
+  piano-key .selected-finger:hover {
+    background-color: black;
+    color: white; }
+
+.finger-number {
+  border-radius: 50%;
+  border: 2px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding-top: 5px;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block; }
+
+.finger-selector {
+  position: absolute;
+  bottom: 0px;
+  z-index: 100;
+  left: -37.5px;
+  bottom: -40px;
+  background-color: transparent;
+  width: 150px;
+  height: 160px; }
+  .finger-selector .finger-number {
+    background-color: white;
+    position: absolute; }
+  .finger-selector .L1 {
+    top: 5px;
+    left: 42px; }
+  .finger-selector .R1 {
+    top: 5px;
+    right: 42px; }
+  .finger-selector .L2 {
+    top: 35px;
+    left: 22px; }
+  .finger-selector .R2 {
+    top: 35px;
+    right: 22px; }
+  .finger-selector .L3 {
+    top: 65px;
+    left: 2px; }
+  .finger-selector .R3 {
+    top: 65px;
+    right: 2px; }
+  .finger-selector .L4 {
+    top: 95px;
+    left: 22px; }
+  .finger-selector .R4 {
+    top: 95px;
+    right: 22px; }
+  .finger-selector .L5 {
+    top: 125px;
+    left: 42px; }
+  .finger-selector .R5 {
+    top: 125px;
+    right: 42px; }
 
 /*# sourceMappingURL=app.css.map */

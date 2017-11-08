@@ -17,9 +17,31 @@ module app.components {
         }
         private _key: Key;
 
+        /**
+         * @Input
+         */
+        public get isSelected() {
+            return this._isSelected;
+        }
+        public set isSelected(value) {
+            this._isSelected = value;
+            this.updateElementClass();
+        }
+        private _isSelected: boolean = false;
+
+        /**
+         * @Input
+         */
+        public finger: Finger;
+
         private updateElementClass() {
             this.$element.removeClass('white-key').removeClass('black-key');
             this.$element.addClass(this.isWhiteKey ? 'white-key' : 'black-key');
+
+            this.$element.removeClass('selected');
+            if (this.isSelected) {
+                this.$element.addClass('selected');
+            }
         }
         /**
          * Is this key a white key. If not, it is a black key
@@ -27,10 +49,21 @@ module app.components {
         public get isWhiteKey() {
             return WhiteKeys.indexOf(this.key) > -1;
         }
+
+        public fingerSelectorIsVisible = false;
+
+        public selectFinger(event: Event) {
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            event.preventDefault();
+            this.fingerSelectorIsVisible = true;
+        }
     }
     angular.module('app').component('pianoKey', {
         bindings: {
-            key: '@'
+            key: '=',
+            finger: '=',
+            isSelected: '='
         }
     });
 }

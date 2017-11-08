@@ -157,7 +157,7 @@ module app {
         Key.asharp5,
         Key.b5,
     ];
-    
+
     export const WhiteNotes = [
         Note.a,
         Note.b,
@@ -183,4 +183,20 @@ module app {
     export const BlackKeys = AllKeys.filter((key) => {
         return key.indexOf('#') > -1;
     })
+    export enum Finger {
+        L1 = 'L1',
+        L2 = 'L2',
+        L3 = 'L3',
+        L4 = 'L4',
+        L5 = 'L5',
+        R1 = 'R1',
+        R2 = 'R2',
+        R3 = 'R3',
+        R4 = 'R4',
+        R5 = 'R5'
+    }
+    export interface KeySelection {
+        key: Key;
+        finger: Finger
+    }
 }

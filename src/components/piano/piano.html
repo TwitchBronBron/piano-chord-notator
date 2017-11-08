@@ -1,1 +1,2 @@
-<piano-key ng-repeat="key in vm.keyRange" key="{{key}}"></piano-key>
+<piano-key ng-click="vm.toggleKeySelection(key)" ng-repeat="key in vm.keyRange" class="major" key="key" finger="vm.keySelection[key].finger"
+    is-selected="vm.keySelection[key] !== undefined"></piano-key>

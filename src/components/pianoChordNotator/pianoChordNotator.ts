@@ -16,7 +16,7 @@ module app.components {
             if (index === -1) {
                 throw new Error(`Unknown key: '${key}`);
             }
-            return AllKeys.slice(index);
+            return WhiteKeys.slice(index);
         }
         public export() {
             let element = document.getElementById(this.pianoId);

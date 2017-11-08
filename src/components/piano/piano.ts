@@ -46,6 +46,23 @@ module app.components {
             return BlackKeys.indexOf(this.endKey) > -1;
         }
 
+        private keySelection: { [key: string]: KeySelection } = {};
+        public toggleKeySelection(key: Key) {
+            if (this.keySelection[key]) {
+                delete this.keySelection[key];
+            } else {
+                this.keySelection[key] = <any>{
+                    key,
+                    finger: undefined,
+                    hand: undefined
+                };
+            }
+        }
+
+        public keyIsSelected(key: Key) {
+            return this.keySelection[key] !== undefined;
+        }
+
 
         /**
          * Try to calculate the key range. Otherwise set to undefined
