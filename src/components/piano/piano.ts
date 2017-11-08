@@ -1,8 +1,14 @@
 module app.components {
     export class PianoComponent {
         constructor(
-            public $element: ng.IAugmentedJQuery
+            public $element: ng.IAugmentedJQuery,
+            public $scope: ng.IScope
         ) {
+            $scope.$watchCollection(()=>{
+                return this.keySelection;
+            }, ()=>{
+                this.triggerChanged();
+            });
         }
 
         /**
@@ -46,13 +52,9 @@ module app.components {
             return BlackKeys.indexOf(this.endKey) > -1;
         }
 
-        private keySelection: { [key: string]: KeySelection } = <any>{
-            'C#3': {
-                finger: Finger.L1,
-                key: 'C#3'
-            }
-        };
-        public toggleKeySelection(key: Key) {
+        private keySelection: { [key: string]: KeySelection } = {};
+
+        toggleKeySelection(key: Key) {
             if (this.keySelection[key]) {
                 delete this.keySelection[key];
             } else {
@@ -116,7 +118,8 @@ module app.components {
         bindings: {
             beginKey: '@',
             endKey: '@',
-            onchange: '&'
+            onchange: '&',
+            keySelection: '='
         }
     });
 }

@@ -331,15 +331,17 @@ var app;
     var components;
     (function (components) {
         var PianoComponent = /** @class */ (function () {
-            function PianoComponent($element) {
+            function PianoComponent($element, $scope) {
+                var _this = this;
                 this.$element = $element;
-                this.keySelection = {
-                    'C#3': {
-                        finger: app.Finger.L1,
-                        key: 'C#3'
-                    }
-                };
+                this.$scope = $scope;
+                this.keySelection = {};
                 this.onchange = function () { };
+                $scope.$watchCollection(function () {
+                    return _this.keySelection;
+                }, function () {
+                    _this.triggerChanged();
+                });
             }
             Object.defineProperty(PianoComponent.prototype, "beginKey", {
                 get: function () {
@@ -455,7 +457,8 @@ var app;
             bindings: {
                 beginKey: '@',
                 endKey: '@',
-                onchange: '&'
+                onchange: '&',
+                keySelection: '='
             }
         });
     })(components = app.components || (app.components = {}));
@@ -473,6 +476,7 @@ var app;
                 this.whiteKeys = app.WhiteKeys;
                 this.beginKey = app.Key.c3;
                 this.endKey = app.Key.c4;
+                this.keySelection = {};
                 this.pianoId = 'piano-' + pianoIdCounter++;
             }
             PianoChordNotatorComponent.prototype.$onInit = function () {
@@ -484,6 +488,9 @@ var app;
                     throw new Error("Unknown key: '" + key);
                 }
                 return app.WhiteKeys.slice(index);
+            };
+            PianoChordNotatorComponent.prototype.reset = function () {
+                this.keySelection = {};
             };
             /**
              * Called every time the piano changes
@@ -540,6 +547,13 @@ var app;
                 set: function (value) {
                     this._key = value;
                     this.updateElementClass();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoKeyComponent.prototype, "note", {
+                get: function () {
+                    return this.key.replace(/[1-7]/, '');
                 },
                 enumerable: true,
                 configurable: true

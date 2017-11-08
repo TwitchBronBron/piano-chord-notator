@@ -11,7 +11,7 @@ module app.components {
         $onInit() {
             this.changed();
         }
-        
+
         public pianoId: string;
         public whiteKeys = WhiteKeys;
         public beginKey = Key.c3;
@@ -26,7 +26,11 @@ module app.components {
         }
 
         public downloadUrl: string | undefined;
+        public keySelection: { [key: string]: KeySelection } = {};
 
+        public reset() {
+            this.keySelection = {};
+        }
         /**
          * Called every time the piano changes
          */

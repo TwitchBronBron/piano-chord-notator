@@ -144,9 +144,18 @@ piano-key {
       color: white;
       left: 7px;
       bottom: 10px; }
+    piano-key.black-key .note {
+      bottom: -176px; }
   piano-key .selected-finger {
     position: absolute;
     left: 20px;
     bottom: 20px; }
+  piano-key .note {
+    position: absolute;
+    bottom: -28px;
+    font-size: 1.2em;
+    width: 100%;
+    text-align: center;
+    font-weight: bold; }
 
 /*# sourceMappingURL=app.css.map */

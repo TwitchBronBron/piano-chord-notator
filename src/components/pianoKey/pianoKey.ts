@@ -16,6 +16,10 @@ module app.components {
             this._key = value;
             this.updateElementClass();
         }
+
+        public get note() {
+            return this.key.replace(/[1-7]/, '');
+        }
         private _key: Key;
 
         /**

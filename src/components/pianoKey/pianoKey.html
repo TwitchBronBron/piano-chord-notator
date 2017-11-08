@@ -1,6 +1,6 @@
-<div ng-class="vm.isWhiteKey? 'white-key': 'black-key'">
-    <div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.showFingerSelector()"
-        ng-click="vm.toggleFingerSelector(this, $event)">
-        {{vm.finger? vm.finger: '?'}}
-    </div>
+<div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.showFingerSelector()" ng-click="vm.toggleFingerSelector(this, $event)">
+    {{vm.finger? vm.finger: '?'}}
+</div>
+<div ng-if="vm.isSelected" class="note">
+    {{vm.note}}
 </div>
