@@ -21,7 +21,7 @@ piano-key {
         background: linear-gradient(-30deg, #5ef9fc, #40f9fc, #9cfcff);
     }
     &.black-key.selected {
-        background: linear-gradient(-20deg, #0077a1, #000000, #0077a1);
+        background: linear-gradient(-20deg, #5ef9fc, #0077a1, #5ef9fc);
     }
     &.black-key {
         content: "";
@@ -67,6 +67,7 @@ piano-key {
         width: 100%;
         text-align: center;
         font-weight: bold;
+        user-select: none;
     }
    
 }

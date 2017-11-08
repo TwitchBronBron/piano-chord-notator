@@ -32,22 +32,117 @@ var app;
 "use strict";
 var app;
 (function (app) {
+    app.AudioFiles = {
+        '148401__neatonk__piano-loud-bb5.aac': '148401__neatonk__piano-loud-bb5.aac',
+        '148402__neatonk__piano-loud-bb6.aac': '148402__neatonk__piano-loud-bb6.aac',
+        '148403__neatonk__piano-loud-b7.aac': '148403__neatonk__piano-loud-b7.aac',
+        '148404__neatonk__piano-loud-bb0.aac': '148404__neatonk__piano-loud-bb0.aac',
+        '148405__neatonk__piano-loud-b5.aac': '148405__neatonk__piano-loud-b5.aac',
+        '148406__neatonk__piano-loud-b6.aac': '148406__neatonk__piano-loud-b6.aac',
+        '148407__neatonk__piano-loud-bb3.aac': '148407__neatonk__piano-loud-bb3.aac',
+        '148408__neatonk__piano-loud-bb4.aac': '148408__neatonk__piano-loud-bb4.aac',
+        '148423__neatonk__piano-loud-bb1.aac': '148423__neatonk__piano-loud-bb1.aac',
+        '148424__neatonk__piano-loud-bb2.aac': '148424__neatonk__piano-loud-bb2.aac',
+        '148425__neatonk__piano-loud-d1.aac': '148425__neatonk__piano-loud-d1.aac',
+        '148426__neatonk__piano-loud-c8.aac': '148426__neatonk__piano-loud-c8.aac',
+        '148427__neatonk__piano-loud-c1.aac': '148427__neatonk__piano-loud-c1.aac',
+        '148428__neatonk__piano-loud-bb7.aac': '148428__neatonk__piano-loud-bb7.aac',
+        '148429__neatonk__piano-loud-c3.aac': '148429__neatonk__piano-loud-c3.aac',
+        '148430__neatonk__piano-loud-c2.aac': '148430__neatonk__piano-loud-c2.aac',
+        '148431__neatonk__piano-loud-c5.aac': '148431__neatonk__piano-loud-c5.aac',
+        '148432__neatonk__piano-loud-c4.aac': '148432__neatonk__piano-loud-c4.aac',
+        '148433__neatonk__piano-loud-c7.aac': '148433__neatonk__piano-loud-c7.aac',
+        '148434__neatonk__piano-loud-c6.aac': '148434__neatonk__piano-loud-c6.aac',
+        '148435__neatonk__piano-loud-gb4.aac': '148435__neatonk__piano-loud-gb4.aac',
+        '148436__neatonk__piano-loud-gb5.aac': '148436__neatonk__piano-loud-gb5.aac',
+        '148437__neatonk__piano-loud-gb6.aac': '148437__neatonk__piano-loud-gb6.aac',
+        '148438__neatonk__piano-loud-gb7.aac': '148438__neatonk__piano-loud-gb7.aac',
+        '148439__neatonk__piano-loud-g7.aac': '148439__neatonk__piano-loud-g7.aac',
+        '148440__neatonk__piano-loud-gb1.aac': '148440__neatonk__piano-loud-gb1.aac',
+        '148441__neatonk__piano-loud-gb2.aac': '148441__neatonk__piano-loud-gb2.aac',
+        '148442__neatonk__piano-loud-gb3.aac': '148442__neatonk__piano-loud-gb3.aac',
+        '148471__neatonk__piano-loud-ab6.aac': '148471__neatonk__piano-loud-ab6.aac',
+        '148472__neatonk__piano-loud-ab5.aac': '148472__neatonk__piano-loud-ab5.aac',
+        '148473__neatonk__piano-loud-ab4.aac': '148473__neatonk__piano-loud-ab4.aac',
+        '148474__neatonk__piano-loud-ab3.aac': '148474__neatonk__piano-loud-ab3.aac',
+        '148475__neatonk__piano-loud-b2.aac': '148475__neatonk__piano-loud-b2.aac',
+        '148476__neatonk__piano-loud-b1.aac': '148476__neatonk__piano-loud-b1.aac',
+        '148477__neatonk__piano-loud-b0.aac': '148477__neatonk__piano-loud-b0.aac',
+        '148478__neatonk__piano-loud-ab7.aac': '148478__neatonk__piano-loud-ab7.aac',
+        '148479__neatonk__piano-loud-b4.aac': '148479__neatonk__piano-loud-b4.aac',
+        '148480__neatonk__piano-loud-b3.aac': '148480__neatonk__piano-loud-b3.aac',
+        '148481__neatonk__piano-loud-a3.aac': '148481__neatonk__piano-loud-a3.aac',
+        '148482__neatonk__piano-loud-a2.aac': '148482__neatonk__piano-loud-a2.aac',
+        '148483__neatonk__piano-loud-a1.aac': '148483__neatonk__piano-loud-a1.aac',
+        '148484__neatonk__piano-loud-a0.aac': '148484__neatonk__piano-loud-a0.aac',
+        '148485__neatonk__piano-loud-a7.aac': '148485__neatonk__piano-loud-a7.aac',
+        '148486__neatonk__piano-loud-a6.aac': '148486__neatonk__piano-loud-a6.aac',
+        '148487__neatonk__piano-loud-a5.aac': '148487__neatonk__piano-loud-a5.aac',
+        '148488__neatonk__piano-loud-a4.aac': '148488__neatonk__piano-loud-a4.aac',
+        '148489__neatonk__piano-loud-ab2.aac': '148489__neatonk__piano-loud-ab2.aac',
+        '148490__neatonk__piano-loud-ab1.aac': '148490__neatonk__piano-loud-ab1.aac',
+        '148491__neatonk__piano-loud-eb7.aac': '148491__neatonk__piano-loud-eb7.aac',
+        '148492__neatonk__piano-loud-f1.aac': '148492__neatonk__piano-loud-f1.aac',
+        '148493__neatonk__piano-loud-eb5.aac': '148493__neatonk__piano-loud-eb5.aac',
+        '148494__neatonk__piano-loud-eb6.aac': '148494__neatonk__piano-loud-eb6.aac',
+        '148495__neatonk__piano-loud-eb3.aac': '148495__neatonk__piano-loud-eb3.aac',
+        '148496__neatonk__piano-loud-eb4.aac': '148496__neatonk__piano-loud-eb4.aac',
+        '148497__neatonk__piano-loud-eb1.aac': '148497__neatonk__piano-loud-eb1.aac',
+        '148498__neatonk__piano-loud-eb2.aac': '148498__neatonk__piano-loud-eb2.aac',
+        '148499__neatonk__piano-loud-f2.aac': '148499__neatonk__piano-loud-f2.aac',
+        '148500__neatonk__piano-loud-f3.aac': '148500__neatonk__piano-loud-f3.aac',
+        '148501__neatonk__piano-loud-g2.aac': '148501__neatonk__piano-loud-g2.aac',
+        '148502__neatonk__piano-loud-g1.aac': '148502__neatonk__piano-loud-g1.aac',
+        '148503__neatonk__piano-loud-g4.aac': '148503__neatonk__piano-loud-g4.aac',
+        '148504__neatonk__piano-loud-g3.aac': '148504__neatonk__piano-loud-g3.aac',
+        '148505__neatonk__piano-loud-f5.aac': '148505__neatonk__piano-loud-f5.aac',
+        '148506__neatonk__piano-loud-f4.aac': '148506__neatonk__piano-loud-f4.aac',
+        '148507__neatonk__piano-loud-f7.aac': '148507__neatonk__piano-loud-f7.aac',
+        '148508__neatonk__piano-loud-f6.aac': '148508__neatonk__piano-loud-f6.aac',
+        '148509__neatonk__piano-loud-g6.aac': '148509__neatonk__piano-loud-g6.aac',
+        '148510__neatonk__piano-loud-g5.aac': '148510__neatonk__piano-loud-g5.aac',
+        '148511__neatonk__piano-loud-d2.aac': '148511__neatonk__piano-loud-d2.aac',
+        '148512__neatonk__piano-loud-d3.aac': '148512__neatonk__piano-loud-d3.aac',
+        '148513__neatonk__piano-loud-d4.aac': '148513__neatonk__piano-loud-d4.aac',
+        '148514__neatonk__piano-loud-d5.aac': '148514__neatonk__piano-loud-d5.aac',
+        '148515__neatonk__piano-loud-d6.aac': '148515__neatonk__piano-loud-d6.aac',
+        '148516__neatonk__piano-loud-d7.aac': '148516__neatonk__piano-loud-d7.aac',
+        '148517__neatonk__piano-loud-db1.aac': '148517__neatonk__piano-loud-db1.aac',
+        '148518__neatonk__piano-loud-db2.aac': '148518__neatonk__piano-loud-db2.aac',
+        '148519__neatonk__piano-loud-db3.aac': '148519__neatonk__piano-loud-db3.aac',
+        '148520__neatonk__piano-loud-db4.aac': '148520__neatonk__piano-loud-db4.aac',
+        '148521__neatonk__piano-loud-e7.aac': '148521__neatonk__piano-loud-e7.aac',
+        '148522__neatonk__piano-loud-e6.aac': '148522__neatonk__piano-loud-e6.aac',
+        '148523__neatonk__piano-loud-e5.aac': '148523__neatonk__piano-loud-e5.aac',
+        '148524__neatonk__piano-loud-e4.aac': '148524__neatonk__piano-loud-e4.aac',
+        '148525__neatonk__piano-loud-e3.aac': '148525__neatonk__piano-loud-e3.aac',
+        '148526__neatonk__piano-loud-e2.aac': '148526__neatonk__piano-loud-e2.aac',
+        '148527__neatonk__piano-loud-e1.aac': '148527__neatonk__piano-loud-e1.aac',
+        '148528__neatonk__piano-loud-db7.aac': '148528__neatonk__piano-loud-db7.aac',
+        '148529__neatonk__piano-loud-db6.aac': '148529__neatonk__piano-loud-db6.aac',
+        '148530__neatonk__piano-loud-db5.aac': '148530__neatonk__piano-loud-db5.aac',
+    };
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
     /**
      * One of the 12 notes per octive
      */
     var Note;
     (function (Note) {
         Note["c"] = "C";
-        Note["csharp"] = "C#";
+        Note["dflat"] = "Db";
         Note["d"] = "D";
-        Note["dsharp"] = "D#";
+        Note["eflat"] = "Eb";
         Note["e"] = "E";
         Note["f"] = "F";
-        Note["fsharp"] = "F#";
+        Note["gflat"] = "Gb";
         Note["g"] = "G";
-        Note["gsharp"] = "G#";
+        Note["aflat"] = "Ab";
         Note["a"] = "A";
-        Note["asharp"] = "A#";
+        Note["bflat"] = "Bb";
         Note["b"] = "B";
     })(Note = app.Note || (app.Note = {}));
     /**
@@ -56,132 +151,132 @@ var app;
     var Key;
     (function (Key) {
         Key["a0"] = "A0";
-        Key["asharp0"] = "A#0";
+        Key["bflat0"] = "Bb0";
         Key["b0"] = "B0";
         Key["c1"] = "C1";
-        Key["csharp1"] = "C#1";
+        Key["dflat1"] = "Db1";
         Key["d1"] = "D1";
-        Key["dsharp1"] = "D#1";
+        Key["eflat1"] = "Eb1";
         Key["e1"] = "E1";
         Key["f1"] = "F1";
-        Key["fsharp1"] = "F#1";
+        Key["gflat1"] = "Gb1";
         Key["g1"] = "G1";
-        Key["gsharp1"] = "G#1";
+        Key["aflat1"] = "Ab1";
         Key["a1"] = "A1";
-        Key["asharp1"] = "A#1";
+        Key["bflat1"] = "Bb1";
         Key["b1"] = "B1";
         Key["c2"] = "C2";
-        Key["csharp2"] = "C#2";
+        Key["dflat2"] = "Db2";
         Key["d2"] = "D2";
-        Key["dsharp2"] = "D#2";
+        Key["eflat2"] = "Eb2";
         Key["e2"] = "E2";
         Key["f2"] = "F2";
-        Key["fsharp2"] = "F#2";
+        Key["gflat2"] = "Gb2";
         Key["g2"] = "G2";
-        Key["gsharp2"] = "G#2";
+        Key["aflat2"] = "Ab2";
         Key["a2"] = "A2";
-        Key["asharp2"] = "A#2";
+        Key["bflat2"] = "Bb2";
         Key["b2"] = "B2";
         Key["c3"] = "C3";
-        Key["csharp3"] = "C#3";
+        Key["dflat3"] = "Db3";
         Key["d3"] = "D3";
-        Key["dsharp3"] = "D#3";
+        Key["eflat3"] = "Eb3";
         Key["e3"] = "E3";
         Key["f3"] = "F3";
-        Key["fsharp3"] = "F#3";
+        Key["gflat3"] = "Gb3";
         Key["g3"] = "G3";
-        Key["gsharp3"] = "G#3";
+        Key["aflat3"] = "Ab3";
         Key["a3"] = "A3";
-        Key["asharp3"] = "A#3";
+        Key["bflat3"] = "Bb3";
         Key["b3"] = "B3";
         Key["c4"] = "C4";
-        Key["csharp4"] = "C#4";
+        Key["dflat4"] = "Db4";
         Key["d4"] = "D4";
-        Key["dsharp4"] = "D#4";
+        Key["eflat4"] = "Eb4";
         Key["e4"] = "E4";
         Key["f4"] = "F4";
-        Key["fsharp4"] = "F#4";
+        Key["gflat4"] = "Gb4";
         Key["g4"] = "G4";
-        Key["gsharp4"] = "G#4";
+        Key["aflat4"] = "Ab4";
         Key["a4"] = "A4";
-        Key["asharp4"] = "A#4";
+        Key["bflat4"] = "Bb4";
         Key["b4"] = "B4";
         Key["c5"] = "C5";
-        Key["csharp5"] = "C#5";
+        Key["dflat5"] = "Db5";
         Key["d5"] = "D5";
-        Key["dsharp5"] = "D#5";
+        Key["eflat5"] = "Eb5";
         Key["e5"] = "E5";
         Key["f5"] = "F5";
-        Key["fsharp5"] = "F#5";
+        Key["gflat5"] = "Gb5";
         Key["g5"] = "G5";
-        Key["gsharp5"] = "G#5";
+        Key["aflat5"] = "Ab5";
         Key["a5"] = "A5";
-        Key["asharp5"] = "A#5";
+        Key["bflat5"] = "Bb5";
         Key["b5"] = "B5";
     })(Key = app.Key || (app.Key = {}));
     app.AllKeys = [
         Key.a0,
-        Key.asharp0,
+        Key.bflat0,
         Key.b0,
         Key.c1,
-        Key.csharp1,
+        Key.dflat1,
         Key.d1,
-        Key.dsharp1,
+        Key.eflat1,
         Key.e1,
         Key.f1,
-        Key.fsharp1,
+        Key.gflat1,
         Key.g1,
-        Key.gsharp1,
+        Key.aflat1,
         Key.a1,
-        Key.asharp1,
+        Key.bflat1,
         Key.b1,
         Key.c2,
-        Key.csharp2,
+        Key.dflat2,
         Key.d2,
-        Key.dsharp2,
+        Key.eflat2,
         Key.e2,
         Key.f2,
-        Key.fsharp2,
+        Key.gflat2,
         Key.g2,
-        Key.gsharp2,
+        Key.aflat2,
         Key.a2,
-        Key.asharp2,
+        Key.bflat2,
         Key.b2,
         Key.c3,
-        Key.csharp3,
+        Key.dflat3,
         Key.d3,
-        Key.dsharp3,
+        Key.eflat3,
         Key.e3,
         Key.f3,
-        Key.fsharp3,
+        Key.gflat3,
         Key.g3,
-        Key.gsharp3,
+        Key.aflat3,
         Key.a3,
-        Key.asharp3,
+        Key.bflat3,
         Key.b3,
         Key.c4,
-        Key.csharp4,
+        Key.dflat4,
         Key.d4,
-        Key.dsharp4,
+        Key.eflat4,
         Key.e4,
         Key.f4,
-        Key.fsharp4,
+        Key.gflat4,
         Key.g4,
-        Key.gsharp4,
+        Key.aflat4,
         Key.a4,
-        Key.asharp4,
+        Key.bflat4,
         Key.b4,
         Key.c5,
-        Key.csharp5,
+        Key.dflat5,
         Key.d5,
-        Key.dsharp5,
+        Key.eflat5,
         Key.e5,
         Key.f5,
-        Key.fsharp5,
+        Key.gflat5,
         Key.g5,
-        Key.gsharp5,
+        Key.aflat5,
         Key.a5,
-        Key.asharp5,
+        Key.bflat5,
         Key.b5,
     ];
     app.WhiteNotes = [
@@ -194,17 +289,17 @@ var app;
         Note.g
     ];
     app.BlackNotes = [
-        Note.asharp,
-        Note.csharp,
-        Note.dsharp,
-        Note.fsharp,
-        Note.gsharp
+        Note.bflat,
+        Note.dflat,
+        Note.eflat,
+        Note.gflat,
+        Note.aflat
     ];
     app.WhiteKeys = app.AllKeys.filter(function (key) {
-        return key.indexOf('#') === -1;
+        return key.indexOf('b') === -1;
     });
     app.BlackKeys = app.AllKeys.filter(function (key) {
-        return key.indexOf('#') > -1;
+        return key.indexOf('b') > -1;
     });
     var Finger;
     (function (Finger) {
@@ -251,6 +346,51 @@ angular.module('app').directive('debounceMouseenter', function ($timeout) {
         }
     };
 });
+
+"use strict";
+var app;
+(function (app) {
+    var AudioService = /** @class */ (function () {
+        function AudioService() {
+        }
+        AudioService.prototype.playKeys = function (keys) {
+            var urls = this.getKeyUrls(keys);
+            for (var _i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
+                var url = urls_1[_i];
+                var sound = new Howl({
+                    src: [url]
+                });
+                sound.play();
+            }
+        };
+        AudioService.prototype.getKeyUrls = function (keys) {
+            var urls = [];
+            var audioFileKeys = Object.keys(app.AudioFiles);
+            var _loop_1 = function (key) {
+                var matches = audioFileKeys.filter((function (x) {
+                    return x.toLowerCase().indexOf('-' + key.toLowerCase()) > -1;
+                }));
+                if (matches.length === 1) {
+                    var filePath = app.AudioFiles[matches[0]];
+                    urls.push("audio/" + filePath);
+                }
+                else {
+                    var message = "Unable to find a key url for '" + key;
+                    alert(message);
+                    throw new Error(message);
+                }
+            };
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                _loop_1(key);
+            }
+            return urls;
+        };
+        return AudioService;
+    }());
+    app.AudioService = AudioService;
+    angular.module('app').service('audioService', AudioService);
+})(app || (app = {}));
 
 "use strict";
 var app;
@@ -331,10 +471,11 @@ var app;
     var components;
     (function (components) {
         var PianoComponent = /** @class */ (function () {
-            function PianoComponent($element, $scope) {
+            function PianoComponent($element, $scope, audioService) {
                 var _this = this;
                 this.$element = $element;
                 this.$scope = $scope;
+                this.audioService = audioService;
                 this.keySelection = {};
                 this.onchange = function () { };
                 $scope.$watchCollection(function () {
@@ -396,6 +537,10 @@ var app;
                 enumerable: true,
                 configurable: true
             });
+            PianoComponent.prototype.keyClick = function (key) {
+                this.toggleKeySelection(key);
+                this.playKey(key);
+            };
             PianoComponent.prototype.toggleKeySelection = function (key) {
                 if (this.keySelection[key]) {
                     delete this.keySelection[key];
@@ -450,6 +595,9 @@ var app;
             PianoComponent.prototype.triggerChanged = function () {
                 this.onchange();
             };
+            PianoComponent.prototype.playKey = function (key) {
+                this.audioService.playKeys([key]);
+            };
             return PianoComponent;
         }());
         components.PianoComponent = PianoComponent;
@@ -471,8 +619,9 @@ var app;
     (function (components) {
         var pianoIdCounter = 1;
         var PianoChordNotatorComponent = /** @class */ (function () {
-            function PianoChordNotatorComponent($timeout) {
+            function PianoChordNotatorComponent($timeout, audioService) {
                 this.$timeout = $timeout;
+                this.audioService = audioService;
                 this.whiteKeys = app.WhiteKeys;
                 this.beginKey = app.Key.c3;
                 this.endKey = app.Key.c4;
@@ -499,11 +648,15 @@ var app;
                 var _this = this;
                 this.downloadUrl = undefined;
                 //let the UI finish rendering
-                this.$timeout(100).then(function () {
+                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
+                    if (timeoutHandle !== _this.timeoutHandle) {
+                        return Promise.reject(new Error('Another change has occurred since we started'));
+                    }
                     var element = document.getElementById(_this.pianoId);
                     return html2canvas(element);
                 }).then(function (canvas) {
                     _this.downloadUrl = canvas.toDataURL('image/png');
+                }, function () {
                 });
             };
             PianoChordNotatorComponent.prototype.addLowerKey = function () {
@@ -513,6 +666,10 @@ var app;
             PianoChordNotatorComponent.prototype.addHigherKey = function () {
                 var index = app.WhiteKeys.indexOf(this.endKey);
                 this.endKey = app.WhiteKeys[index + 1];
+            };
+            PianoChordNotatorComponent.prototype.playChord = function () {
+                var keys = Object.keys(this.keySelection);
+                this.audioService.playKeys(keys);
             };
             return PianoChordNotatorComponent;
         }());

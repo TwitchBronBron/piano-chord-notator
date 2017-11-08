@@ -1,6 +1,9 @@
 * {
   box-sizing: border-box; }
 
+button {
+  cursor: pointer; }
+
 .clearfix {
   clear: both; }
 
@@ -71,10 +74,10 @@ finger-selector {
 
 piano {
   display: block;
-  padding-bottom: 15px;
+  padding-bottom: 45px;
   padding-left: 10px;
   padding-right: 10px;
-  padding-top: 0px; }
+  padding-top: 5px; }
   piano piano-key {
     display: inline-block;
     vertical-align: top; }
@@ -121,7 +124,7 @@ piano-key {
   piano-key.white-key.selected {
     background: linear-gradient(-30deg, #5ef9fc, #40f9fc, #9cfcff); }
   piano-key.black-key.selected {
-    background: linear-gradient(-20deg, #0077a1, #000000, #0077a1); }
+    background: linear-gradient(-20deg, #5ef9fc, #0077a1, #5ef9fc); }
   piano-key.black-key {
     content: "";
     box-shadow: inset 0px -1px 2px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);
@@ -156,6 +159,7 @@ piano-key {
     font-size: 1.2em;
     width: 100%;
     text-align: center;
-    font-weight: bold; }
+    font-weight: bold;
+    user-select: none; }
 
 /*# sourceMappingURL=app.css.map */

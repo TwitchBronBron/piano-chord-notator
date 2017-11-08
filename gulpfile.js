@@ -7,8 +7,25 @@ var serve = require('gulp-serve');
 var sourcemaps = require('gulp-sourcemaps');
 var templateCache = require('gulp-angular-templatecache');
 var ts = require('gulp-typescript');
-
+var glob = require('glob');
 var tsProject = ts.createProject('tsconfig.json');
+var path = require('path');
+var fs = require('fs');
+
+gulp.task('audio', function (done) {
+    let files = glob.sync('audio/**/*.aac');
+    let filenames = [];
+    let script = `module app {export const AudioFiles = {\n`;
+    for (var i = 0; i < files.length; i++) {
+        let file = files[i];
+        let filename = path.basename(file);
+        let urlSafe = filename.replace('#', '%23');
+        script += `'${filename}': '${urlSafe}',\n`
+    };
+    script += '};}';
+    fs.writeFileSync('src/audioFiles.ts', script);
+    done();
+});
 
 gulp.task('js', function () {
     return gulp.src(['src/app.ts', 'src/**/*.ts'])
@@ -24,7 +41,8 @@ gulp.task('lib-js', function () {
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/angular/angular.min.js',
         // 'lib/html2canvas.min.js'
-        'lib/html2canvas-box-shadow-support.min.js'
+        'lib/html2canvas-box-shadow-support.min.js',
+        'node_modules/howler/dist/howler.min.js'
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('lib.js'))

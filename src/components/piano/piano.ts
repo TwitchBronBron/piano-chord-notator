@@ -2,11 +2,12 @@ module app.components {
     export class PianoComponent {
         constructor(
             public $element: ng.IAugmentedJQuery,
-            public $scope: ng.IScope
+            public $scope: ng.IScope,
+            public audioService: AudioService
         ) {
-            $scope.$watchCollection(()=>{
+            $scope.$watchCollection(() => {
                 return this.keySelection;
-            }, ()=>{
+            }, () => {
                 this.triggerChanged();
             });
         }
@@ -50,6 +51,11 @@ module app.components {
 
         public get endsWithBlackKey() {
             return BlackKeys.indexOf(this.endKey) > -1;
+        }
+
+        public keyClick(key: Key) {
+            this.toggleKeySelection(key);
+            this.playKey(key);
         }
 
         private keySelection: { [key: string]: KeySelection } = {};
@@ -111,6 +117,10 @@ module app.components {
         public onchange: any = () => { };
         private triggerChanged() {
             this.onchange();
+        }
+
+        public playKey(key: Key) {
+            this.audioService.playKeys([key]);
         }
     }
 

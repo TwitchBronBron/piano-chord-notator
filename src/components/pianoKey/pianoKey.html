@@ -1,4 +1,4 @@
-<div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.showFingerSelector()" ng-click="vm.toggleFingerSelector(this, $event)">
+<div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.showFingerSelector()" ng-click="vm.showFingerSelector();$event.stopPropagation()">
     {{vm.finger? vm.finger: '?'}}
 </div>
 <div ng-if="vm.isSelected" class="note">

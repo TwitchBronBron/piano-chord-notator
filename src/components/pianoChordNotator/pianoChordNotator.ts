@@ -3,7 +3,8 @@ module app.components {
     let pianoIdCounter = 1;
     export class PianoChordNotatorComponent {
         constructor(
-            public $timeout: ng.ITimeoutService
+            public $timeout: ng.ITimeoutService,
+            public audioService: AudioService
         ) {
             this.pianoId = 'piano-' + pianoIdCounter++;
         }
@@ -31,17 +32,24 @@ module app.components {
         public reset() {
             this.keySelection = {};
         }
+
+        private timeoutHandle: Promise<void>;
         /**
          * Called every time the piano changes
          */
         public changed() {
             this.downloadUrl = undefined;
             //let the UI finish rendering
-            this.$timeout(100).then(() => {
+            let timeoutHandle = this.timeoutHandle = this.$timeout(100).then(() => {
+                if (timeoutHandle !== this.timeoutHandle) {
+                    return Promise.reject(new Error('Another change has occurred since we started'));
+                }
                 let element = document.getElementById(this.pianoId);
                 return html2canvas(element);
             }).then((canvas: HTMLCanvasElement) => {
                 this.downloadUrl = canvas.toDataURL('image/png');
+            }, () => {
+
             });
         }
 
@@ -53,6 +61,11 @@ module app.components {
         public addHigherKey() {
             let index = WhiteKeys.indexOf(this.endKey);
             this.endKey = WhiteKeys[index + 1];
+        }
+
+        public playChord() {
+            let keys = <Key[]>Object.keys(this.keySelection);
+            this.audioService.playKeys(keys);
         }
     }
     angular.module('app').component('pianoChordNotator', {
