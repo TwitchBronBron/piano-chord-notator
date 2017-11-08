@@ -1,0 +1,64 @@
+finger-selector {
+    position: absolute;
+    bottom: 0px;
+    z-index: 1000;
+    background-color: white;
+    padding: 5px;
+    width: 150px;
+    height: 160px;
+    border-radius: 50%;
+    border: 2px solid black;
+    box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75);
+    .finger-number {
+        background-color: white;
+        position: absolute;
+    }
+    .close {
+        left: 58px;
+        top: 63px;
+        &:hover {
+            background-color: red !important;
+            color: black;
+        }
+    }
+    .L1 {
+        top: 7px;
+        left: 42px;
+    }
+    .R1 {
+        top: 7px;
+        right: 42px;
+    }
+    .L2 {
+        top: 33px;
+        left: 22px;
+    }
+    .R2 {
+        top: 33px;
+        right: 22px;
+    }
+    .L3 {
+        top: 63px;
+        left: 2px;
+    }
+    .R3 {
+        top: 63px;
+        right: 2px;
+    }
+    .L4 {
+        top: 93px;
+        left: 22px;
+    }
+    .R4 {
+        top: 93px;
+        right: 22px;
+    }
+    .L5 {
+        top: 121px;
+        left: 42px;
+    }
+    .R5 {
+        top: 121px;
+        right: 42px;
+    }
+}

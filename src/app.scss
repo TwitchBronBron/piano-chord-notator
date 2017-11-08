@@ -5,3 +5,19 @@
 .clearfix {
     clear: both;
 }
+
+.finger-number {
+    border-radius: 50%;
+    border: 2px solid black;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding-top: 5px;
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    &:hover {
+        background-color: black !important;
+        color: white;
+    }
+}

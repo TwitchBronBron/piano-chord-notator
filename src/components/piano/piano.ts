@@ -46,7 +46,12 @@ module app.components {
             return BlackKeys.indexOf(this.endKey) > -1;
         }
 
-        private keySelection: { [key: string]: KeySelection } = {};
+        private keySelection: { [key: string]: KeySelection } = <any>{
+            'C#3': {
+                finger: Finger.L1,
+                key: 'C#3'
+            }
+        };
         public toggleKeySelection(key: Key) {
             if (this.keySelection[key]) {
                 delete this.keySelection[key];

@@ -6,9 +6,7 @@ angular.module('app').directive('debounceMouseenter', function ($timeout: ng.ITi
                 var timeoutSeconds = parseInt($attributes.debounceDuration);
                 timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
                 timer = $timeout(function () {
-                    try {
-                        $scope.$eval($attributes.debounceMouseenter);
-                    } catch (e) { }
+                    $scope.$eval($attributes.debounceMouseenter);
                 }, timeoutSeconds);
             });
 

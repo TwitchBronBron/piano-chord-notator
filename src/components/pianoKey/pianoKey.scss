@@ -12,6 +12,9 @@ piano-key {
             box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #fffffff1, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px #000000, -3px 4px 6px rgba(0, 0, 0, 0.5);
             position: relative;
             top: -5px;
+            .finger-selector {
+                bottom: -45px;
+            }
         }
     }
     &.white-key.selected {
@@ -29,16 +32,17 @@ piano-key {
         border-color: #666 #222 #111 #555;
         height: 160px;
         width: 50px;
-        z-index: 10;
+        z-index:1;
         &:active {
             border-left-width: 1px;
             border-right-width: 1px;
             border-bottom-width: 3px;
-            .finger-number {
-                left: 9px;
+            .finger-selector {
+                bottom: -35px;
+                left: -53px;
             }
         }
-        .finger-number {
+        .selected-finger {
             border-color: white;
             color: white;
             left: 7px;
@@ -52,81 +56,5 @@ piano-key {
         position: absolute;
         left: 20px;
         bottom: 20px;
-        z-index: 101;
-    }
-}
-
-.finger-number {
-    border-radius: 50%;
-    border: 2px solid black;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    padding-top: 5px;
-    cursor: pointer;
-    user-select: none;
-    display: inline-block;
-    &:hover {
-        background-color: black !important;
-        color: white;
-    }
-}
-
-.finger-selector {
-    position: absolute;
-    bottom: 0px;
-    z-index: 100;
-    left: -37.5px;
-    bottom: -40px;
-    background-color: white;
-    padding: 5px;
-    width: 150px;
-    height: 160px;
-    border-radius: 50%;
-    border: 2px solid black;
-    box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75);
-    .finger-number {
-        background-color: white;
-        position: absolute;
-    }
-    .L1 {
-        top: 7px;
-        left: 42px;
-    }
-    .R1 {
-        top: 7px;
-        right: 42px;
-    }
-    .L2 {
-        top: 33px;
-        left: 22px;
-    }
-    .R2 {
-        top: 33px;
-        right: 22px;
-    }
-    .L3 {
-        top: 63px;
-        left: 2px;
-    }
-    .R3 {
-        top: 63px;
-        right: 2px;
-    }
-    .L4 {
-        top: 93px;
-        left: 22px;
-    }
-    .R4 {
-        top: 93px;
-        right: 22px;
-    }
-    .L5 {
-        top: 121px;
-        left: 42px;
-    }
-    .R5 {
-        top: 121px;
-        right: 42px;
     }
 }

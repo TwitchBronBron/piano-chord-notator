@@ -16,12 +16,12 @@ gulp.task('js', function () {
         .pipe(tsProject())
         .pipe(concat('app.js'))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist'))
-        .pipe(refresh());
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('lib-js', function () {
     return gulp.src([
+        'node_modules/jquery/dist/jquery.min.js',
         'node_modules/angular/angular.min.js',
         // 'lib/html2canvas.min.js'
         'lib/html2canvas-box-shadow-support.min.js'
@@ -29,8 +29,7 @@ gulp.task('lib-js', function () {
         .pipe(sourcemaps.init())
         .pipe(concat('lib.js'))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist'))
-        .pipe(refresh());
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('templates', function () {
@@ -39,8 +38,7 @@ gulp.task('templates', function () {
         .pipe(flatten())
         .pipe(templateCache('templates.js', { module: 'app', root: '' }))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist'))
-        .pipe(refresh());
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('css', function () {
@@ -49,8 +47,7 @@ gulp.task('css', function () {
         .pipe(sass().on('error', sass.logError))
         .pipe(concat('app.css'))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist'))
-        .pipe(refresh());
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('default',
@@ -64,6 +61,11 @@ gulp.task('watch', gulp.series([
         gulp.watch('src/**/*.ts', gulp.parallel(['js']));
         gulp.watch('src/**/*.scss', gulp.parallel(['css']));
         gulp.watch('src/**/*.html', gulp.parallel(['templates']));
+
+        //refresh only the output files
+        gulp.watch(['dist/**/*.js', 'dist/**/*.css']).on('change', function (path) {
+            refresh.changed(path);
+        });
     }]
 ));
 

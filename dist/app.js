@@ -19,6 +19,10 @@ var app;
         }
         return originalComponent.apply(module, [name, options]);
     };
+    //overwrite the window Promise object 
+    module.run(function ($q) {
+        window.Promise = $q;
+    });
 })(app || (app = {}));
 
 "use strict";
@@ -234,10 +238,7 @@ angular.module('app').directive('debounceMouseenter', function ($timeout) {
                 var timeoutSeconds = parseInt($attributes.debounceDuration);
                 timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
                 timer = $timeout(function () {
-                    try {
-                        $scope.$eval($attributes.debounceMouseenter);
-                    }
-                    catch (e) { }
+                    $scope.$eval($attributes.debounceMouseenter);
                 }, timeoutSeconds);
             });
             $element.on('mouseleave', function () {
@@ -250,12 +251,90 @@ angular.module('app').directive('debounceMouseenter', function ($timeout) {
 "use strict";
 var app;
 (function (app) {
+    var idCounter = 0;
+    var FingerSelectorService = /** @class */ (function () {
+        function FingerSelectorService($compile, $rootScope, $document) {
+            this.$compile = $compile;
+            this.$rootScope = $rootScope;
+            this.$document = $document;
+        }
+        FingerSelectorService.prototype.selectFinger = function (element) {
+            var _this = this;
+            //create a new fingerSelector element
+            return new Promise(function (resolve, reject) {
+                var fingerSelectorElement;
+                var $scope = _this.$rootScope.$new();
+                var id = 'finger-selector-' + idCounter++;
+                var coordinates = $(element).offset();
+                //adjust the coordinates so that the item is centered 
+                coordinates.top -= 95;
+                coordinates.left -= 60;
+                $scope.onclose = function () {
+                    fingerSelectorElement.remove();
+                    reject();
+                };
+                $scope.onselect = function (finger) {
+                    fingerSelectorElement.remove();
+                    resolve(finger);
+                };
+                var template = "\n                    <finger-selector id=\"" + id + "\" ng-mouseleave=\"onclose()\" onclose=\"onclose()\" onselect=\"onselect(finger)\" style=\"top:" + coordinates.top + "px;left:" + coordinates.left + "\"></finger-selector>\n                ";
+                var linkFn = _this.$compile(template);
+                var content = linkFn($scope);
+                _this.$document.find('body').append(content);
+                fingerSelectorElement = document.getElementById(id);
+            });
+        };
+        return FingerSelectorService;
+    }());
+    app.FingerSelectorService = FingerSelectorService;
+    angular.module('app').service('fingerSelectorService', FingerSelectorService);
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var FingerSelectorComponent = /** @class */ (function () {
+            function FingerSelectorComponent($element) {
+                this.$element = $element;
+                this.fingers = app.Fingers;
+            }
+            FingerSelectorComponent.prototype.close = function () {
+                try {
+                    this.onclose();
+                }
+                catch (e) { }
+            };
+            FingerSelectorComponent.prototype.selectFinger = function (finger) {
+                this.onselect({ finger: finger });
+            };
+            return FingerSelectorComponent;
+        }());
+        components.FingerSelectorComponent = FingerSelectorComponent;
+        angular.module('app').component('fingerSelector', {
+            bindings: {
+                onclose: '&',
+                onselect: '&'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
     var components;
     (function (components) {
         var PianoComponent = /** @class */ (function () {
             function PianoComponent($element) {
                 this.$element = $element;
-                this.keySelection = {};
+                this.keySelection = {
+                    'C#3': {
+                        finger: app.Finger.L1,
+                        key: 'C#3'
+                    }
+                };
             }
             Object.defineProperty(PianoComponent.prototype, "beginKey", {
                 get: function () {
@@ -431,11 +510,10 @@ var app;
     var components;
     (function (components) {
         var PianoKeyComponent = /** @class */ (function () {
-            function PianoKeyComponent($element) {
+            function PianoKeyComponent($element, fingerSelectorService) {
                 this.$element = $element;
-                this.fingers = app.Fingers;
+                this.fingerSelectorService = fingerSelectorService;
                 this._isSelected = false;
-                this.fingerSelectorIsVisible = false;
             }
             Object.defineProperty(PianoKeyComponent.prototype, "key", {
                 /**
@@ -483,10 +561,14 @@ var app;
                 enumerable: true,
                 configurable: true
             });
-            PianoKeyComponent.prototype.setSelectedFinger = function (finger, event) {
-                event.stopPropagation();
-                this.finger = finger;
-                this.fingerSelectorIsVisible = false;
+            PianoKeyComponent.prototype.showFingerSelector = function () {
+                var _this = this;
+                var element = this.$element.find('.selected-finger')[0];
+                this.fingerSelectorService.selectFinger(element).then(function (finger) {
+                    _this.finger = finger;
+                }, function () {
+                    //do nothing with the rejection: user canceled.
+                });
             };
             return PianoKeyComponent;
         }());

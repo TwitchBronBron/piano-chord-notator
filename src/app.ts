@@ -17,4 +17,8 @@ module app {
         }
         return originalComponent.apply(module, [name, options]);
     };
+    //overwrite the window Promise object 
+    module.run(($q: ng.IQService) => {
+        (window as any).Promise = $q;
+    });
 }

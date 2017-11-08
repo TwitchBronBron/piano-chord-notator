@@ -1,11 +1,11 @@
 module app.components {
     export class PianoKeyComponent {
         constructor(
-            private $element: ng.IAugmentedJQuery
+            private $element: ng.IAugmentedJQuery,
+            private fingerSelectorService: FingerSelectorService
         ) {
         }
 
-        public fingers = Fingers;
         /**
          * @Input
          */
@@ -51,12 +51,13 @@ module app.components {
             return WhiteKeys.indexOf(this.key) > -1;
         }
 
-        public fingerSelectorIsVisible = false;
-
-        public setSelectedFinger(finger: Finger, event: Event) {
-            event.stopPropagation();
-            this.finger = finger;
-            this.fingerSelectorIsVisible = false;
+        public showFingerSelector() {
+            let element = this.$element.find('.selected-finger')[0];
+            this.fingerSelectorService.selectFinger(element).then((finger: Finger) => {
+                this.finger = finger;
+            }, () => {
+                //do nothing with the rejection: user canceled.
+            });
         }
     }
     angular.module('app').component('pianoKey', {

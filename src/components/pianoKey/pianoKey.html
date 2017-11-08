@@ -1,10 +1,6 @@
 <div ng-class="vm.isWhiteKey? 'white-key': 'black-key'">
-    <div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.fingerSelectorIsVisible = true" ng-click="vm.fingerSelectorIsVisible = !vm.fingerSelectorIsVisible; $event.stopPropagation()">
+    <div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.showFingerSelector()"
+        ng-click="vm.toggleFingerSelector(this, $event)">
         {{vm.finger? vm.finger: '?'}}
-    </div>
-    <div class="finger-selector" ng-if="vm.fingerSelectorIsVisible" ng-mouseleave="vm.fingerSelectorIsVisible = false" ng-click="$event.stopPropagation()">
-        <div ng-repeat="finger in vm.fingers" class="finger-number {{finger}}" ng-click="vm.setSelectedFinger(finger, $event)">
-            {{finger}}
-        </div>
     </div>
 </div>
