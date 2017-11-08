@@ -3,9 +3,15 @@ module app.components {
     let pianoIdCounter = 1;
     export class PianoChordNotatorComponent {
         constructor(
+            public $timeout: ng.ITimeoutService
         ) {
             this.pianoId = 'piano-' + pianoIdCounter++;
         }
+
+        $onInit() {
+            this.changed();
+        }
+        
         public pianoId: string;
         public whiteKeys = WhiteKeys;
         public beginKey = Key.c3;
@@ -18,21 +24,20 @@ module app.components {
             }
             return WhiteKeys.slice(index);
         }
-        public export() {
-            let element = document.getElementById(this.pianoId);
-            html2canvas(element).then(function (canvas: HTMLCanvasElement) {
-                let dataUrl = canvas.toDataURL('image/png');
 
-                let a = document.createElement('a');
-                a.href = dataUrl;
-                a.innerHTML = 'Click to download';
-                a.download = 'export.png';
-                a.target = '_blank';
-                document.body.appendChild(a);
+        public downloadUrl: string | undefined;
 
-                let img = document.createElement('img');
-                img.src = dataUrl;
-                document.body.appendChild(img);
+        /**
+         * Called every time the piano changes
+         */
+        public changed() {
+            this.downloadUrl = undefined;
+            //let the UI finish rendering
+            this.$timeout(100).then(() => {
+                let element = document.getElementById(this.pianoId);
+                return html2canvas(element);
+            }).then((canvas: HTMLCanvasElement) => {
+                this.downloadUrl = canvas.toDataURL('image/png');
             });
         }
 

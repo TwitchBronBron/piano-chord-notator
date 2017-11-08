@@ -55,16 +55,24 @@ module app.components {
             let element = this.$element.find('.selected-finger')[0];
             this.fingerSelectorService.selectFinger(element).then((finger: Finger) => {
                 this.finger = finger;
+                this.triggerChanged();
             }, () => {
                 //do nothing with the rejection: user canceled.
             });
         }
+
+        private triggerChanged() {
+            try { this.onchange(); } catch (e) { }
+        }
+
+        public onchange: any = () => { };
     }
     angular.module('app').component('pianoKey', {
         bindings: {
             key: '=',
             finger: '=',
-            isSelected: '='
+            isSelected: '=',
+            onchange: '&'
         }
     });
 }

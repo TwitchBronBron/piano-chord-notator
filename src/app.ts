@@ -21,4 +21,9 @@ module app {
     module.run(($q: ng.IQService) => {
         (window as any).Promise = $q;
     });
+    module.config(function ($compileProvider: any) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|data):/);
+        // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
+    }
+    );
 }

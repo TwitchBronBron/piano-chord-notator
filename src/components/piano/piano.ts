@@ -62,6 +62,7 @@ module app.components {
                     hand: undefined
                 };
             }
+            this.triggerChanged();
         }
 
         public keyIsSelected(key: Key) {
@@ -78,6 +79,7 @@ module app.components {
             } else {
                 (this._keyRange as any) = undefined;
             }
+            this.triggerChanged();
         }
 
         /**
@@ -104,12 +106,17 @@ module app.components {
 
             return AllKeys.slice(beginIndex, endIndex + 1);
         }
+        public onchange: any = () => { };
+        private triggerChanged() {
+            this.onchange();
+        }
     }
 
     angular.module('app').component('piano', {
         bindings: {
             beginKey: '@',
-            endKey: '@'
+            endKey: '@',
+            onchange: '&'
         }
     });
 }
