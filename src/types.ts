@@ -195,6 +195,18 @@ module app {
         R4 = 'R4',
         R5 = 'R5'
     }
+    export const Fingers = [
+        Finger.L1,
+        Finger.L2,
+        Finger.L3,
+        Finger.L4,
+        Finger.L5,
+        Finger.R1,
+        Finger.R2,
+        Finger.R3,
+        Finger.R4,
+        Finger.R5
+    ];
     export interface KeySelection {
         key: Key;
         finger: Finger

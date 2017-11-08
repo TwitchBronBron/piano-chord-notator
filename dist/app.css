@@ -4,6 +4,19 @@
 .clearfix {
   clear: both; }
 
+piano-chord-notator {
+  display: block;
+  padding-bottom: 5px; }
+  piano-chord-notator piano {
+    display: inline-block; }
+  piano-chord-notator .add-button-container {
+    height: 300px;
+    width: 30px;
+    padding-top: 135px;
+    vertical-align: middle;
+    display: inline-block;
+    vertical-align: top; }
+
 piano {
   display: block;
   padding-bottom: 15px;
@@ -20,19 +33,6 @@ piano {
       margin-left: -25px;
       margin-right: -25px;
       position: absolute; }
-
-piano-chord-notator {
-  display: block;
-  padding-bottom: 5px; }
-  piano-chord-notator piano {
-    display: inline-block; }
-  piano-chord-notator .add-button-container {
-    height: 300px;
-    width: 30px;
-    padding-top: 135px;
-    vertical-align: middle;
-    display: inline-block;
-    vertical-align: top; }
 
 piano-key {
   display: inline-block;
@@ -79,10 +79,8 @@ piano-key {
   piano-key .selected-finger {
     position: absolute;
     left: 20px;
-    bottom: 20px; }
-  piano-key .selected-finger:hover {
-    background-color: black;
-    color: white; }
+    bottom: 20px;
+    z-index: 101; }
 
 .finger-number {
   border-radius: 50%;
@@ -94,6 +92,9 @@ piano-key {
   cursor: pointer;
   user-select: none;
   display: inline-block; }
+  .finger-number:hover {
+    background-color: black !important;
+    color: white; }
 
 .finger-selector {
   position: absolute;
@@ -101,41 +102,45 @@ piano-key {
   z-index: 100;
   left: -37.5px;
   bottom: -40px;
-  background-color: transparent;
+  background-color: white;
+  padding: 5px;
   width: 150px;
-  height: 160px; }
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid black;
+  box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75); }
   .finger-selector .finger-number {
     background-color: white;
     position: absolute; }
   .finger-selector .L1 {
-    top: 5px;
+    top: 7px;
     left: 42px; }
   .finger-selector .R1 {
-    top: 5px;
+    top: 7px;
     right: 42px; }
   .finger-selector .L2 {
-    top: 35px;
+    top: 33px;
     left: 22px; }
   .finger-selector .R2 {
-    top: 35px;
+    top: 33px;
     right: 22px; }
   .finger-selector .L3 {
-    top: 65px;
+    top: 63px;
     left: 2px; }
   .finger-selector .R3 {
-    top: 65px;
+    top: 63px;
     right: 2px; }
   .finger-selector .L4 {
-    top: 95px;
+    top: 93px;
     left: 22px; }
   .finger-selector .R4 {
-    top: 95px;
+    top: 93px;
     right: 22px; }
   .finger-selector .L5 {
-    top: 125px;
+    top: 121px;
     left: 42px; }
   .finger-selector .R5 {
-    top: 125px;
+    top: 121px;
     right: 42px; }
 
 /*# sourceMappingURL=app.css.map */

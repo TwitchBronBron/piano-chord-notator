@@ -211,83 +211,41 @@ var app;
         Finger["R4"] = "R4";
         Finger["R5"] = "R5";
     })(Finger = app.Finger || (app.Finger = {}));
+    app.Fingers = [
+        Finger.L1,
+        Finger.L2,
+        Finger.L3,
+        Finger.L4,
+        Finger.L5,
+        Finger.R1,
+        Finger.R2,
+        Finger.R3,
+        Finger.R4,
+        Finger.R5
+    ];
 })(app || (app = {}));
 
 "use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var PianoKeyComponent = /** @class */ (function () {
-            function PianoKeyComponent($element) {
-                this.$element = $element;
-                this._isSelected = false;
-                this.fingerSelectorIsVisible = false;
-            }
-            Object.defineProperty(PianoKeyComponent.prototype, "key", {
-                /**
-                 * @Input
-                 */
-                get: function () {
-                    return this._key;
-                },
-                set: function (value) {
-                    this._key = value;
-                    this.updateElementClass();
-                },
-                enumerable: true,
-                configurable: true
+angular.module('app').directive('debounceMouseenter', function ($timeout) {
+    return {
+        link: function ($scope, $element, $attributes) {
+            var timer;
+            $element.on('mouseenter', function () {
+                var timeoutSeconds = parseInt($attributes.debounceDuration);
+                timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
+                timer = $timeout(function () {
+                    try {
+                        $scope.$eval($attributes.debounceMouseenter);
+                    }
+                    catch (e) { }
+                }, timeoutSeconds);
             });
-            Object.defineProperty(PianoKeyComponent.prototype, "isSelected", {
-                /**
-                 * @Input
-                 */
-                get: function () {
-                    return this._isSelected;
-                },
-                set: function (value) {
-                    this._isSelected = value;
-                    this.updateElementClass();
-                },
-                enumerable: true,
-                configurable: true
+            $element.on('mouseleave', function () {
+                $timeout.cancel(timer);
             });
-            PianoKeyComponent.prototype.updateElementClass = function () {
-                this.$element.removeClass('white-key').removeClass('black-key');
-                this.$element.addClass(this.isWhiteKey ? 'white-key' : 'black-key');
-                this.$element.removeClass('selected');
-                if (this.isSelected) {
-                    this.$element.addClass('selected');
-                }
-            };
-            Object.defineProperty(PianoKeyComponent.prototype, "isWhiteKey", {
-                /**
-                 * Is this key a white key. If not, it is a black key
-                 */
-                get: function () {
-                    return app.WhiteKeys.indexOf(this.key) > -1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoKeyComponent.prototype.selectFinger = function (event) {
-                event.stopImmediatePropagation();
-                event.stopPropagation();
-                event.preventDefault();
-                this.fingerSelectorIsVisible = true;
-            };
-            return PianoKeyComponent;
-        }());
-        components.PianoKeyComponent = PianoKeyComponent;
-        angular.module('app').component('pianoKey', {
-            bindings: {
-                key: '=',
-                finger: '=',
-                isSelected: '='
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
+        }
+    };
+});
 
 "use strict";
 var app;
@@ -462,6 +420,82 @@ var app;
         angular.module('app').component('pianoChordNotator', {
             bindings: {
                 key: '<'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var PianoKeyComponent = /** @class */ (function () {
+            function PianoKeyComponent($element) {
+                this.$element = $element;
+                this.fingers = app.Fingers;
+                this._isSelected = false;
+                this.fingerSelectorIsVisible = false;
+            }
+            Object.defineProperty(PianoKeyComponent.prototype, "key", {
+                /**
+                 * @Input
+                 */
+                get: function () {
+                    return this._key;
+                },
+                set: function (value) {
+                    this._key = value;
+                    this.updateElementClass();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoKeyComponent.prototype, "isSelected", {
+                /**
+                 * @Input
+                 */
+                get: function () {
+                    return this._isSelected;
+                },
+                set: function (value) {
+                    this._isSelected = value;
+                    this.updateElementClass();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoKeyComponent.prototype.updateElementClass = function () {
+                this.$element.removeClass('white-key').removeClass('black-key');
+                this.$element.addClass(this.isWhiteKey ? 'white-key' : 'black-key');
+                this.$element.removeClass('selected');
+                if (this.isSelected) {
+                    this.$element.addClass('selected');
+                }
+            };
+            Object.defineProperty(PianoKeyComponent.prototype, "isWhiteKey", {
+                /**
+                 * Is this key a white key. If not, it is a black key
+                 */
+                get: function () {
+                    return app.WhiteKeys.indexOf(this.key) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoKeyComponent.prototype.setSelectedFinger = function (finger, event) {
+                event.stopPropagation();
+                this.finger = finger;
+                this.fingerSelectorIsVisible = false;
+            };
+            return PianoKeyComponent;
+        }());
+        components.PianoKeyComponent = PianoKeyComponent;
+        angular.module('app').component('pianoKey', {
+            bindings: {
+                key: '=',
+                finger: '=',
+                isSelected: '='
             }
         });
     })(components = app.components || (app.components = {}));

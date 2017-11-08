@@ -5,6 +5,7 @@ module app.components {
         ) {
         }
 
+        public fingers = Fingers;
         /**
          * @Input
          */
@@ -52,11 +53,10 @@ module app.components {
 
         public fingerSelectorIsVisible = false;
 
-        public selectFinger(event: Event) {
-            event.stopImmediatePropagation();
+        public setSelectedFinger(finger: Finger, event: Event) {
             event.stopPropagation();
-            event.preventDefault();
-            this.fingerSelectorIsVisible = true;
+            this.finger = finger;
+            this.fingerSelectorIsVisible = false;
         }
     }
     angular.module('app').component('pianoKey', {

@@ -1,17 +1,10 @@
 <div ng-class="vm.isWhiteKey? 'white-key': 'black-key'">
-    <div class="finger-number selected-finger" ng-if="vm.isSelected" ng-click="vm.selectFinger($event);">
+    <div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.fingerSelectorIsVisible = true" ng-click="vm.fingerSelectorIsVisible = !vm.fingerSelectorIsVisible; $event.stopPropagation()">
         {{vm.finger? vm.finger: '?'}}
     </div>
-    <div class="finger-selector" ng-if="vm.fingerSelectorIsVisible">
-            <div class="finger-number L1" ng-click="vm.finger = 'L1'">L1</div>
-            <div class="finger-number L2" ng-click="vm.finger = 'L2'">L2</div>
-            <div class="finger-number L3" ng-click="vm.finger = 'L3'">L3</div>
-            <div class="finger-number L4" ng-click="vm.finger = 'L4'">L4</div>
-            <div class="finger-number L5" ng-click="vm.finger = 'L5'">L5</div>
-            <div class="finger-number R1" ng-click="vm.finger = 'R1'">R1</div>
-            <div class="finger-number R2" ng-click="vm.finger = 'R2'">R2</div>
-            <div class="finger-number R3" ng-click="vm.finger = 'R3'">R3</div>
-            <div class="finger-number R4" ng-click="vm.finger = 'R4'">R4</div>
-            <div class="finger-number R5" ng-click="vm.finger = 'R5'">R5</div>
+    <div class="finger-selector" ng-if="vm.fingerSelectorIsVisible" ng-mouseleave="vm.fingerSelectorIsVisible = false" ng-click="$event.stopPropagation()">
+        <div ng-repeat="finger in vm.fingers" class="finger-number {{finger}}" ng-click="vm.setSelectedFinger(finger, $event)">
+            {{finger}}
         </div>
+    </div>
 </div>

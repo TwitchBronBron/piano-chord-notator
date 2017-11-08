@@ -52,10 +52,7 @@ piano-key {
         position: absolute;
         left: 20px;
         bottom: 20px;
-    }
-    .selected-finger:hover {
-        background-color: black;
-        color: white;
+        z-index: 101;
     }
 }
 
@@ -69,59 +66,67 @@ piano-key {
     cursor: pointer;
     user-select: none;
     display: inline-block;
+    &:hover {
+        background-color: black !important;
+        color: white;
+    }
 }
 
 .finger-selector {
     position: absolute;
     bottom: 0px;
-    z-index:100;
+    z-index: 100;
     left: -37.5px;
     bottom: -40px;
-    background-color: transparent;
+    background-color: white;
+    padding: 5px;
     width: 150px;
     height: 160px;
+    border-radius: 50%;
+    border: 2px solid black;
+    box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75);
     .finger-number {
-        background-color:white;
+        background-color: white;
         position: absolute;
     }
     .L1 {
-        top: 5px;
+        top: 7px;
         left: 42px;
     }
     .R1 {
-        top: 5px;
+        top: 7px;
         right: 42px;
     }
     .L2 {
-        top: 35px;
+        top: 33px;
         left: 22px;
     }
     .R2 {
-        top: 35px;
+        top: 33px;
         right: 22px;
     }
     .L3 {
-        top: 65px;
+        top: 63px;
         left: 2px;
     }
     .R3 {
-        top: 65px;
+        top: 63px;
         right: 2px;
     }
     .L4 {
-        top: 95px;
+        top: 93px;
         left: 22px;
     }
     .R4 {
-        top: 95px;
+        top: 93px;
         right: 22px;
     }
     .L5 {
-        top: 125px;
+        top: 121px;
         left: 42px;
     }
     .R5 {
-        top: 125px;
+        top: 121px;
         right: 42px;
     }
 }
