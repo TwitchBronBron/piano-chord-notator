@@ -12,6 +12,14 @@ module app.components {
             });
         }
 
+        public get playKeyWhenPressed() {
+            return this._playKeyWhenPressed ? true : false;
+        }
+        public set playKeyWhenPressed(value) {
+            this._playKeyWhenPressed = value ? true : false;
+        }
+        private _playKeyWhenPressed: boolean;
+
         /**
          * The key the piano should begin at (including this key)
          * @Input
@@ -120,7 +128,9 @@ module app.components {
         }
 
         public playKey(key: Key) {
-            this.audioService.playKeys([key]);
+            if (this.playKeyWhenPressed) {
+                this.audioService.playKeys([key]);
+            }
         }
     }
 
@@ -129,7 +139,8 @@ module app.components {
             beginKey: '@',
             endKey: '@',
             onchange: '&',
-            keySelection: '='
+            keySelection: '=',
+            playKeyWhenPressed: '='
         }
     });
 }

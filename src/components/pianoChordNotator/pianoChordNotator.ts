@@ -17,6 +17,7 @@ module app.components {
         public whiteKeys = WhiteKeys;
         public beginKey = Key.c3;
         public endKey = Key.c4;
+        public playKeyWhenPressed = false;
 
         public getRemainingKeys(key: Key) {
             let index = WhiteKeys.indexOf(key);

@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var flatten = require('gulp-flatten');
 var refresh = require('gulp-refresh');
+var replace = require('gulp-replace');
 var sass = require('gulp-sass');
 var serve = require('gulp-serve');
 var sourcemaps = require('gulp-sourcemaps');
@@ -42,7 +43,7 @@ gulp.task('lib-js', function () {
         'node_modules/angular/angular.min.js',
         // 'lib/html2canvas.min.js'
         'lib/html2canvas-box-shadow-support.min.js',
-        'node_modules/howler/dist/howler.min.js'
+        'node_modules/howler/dist/howler.min.js',
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('lib.js'))
@@ -60,7 +61,7 @@ gulp.task('templates', function () {
 });
 
 gulp.task('css', function () {
-    return gulp.src('src/**/*.scss')
+    return gulp.src(['src/**/*.scss', '!src/font-awesome-overrides.scss'])
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(concat('app.css'))
@@ -68,8 +69,25 @@ gulp.task('css', function () {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('lib-css', function () {
+    return gulp.src([
+        'node_modules/font-awesome/css/font-awesome.min.css',
+    ])
+        .pipe(concat('lib.css'))
+        .pipe(replace(/\.\.\/fonts/g, './fonts'))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('lib-assets', function () {
+    return gulp.src('node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest('dist/fonts'));
+});
+
 gulp.task('default',
-    gulp.parallel(['js', 'lib-js', 'templates', 'css'])
+    gulp.parallel([
+        'js', 'templates', 'css',
+        'lib-js', 'lib-css', 'lib-assets'
+    ])
 );
 
 gulp.task('watch', gulp.series([

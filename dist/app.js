@@ -30,6 +30,469 @@ var app;
 })(app || (app = {}));
 
 "use strict";
+angular.module('app').directive('debounceMouseenter', function ($timeout) {
+    return {
+        link: function ($scope, $element, $attributes) {
+            var timer;
+            $element.on('mouseenter', function () {
+                var timeoutSeconds = parseInt($attributes.debounceDuration);
+                timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
+                timer = $timeout(function () {
+                    $scope.$eval($attributes.debounceMouseenter);
+                }, timeoutSeconds);
+            });
+            $element.on('mouseleave', function () {
+                $timeout.cancel(timer);
+            });
+        }
+    };
+});
+
+"use strict";
+var app;
+(function (app) {
+    var AudioService = /** @class */ (function () {
+        function AudioService() {
+        }
+        AudioService.prototype.playKeys = function (keys) {
+            var urls = this.getKeyUrls(keys);
+            for (var _i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
+                var url = urls_1[_i];
+                var sound = new Howl({
+                    src: [url]
+                });
+                sound.play();
+            }
+        };
+        AudioService.prototype.getKeyUrls = function (keys) {
+            var urls = [];
+            var audioFileKeys = Object.keys(app.AudioFiles);
+            var _loop_1 = function (key) {
+                var matches = audioFileKeys.filter((function (x) {
+                    return x.toLowerCase().indexOf('-' + key.toLowerCase()) > -1;
+                }));
+                if (matches.length === 1) {
+                    var filePath = app.AudioFiles[matches[0]];
+                    urls.push("audio/" + filePath);
+                }
+                else {
+                    var message = "Unable to find a key url for '" + key;
+                    alert(message);
+                    throw new Error(message);
+                }
+            };
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                _loop_1(key);
+            }
+            return urls;
+        };
+        return AudioService;
+    }());
+    app.AudioService = AudioService;
+    angular.module('app').service('audioService', AudioService);
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var idCounter = 0;
+    var FingerSelectorService = /** @class */ (function () {
+        function FingerSelectorService($compile, $rootScope, $document) {
+            this.$compile = $compile;
+            this.$rootScope = $rootScope;
+            this.$document = $document;
+        }
+        FingerSelectorService.prototype.selectFinger = function (element) {
+            var _this = this;
+            //create a new fingerSelector element
+            return new Promise(function (resolve, reject) {
+                var fingerSelectorElement;
+                var $scope = _this.$rootScope.$new();
+                var id = 'finger-selector-' + idCounter++;
+                var coordinates = $(element).offset();
+                //adjust the coordinates so that the item is centered 
+                coordinates.top -= 95;
+                coordinates.left -= 60;
+                $scope.onclose = function () {
+                    fingerSelectorElement.remove();
+                    reject();
+                };
+                $scope.onselect = function (finger) {
+                    fingerSelectorElement.remove();
+                    resolve(finger);
+                };
+                var template = "\n                    <finger-selector id=\"" + id + "\" ng-mouseleave=\"onclose()\" onclose=\"onclose()\" onselect=\"onselect(finger)\" style=\"top:" + coordinates.top + "px;left:" + coordinates.left + "\"></finger-selector>\n                ";
+                var linkFn = _this.$compile(template);
+                var content = linkFn($scope);
+                _this.$document.find('body').append(content);
+                fingerSelectorElement = document.getElementById(id);
+            });
+        };
+        return FingerSelectorService;
+    }());
+    app.FingerSelectorService = FingerSelectorService;
+    angular.module('app').service('fingerSelectorService', FingerSelectorService);
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var FingerSelectorComponent = /** @class */ (function () {
+            function FingerSelectorComponent($element) {
+                this.$element = $element;
+                this.fingers = app.Fingers;
+            }
+            FingerSelectorComponent.prototype.close = function () {
+                try {
+                    this.onclose();
+                }
+                catch (e) { }
+            };
+            FingerSelectorComponent.prototype.selectFinger = function (finger) {
+                this.onselect({ finger: finger });
+            };
+            return FingerSelectorComponent;
+        }());
+        components.FingerSelectorComponent = FingerSelectorComponent;
+        angular.module('app').component('fingerSelector', {
+            bindings: {
+                onclose: '&',
+                onselect: '&'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var pianoIdCounter = 1;
+        var PianoChordNotatorComponent = /** @class */ (function () {
+            function PianoChordNotatorComponent($timeout, audioService) {
+                this.$timeout = $timeout;
+                this.audioService = audioService;
+                this.whiteKeys = app.WhiteKeys;
+                this.beginKey = app.Key.c3;
+                this.endKey = app.Key.c4;
+                this.playKeyWhenPressed = false;
+                this.keySelection = {};
+                this.pianoId = 'piano-' + pianoIdCounter++;
+            }
+            PianoChordNotatorComponent.prototype.$onInit = function () {
+                this.changed();
+            };
+            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
+                var index = app.WhiteKeys.indexOf(key);
+                if (index === -1) {
+                    throw new Error("Unknown key: '" + key);
+                }
+                return app.WhiteKeys.slice(index);
+            };
+            PianoChordNotatorComponent.prototype.reset = function () {
+                this.keySelection = {};
+            };
+            /**
+             * Called every time the piano changes
+             */
+            PianoChordNotatorComponent.prototype.changed = function () {
+                var _this = this;
+                this.downloadUrl = undefined;
+                //let the UI finish rendering
+                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
+                    if (timeoutHandle !== _this.timeoutHandle) {
+                        return Promise.reject(new Error('Another change has occurred since we started'));
+                    }
+                    var element = document.getElementById(_this.pianoId);
+                    return html2canvas(element);
+                }).then(function (canvas) {
+                    _this.downloadUrl = canvas.toDataURL('image/png');
+                }, function () {
+                });
+            };
+            PianoChordNotatorComponent.prototype.addLowerKey = function () {
+                var index = app.WhiteKeys.indexOf(this.beginKey);
+                this.beginKey = app.WhiteKeys[index - 1];
+            };
+            PianoChordNotatorComponent.prototype.addHigherKey = function () {
+                var index = app.WhiteKeys.indexOf(this.endKey);
+                this.endKey = app.WhiteKeys[index + 1];
+            };
+            PianoChordNotatorComponent.prototype.playChord = function () {
+                var keys = Object.keys(this.keySelection);
+                this.audioService.playKeys(keys);
+            };
+            return PianoChordNotatorComponent;
+        }());
+        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
+        angular.module('app').component('pianoChordNotator', {
+            bindings: {
+                key: '<'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var PianoComponent = /** @class */ (function () {
+            function PianoComponent($element, $scope, audioService) {
+                var _this = this;
+                this.$element = $element;
+                this.$scope = $scope;
+                this.audioService = audioService;
+                this.keySelection = {};
+                this.onchange = function () { };
+                $scope.$watchCollection(function () {
+                    return _this.keySelection;
+                }, function () {
+                    _this.triggerChanged();
+                });
+            }
+            Object.defineProperty(PianoComponent.prototype, "playKeyWhenPressed", {
+                get: function () {
+                    return this._playKeyWhenPressed ? true : false;
+                },
+                set: function (value) {
+                    this._playKeyWhenPressed = value ? true : false;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "beginKey", {
+                get: function () {
+                    return this._beginKey;
+                },
+                /**
+                 * The key the piano should begin at (including this key)
+                 * @Input
+                 */
+                set: function (value) {
+                    this._beginKey = value;
+                    this.tryCalculateKeyRange();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "endKey", {
+                get: function () {
+                    return this._endKey;
+                },
+                /**
+                 * The key the piano should end at (including this key)
+                 */
+                set: function (value) {
+                    this._endKey = value;
+                    this.tryCalculateKeyRange();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "keyRange", {
+                /**
+                 * The list of all keys (in order) to display on the piano
+                 */
+                get: function () {
+                    return this._keyRange;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "beginsWithBlackKey", {
+                get: function () {
+                    return app.BlackKeys.indexOf(this.beginKey) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "endsWithBlackKey", {
+                get: function () {
+                    return app.BlackKeys.indexOf(this.endKey) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoComponent.prototype.keyClick = function (key) {
+                this.toggleKeySelection(key);
+                this.playKey(key);
+            };
+            PianoComponent.prototype.toggleKeySelection = function (key) {
+                if (this.keySelection[key]) {
+                    delete this.keySelection[key];
+                }
+                else {
+                    this.keySelection[key] = {
+                        key: key,
+                        finger: undefined,
+                        hand: undefined
+                    };
+                }
+                this.triggerChanged();
+            };
+            PianoComponent.prototype.keyIsSelected = function (key) {
+                return this.keySelection[key] !== undefined;
+            };
+            /**
+             * Try to calculate the key range. Otherwise set to undefined
+             */
+            PianoComponent.prototype.tryCalculateKeyRange = function () {
+                if (this._beginKey && this._endKey) {
+                    this._keyRange = this.getKeyRange(this._beginKey, this._endKey);
+                }
+                else {
+                    this._keyRange = undefined;
+                }
+                this.triggerChanged();
+            };
+            /**
+             * Given a begin and end key, get the list of keys that fall between (including the provided keys)
+             * @param beginKey
+             * @param endKey
+             */
+            PianoComponent.prototype.getKeyRange = function (beginKey, endKey) {
+                //sanity checks
+                if (!beginKey || !endKey) {
+                    throw new Error('beginKey and endKey must both be specified');
+                }
+                var beginIndex = app.AllKeys.indexOf(beginKey);
+                if (beginIndex === -1) {
+                    throw new Error("Unknown begin key '" + beginKey + "'");
+                }
+                var endIndex = app.AllKeys.indexOf(endKey);
+                if (endIndex === -1) {
+                    throw new Error("Unknown end key '" + endKey + "'");
+                }
+                if (beginIndex > endIndex) {
+                    throw new Error('begin key must be lower than end key');
+                }
+                return app.AllKeys.slice(beginIndex, endIndex + 1);
+            };
+            PianoComponent.prototype.triggerChanged = function () {
+                this.onchange();
+            };
+            PianoComponent.prototype.playKey = function (key) {
+                if (this.playKeyWhenPressed) {
+                    this.audioService.playKeys([key]);
+                }
+            };
+            return PianoComponent;
+        }());
+        components.PianoComponent = PianoComponent;
+        angular.module('app').component('piano', {
+            bindings: {
+                beginKey: '@',
+                endKey: '@',
+                onchange: '&',
+                keySelection: '=',
+                playKeyWhenPressed: '='
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var PianoKeyComponent = /** @class */ (function () {
+            function PianoKeyComponent($element, fingerSelectorService) {
+                this.$element = $element;
+                this.fingerSelectorService = fingerSelectorService;
+                this._isSelected = false;
+                this.onchange = function () { };
+            }
+            Object.defineProperty(PianoKeyComponent.prototype, "key", {
+                /**
+                 * @Input
+                 */
+                get: function () {
+                    return this._key;
+                },
+                set: function (value) {
+                    this._key = value;
+                    this.updateElementClass();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoKeyComponent.prototype, "note", {
+                get: function () {
+                    return this.key.replace(/[1-7]/, '');
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoKeyComponent.prototype, "isSelected", {
+                /**
+                 * @Input
+                 */
+                get: function () {
+                    return this._isSelected;
+                },
+                set: function (value) {
+                    this._isSelected = value;
+                    this.updateElementClass();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoKeyComponent.prototype.updateElementClass = function () {
+                this.$element.removeClass('white-key').removeClass('black-key');
+                this.$element.addClass(this.isWhiteKey ? 'white-key' : 'black-key');
+                this.$element.removeClass('selected');
+                if (this.isSelected) {
+                    this.$element.addClass('selected');
+                }
+            };
+            Object.defineProperty(PianoKeyComponent.prototype, "isWhiteKey", {
+                /**
+                 * Is this key a white key. If not, it is a black key
+                 */
+                get: function () {
+                    return app.WhiteKeys.indexOf(this.key) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoKeyComponent.prototype.showFingerSelector = function () {
+                var _this = this;
+                var element = this.$element.find('.selected-finger')[0];
+                this.fingerSelectorService.selectFinger(element).then(function (finger) {
+                    _this.finger = finger;
+                    _this.triggerChanged();
+                }, function () {
+                    //do nothing with the rejection: user canceled.
+                });
+            };
+            PianoKeyComponent.prototype.triggerChanged = function () {
+                try {
+                    this.onchange();
+                }
+                catch (e) { }
+            };
+            return PianoKeyComponent;
+        }());
+        components.PianoKeyComponent = PianoKeyComponent;
+        angular.module('app').component('pianoKey', {
+            bindings: {
+                key: '=',
+                finger: '=',
+                isSelected: '=',
+                onchange: '&'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
 var app;
 (function (app) {
     app.AudioFiles = {
@@ -326,455 +789,6 @@ var app;
         Finger.R4,
         Finger.R5
     ];
-})(app || (app = {}));
-
-"use strict";
-angular.module('app').directive('debounceMouseenter', function ($timeout) {
-    return {
-        link: function ($scope, $element, $attributes) {
-            var timer;
-            $element.on('mouseenter', function () {
-                var timeoutSeconds = parseInt($attributes.debounceDuration);
-                timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
-                timer = $timeout(function () {
-                    $scope.$eval($attributes.debounceMouseenter);
-                }, timeoutSeconds);
-            });
-            $element.on('mouseleave', function () {
-                $timeout.cancel(timer);
-            });
-        }
-    };
-});
-
-"use strict";
-var app;
-(function (app) {
-    var AudioService = /** @class */ (function () {
-        function AudioService() {
-        }
-        AudioService.prototype.playKeys = function (keys) {
-            var urls = this.getKeyUrls(keys);
-            for (var _i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
-                var url = urls_1[_i];
-                var sound = new Howl({
-                    src: [url]
-                });
-                sound.play();
-            }
-        };
-        AudioService.prototype.getKeyUrls = function (keys) {
-            var urls = [];
-            var audioFileKeys = Object.keys(app.AudioFiles);
-            var _loop_1 = function (key) {
-                var matches = audioFileKeys.filter((function (x) {
-                    return x.toLowerCase().indexOf('-' + key.toLowerCase()) > -1;
-                }));
-                if (matches.length === 1) {
-                    var filePath = app.AudioFiles[matches[0]];
-                    urls.push("audio/" + filePath);
-                }
-                else {
-                    var message = "Unable to find a key url for '" + key;
-                    alert(message);
-                    throw new Error(message);
-                }
-            };
-            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-                var key = keys_1[_i];
-                _loop_1(key);
-            }
-            return urls;
-        };
-        return AudioService;
-    }());
-    app.AudioService = AudioService;
-    angular.module('app').service('audioService', AudioService);
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var idCounter = 0;
-    var FingerSelectorService = /** @class */ (function () {
-        function FingerSelectorService($compile, $rootScope, $document) {
-            this.$compile = $compile;
-            this.$rootScope = $rootScope;
-            this.$document = $document;
-        }
-        FingerSelectorService.prototype.selectFinger = function (element) {
-            var _this = this;
-            //create a new fingerSelector element
-            return new Promise(function (resolve, reject) {
-                var fingerSelectorElement;
-                var $scope = _this.$rootScope.$new();
-                var id = 'finger-selector-' + idCounter++;
-                var coordinates = $(element).offset();
-                //adjust the coordinates so that the item is centered 
-                coordinates.top -= 95;
-                coordinates.left -= 60;
-                $scope.onclose = function () {
-                    fingerSelectorElement.remove();
-                    reject();
-                };
-                $scope.onselect = function (finger) {
-                    fingerSelectorElement.remove();
-                    resolve(finger);
-                };
-                var template = "\n                    <finger-selector id=\"" + id + "\" ng-mouseleave=\"onclose()\" onclose=\"onclose()\" onselect=\"onselect(finger)\" style=\"top:" + coordinates.top + "px;left:" + coordinates.left + "\"></finger-selector>\n                ";
-                var linkFn = _this.$compile(template);
-                var content = linkFn($scope);
-                _this.$document.find('body').append(content);
-                fingerSelectorElement = document.getElementById(id);
-            });
-        };
-        return FingerSelectorService;
-    }());
-    app.FingerSelectorService = FingerSelectorService;
-    angular.module('app').service('fingerSelectorService', FingerSelectorService);
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var FingerSelectorComponent = /** @class */ (function () {
-            function FingerSelectorComponent($element) {
-                this.$element = $element;
-                this.fingers = app.Fingers;
-            }
-            FingerSelectorComponent.prototype.close = function () {
-                try {
-                    this.onclose();
-                }
-                catch (e) { }
-            };
-            FingerSelectorComponent.prototype.selectFinger = function (finger) {
-                this.onselect({ finger: finger });
-            };
-            return FingerSelectorComponent;
-        }());
-        components.FingerSelectorComponent = FingerSelectorComponent;
-        angular.module('app').component('fingerSelector', {
-            bindings: {
-                onclose: '&',
-                onselect: '&'
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var PianoComponent = /** @class */ (function () {
-            function PianoComponent($element, $scope, audioService) {
-                var _this = this;
-                this.$element = $element;
-                this.$scope = $scope;
-                this.audioService = audioService;
-                this.keySelection = {};
-                this.onchange = function () { };
-                $scope.$watchCollection(function () {
-                    return _this.keySelection;
-                }, function () {
-                    _this.triggerChanged();
-                });
-            }
-            Object.defineProperty(PianoComponent.prototype, "beginKey", {
-                get: function () {
-                    return this._beginKey;
-                },
-                /**
-                 * The key the piano should begin at (including this key)
-                 * @Input
-                 */
-                set: function (value) {
-                    this._beginKey = value;
-                    this.tryCalculateKeyRange();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "endKey", {
-                get: function () {
-                    return this._endKey;
-                },
-                /**
-                 * The key the piano should end at (including this key)
-                 */
-                set: function (value) {
-                    this._endKey = value;
-                    this.tryCalculateKeyRange();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "keyRange", {
-                /**
-                 * The list of all keys (in order) to display on the piano
-                 */
-                get: function () {
-                    return this._keyRange;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "beginsWithBlackKey", {
-                get: function () {
-                    return app.BlackKeys.indexOf(this.beginKey) > -1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "endsWithBlackKey", {
-                get: function () {
-                    return app.BlackKeys.indexOf(this.endKey) > -1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoComponent.prototype.keyClick = function (key) {
-                this.toggleKeySelection(key);
-                this.playKey(key);
-            };
-            PianoComponent.prototype.toggleKeySelection = function (key) {
-                if (this.keySelection[key]) {
-                    delete this.keySelection[key];
-                }
-                else {
-                    this.keySelection[key] = {
-                        key: key,
-                        finger: undefined,
-                        hand: undefined
-                    };
-                }
-                this.triggerChanged();
-            };
-            PianoComponent.prototype.keyIsSelected = function (key) {
-                return this.keySelection[key] !== undefined;
-            };
-            /**
-             * Try to calculate the key range. Otherwise set to undefined
-             */
-            PianoComponent.prototype.tryCalculateKeyRange = function () {
-                if (this._beginKey && this._endKey) {
-                    this._keyRange = this.getKeyRange(this._beginKey, this._endKey);
-                }
-                else {
-                    this._keyRange = undefined;
-                }
-                this.triggerChanged();
-            };
-            /**
-             * Given a begin and end key, get the list of keys that fall between (including the provided keys)
-             * @param beginKey
-             * @param endKey
-             */
-            PianoComponent.prototype.getKeyRange = function (beginKey, endKey) {
-                //sanity checks
-                if (!beginKey || !endKey) {
-                    throw new Error('beginKey and endKey must both be specified');
-                }
-                var beginIndex = app.AllKeys.indexOf(beginKey);
-                if (beginIndex === -1) {
-                    throw new Error("Unknown begin key '" + beginKey + "'");
-                }
-                var endIndex = app.AllKeys.indexOf(endKey);
-                if (endIndex === -1) {
-                    throw new Error("Unknown end key '" + endKey + "'");
-                }
-                if (beginIndex > endIndex) {
-                    throw new Error('begin key must be lower than end key');
-                }
-                return app.AllKeys.slice(beginIndex, endIndex + 1);
-            };
-            PianoComponent.prototype.triggerChanged = function () {
-                this.onchange();
-            };
-            PianoComponent.prototype.playKey = function (key) {
-                this.audioService.playKeys([key]);
-            };
-            return PianoComponent;
-        }());
-        components.PianoComponent = PianoComponent;
-        angular.module('app').component('piano', {
-            bindings: {
-                beginKey: '@',
-                endKey: '@',
-                onchange: '&',
-                keySelection: '='
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var pianoIdCounter = 1;
-        var PianoChordNotatorComponent = /** @class */ (function () {
-            function PianoChordNotatorComponent($timeout, audioService) {
-                this.$timeout = $timeout;
-                this.audioService = audioService;
-                this.whiteKeys = app.WhiteKeys;
-                this.beginKey = app.Key.c3;
-                this.endKey = app.Key.c4;
-                this.keySelection = {};
-                this.pianoId = 'piano-' + pianoIdCounter++;
-            }
-            PianoChordNotatorComponent.prototype.$onInit = function () {
-                this.changed();
-            };
-            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
-                var index = app.WhiteKeys.indexOf(key);
-                if (index === -1) {
-                    throw new Error("Unknown key: '" + key);
-                }
-                return app.WhiteKeys.slice(index);
-            };
-            PianoChordNotatorComponent.prototype.reset = function () {
-                this.keySelection = {};
-            };
-            /**
-             * Called every time the piano changes
-             */
-            PianoChordNotatorComponent.prototype.changed = function () {
-                var _this = this;
-                this.downloadUrl = undefined;
-                //let the UI finish rendering
-                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
-                    if (timeoutHandle !== _this.timeoutHandle) {
-                        return Promise.reject(new Error('Another change has occurred since we started'));
-                    }
-                    var element = document.getElementById(_this.pianoId);
-                    return html2canvas(element);
-                }).then(function (canvas) {
-                    _this.downloadUrl = canvas.toDataURL('image/png');
-                }, function () {
-                });
-            };
-            PianoChordNotatorComponent.prototype.addLowerKey = function () {
-                var index = app.WhiteKeys.indexOf(this.beginKey);
-                this.beginKey = app.WhiteKeys[index - 1];
-            };
-            PianoChordNotatorComponent.prototype.addHigherKey = function () {
-                var index = app.WhiteKeys.indexOf(this.endKey);
-                this.endKey = app.WhiteKeys[index + 1];
-            };
-            PianoChordNotatorComponent.prototype.playChord = function () {
-                var keys = Object.keys(this.keySelection);
-                this.audioService.playKeys(keys);
-            };
-            return PianoChordNotatorComponent;
-        }());
-        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
-        angular.module('app').component('pianoChordNotator', {
-            bindings: {
-                key: '<'
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var PianoKeyComponent = /** @class */ (function () {
-            function PianoKeyComponent($element, fingerSelectorService) {
-                this.$element = $element;
-                this.fingerSelectorService = fingerSelectorService;
-                this._isSelected = false;
-                this.onchange = function () { };
-            }
-            Object.defineProperty(PianoKeyComponent.prototype, "key", {
-                /**
-                 * @Input
-                 */
-                get: function () {
-                    return this._key;
-                },
-                set: function (value) {
-                    this._key = value;
-                    this.updateElementClass();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoKeyComponent.prototype, "note", {
-                get: function () {
-                    return this.key.replace(/[1-7]/, '');
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoKeyComponent.prototype, "isSelected", {
-                /**
-                 * @Input
-                 */
-                get: function () {
-                    return this._isSelected;
-                },
-                set: function (value) {
-                    this._isSelected = value;
-                    this.updateElementClass();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoKeyComponent.prototype.updateElementClass = function () {
-                this.$element.removeClass('white-key').removeClass('black-key');
-                this.$element.addClass(this.isWhiteKey ? 'white-key' : 'black-key');
-                this.$element.removeClass('selected');
-                if (this.isSelected) {
-                    this.$element.addClass('selected');
-                }
-            };
-            Object.defineProperty(PianoKeyComponent.prototype, "isWhiteKey", {
-                /**
-                 * Is this key a white key. If not, it is a black key
-                 */
-                get: function () {
-                    return app.WhiteKeys.indexOf(this.key) > -1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoKeyComponent.prototype.showFingerSelector = function () {
-                var _this = this;
-                var element = this.$element.find('.selected-finger')[0];
-                this.fingerSelectorService.selectFinger(element).then(function (finger) {
-                    _this.finger = finger;
-                    _this.triggerChanged();
-                }, function () {
-                    //do nothing with the rejection: user canceled.
-                });
-            };
-            PianoKeyComponent.prototype.triggerChanged = function () {
-                try {
-                    this.onchange();
-                }
-                catch (e) { }
-            };
-            return PianoKeyComponent;
-        }());
-        components.PianoKeyComponent = PianoKeyComponent;
-        angular.module('app').component('pianoKey', {
-            bindings: {
-                key: '=',
-                finger: '=',
-                isSelected: '=',
-                onchange: '&'
-            }
-        });
-    })(components = app.components || (app.components = {}));
 })(app || (app = {}));
 
 //# sourceMappingURL=app.js.map
