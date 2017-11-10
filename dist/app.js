@@ -377,25 +377,6 @@ var app;
 })(app || (app = {}));
 
 "use strict";
-angular.module('app').directive('debounceMouseenter', function ($timeout) {
-    return {
-        link: function ($scope, $element, $attributes) {
-            var timer;
-            $element.on('mouseenter', function () {
-                var timeoutSeconds = parseInt($attributes.debounceDuration);
-                timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
-                timer = $timeout(function () {
-                    $scope.$eval($attributes.debounceMouseenter);
-                }, timeoutSeconds);
-            });
-            $element.on('mouseleave', function () {
-                $timeout.cancel(timer);
-            });
-        }
-    };
-});
-
-"use strict";
 var app;
 (function (app) {
     var AudioService = /** @class */ (function () {
@@ -481,6 +462,25 @@ var app;
     app.FingerSelectorService = FingerSelectorService;
     angular.module('app').service('fingerSelectorService', FingerSelectorService);
 })(app || (app = {}));
+
+"use strict";
+angular.module('app').directive('debounceMouseenter', function ($timeout) {
+    return {
+        link: function ($scope, $element, $attributes) {
+            var timer;
+            $element.on('mouseenter', function () {
+                var timeoutSeconds = parseInt($attributes.debounceDuration);
+                timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
+                timer = $timeout(function () {
+                    $scope.$eval($attributes.debounceMouseenter);
+                }, timeoutSeconds);
+            });
+            $element.on('mouseleave', function () {
+                $timeout.cancel(timer);
+            });
+        }
+    };
+});
 
 "use strict";
 var app;
@@ -697,7 +697,7 @@ var app;
                 this.audioService = audioService;
                 this.whiteKeys = app.WhiteKeys;
                 this.defaultBeginKey = app.Key.c3;
-                this.defaultEndKey = app.Key.b5;
+                this.defaultEndKey = app.Key.b4;
                 this.playKeyWhenPressed = false;
                 this.chordType = 'major';
                 this.keySelection = {};
