@@ -1,12 +1,25 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="dist/lib.css" /> 
-        <link rel="stylesheet" href="dist/app.css" />
-    </head>
-    <body ng-app="app">
-        <piano-chord-notator></piano-chord-notator>
-        <script src="dist/lib.js"></script>
-        <script src="dist/app.js"></script>
-        <script src="dist/templates.js"></script>
-    </body>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109537332-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-109537332-1');
+    </script>
+
+    <link rel="stylesheet" href="dist/lib.css" />
+    <link rel="stylesheet" href="dist/app.css" />
+</head>
+
+<body ng-app="app">
+    <piano-chord-notator></piano-chord-notator>
+    <script src="dist/lib.js"></script>
+    <script src="dist/app.js"></script>
+    <script src="dist/templates.js"></script>
+</body>
+
 </html>
