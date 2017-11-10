@@ -190,7 +190,8 @@ piano-key {
     border-width: 3px;
     width: 60px;
     height: 60px;
-    font-size: 30px; }
+    font-size: 30px;
+    padding-top: 2px; }
   piano-key .selected-finger {
     position: absolute;
     left: 4px;
