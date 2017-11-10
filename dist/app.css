@@ -7,6 +7,9 @@
 button {
   cursor: pointer; }
 
+label {
+  cursor: pointer; }
+
 .clearfix {
   clear: both; }
 
@@ -16,13 +19,18 @@ button {
   width: 30px;
   height: 30px;
   text-align: center;
-  padding-top: 5px;
+  padding-top: 0px;
   cursor: pointer;
   user-select: none;
   display: inline-block; }
   .finger-number:hover {
     background-color: black !important;
     color: white; }
+
+piano-chord-notator {
+  display: block;
+  margin: auto;
+  text-align: center; }
 
 finger-selector {
   position: absolute;
@@ -99,11 +107,30 @@ piano-chord-notator {
     display: inline-block; }
   piano-chord-notator .add-button-container {
     height: 300px;
-    width: 30px;
+    width: 50px;
     padding-top: 135px;
     vertical-align: middle;
     display: inline-block;
-    vertical-align: top; }
+    vertical-align: top;
+    text-align: center; }
+    piano-chord-notator .add-button-container.low {
+      text-align: right; }
+    piano-chord-notator .add-button-container.high {
+      text-align: left; }
+  piano-chord-notator .download-button {
+    text-decoration-line: unset !important;
+    border: 0; }
+  piano-chord-notator .btn-toolbar {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-top: 5px; }
+    piano-chord-notator .btn-toolbar .fa-refresh {
+      color: lightgreen; }
+    piano-chord-notator .btn-toolbar .fa-play {
+      color: lightskyblue; }
+    piano-chord-notator .btn-toolbar .fa-download {
+      color: white; }
 
 piano-key {
   display: inline-block;
@@ -124,10 +151,14 @@ piano-key {
       top: -5px; }
       piano-key.white-key:active .finger-selector {
         bottom: -45px; }
-  piano-key.white-key.selected {
+  piano-key.white-key.major.selected {
     background: linear-gradient(-30deg, #5ef9fc, #40f9fc, #9cfcff); }
-  piano-key.black-key.selected {
+  piano-key.black-key.major.selected {
     background: linear-gradient(-20deg, #5ef9fc, #0077a1, #5ef9fc); }
+  piano-key.white-key.minor.selected {
+    background: linear-gradient(-30deg, #fc5e5e, #fc4040, #ff9c9c); }
+  piano-key.black-key.minor.selected {
+    background: linear-gradient(-20deg, #fc5e5e, #a10000, #fc5e5e); }
   piano-key.black-key {
     content: "";
     box-shadow: inset 0px -1px 2px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);

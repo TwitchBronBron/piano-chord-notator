@@ -6,10 +6,36 @@ piano-chord-notator {
     }
     .add-button-container {
         height: 300px;
-        width: 30px;
+        width: 50px;
         padding-top: 135px;
         vertical-align: middle;
         display: inline-block;
         vertical-align: top;
+        text-align: center;
+        &.low {
+            text-align: right;
+        }
+        &.high {
+            text-align: left;
+        }
+    }
+    .download-button {
+        text-decoration-line: unset !important;
+        border: 0;
+    }
+    .btn-toolbar {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius:5px;
+        margin-top:5px;
+        .fa-refresh {
+            color: lightgreen;
+        }
+        .fa-play {
+            color: lightskyblue;
+        }
+        .fa-download {
+            color: white;
+        }
     }
 }

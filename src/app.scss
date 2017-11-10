@@ -10,6 +10,10 @@ button {
     cursor: pointer;
 }
 
+label {
+    cursor: pointer;
+}
+
 .clearfix {
     clear: both;
 }
@@ -20,7 +24,7 @@ button {
     width: 30px;
     height: 30px;
     text-align: center;
-    padding-top: 5px;
+    padding-top: 0px;
     cursor: pointer;
     user-select: none;
     display: inline-block;
@@ -28,4 +32,10 @@ button {
         background-color: black !important;
         color: white;
     }
+}
+
+piano-chord-notator {
+    display: block;
+    margin: auto;
+    text-align: center;
 }

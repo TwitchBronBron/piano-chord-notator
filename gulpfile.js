@@ -44,6 +44,7 @@ gulp.task('lib-js', function () {
         // 'lib/html2canvas.min.js'
         'lib/html2canvas-box-shadow-support.min.js',
         'node_modules/howler/dist/howler.min.js',
+        'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('lib.js'))
@@ -72,6 +73,7 @@ gulp.task('css', function () {
 gulp.task('lib-css', function () {
     return gulp.src([
         'node_modules/font-awesome/css/font-awesome.min.css',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css'
     ])
         .pipe(concat('lib.css'))
         .pipe(replace(/\.\.\/fonts/g, './fonts'))

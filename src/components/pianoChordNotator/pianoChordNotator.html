@@ -1,21 +1,47 @@
-<div class="toolbar">
-    <select ng-model="vm.beginKey" ng-options="key as key for key in vm.whiteKeys"></select>
-    <select ng-model="vm.endKey" ng-options="key as key for key in vm.getRemainingKeys(vm.beginKey)"></select>
-    <button ng-click="vm.reset()">Reset</button>
-    <button ng-click="vm.playChord()">Play Chord</button>
-    <a target="_self" download="export.png" ng-href="{{vm.downloadUrl}}" ng-disabled="!vm.downloadUrl"><button>Download</button></a>
-    <label class="pointer">
-        <input type="checkbox" name="play-key-when-pressed" ng-value="true" ng-model="vm.playKeyWhenPressed" />&nbsp;Play key when pressed
-    </label>
-
+<div class="toolbar-container">
+    <div class="btn-toolbar py-2" role="toolbar" aria-label="Toolbar with button groups">
+        <button class="btn btn-secondary mr-2" ng-click="vm.reset()">
+            <i class="fa fa-refresh mr-1"></i>
+            Reset
+        </button>
+        <button class="btn btn-secondary  mr-2" ng-click="vm.playChord()">
+            <i class="fa fa-play mr-1"></i>
+            Play Chord
+        </button>
+        <a class="btn btn-secondary mr-2" target="_self" download="export.png" ng-href="{{vm.downloadUrl}}" ng-class="{'disabled': !vm.downloadUrl}">
+            <i class="fa fa-download mr-1"></i>Download
+        </a>
+        <div class="btn-group mr-2" role="group">
+            <button id="btnGroupDrop1" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Chord Theme
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <label class="dropdown-item">
+                    <input type="radio" name="chord-type" ng-value="'major'" ng-model="vm.chordType" />Major
+                </label>
+                <label class="dropdown-item">
+                    <input type="radio" name="chord-type" ng-value="'minor'" ng-model="vm.chordType" />Minor
+                </label>
+            </div>
+        </div>
+        <button class="btn btn-secondary">
+            <label class="m-0">
+                <input type="checkbox" name="play-key-when-pressed" ng-model="vm.playKeyWhenPressed" />&nbsp;Play key when pressed
+            </label>
+        </button>
+    </div>
 </div>
-<div class="add-button-container">
-    <button ng-click="vm.addLowerKey()">+</button>
+
+<div class="add-button-container low">
+    <select class="mb-2 form-control p-0" ng-model="vm.beginKey" ng-options="key as key for key in vm.whiteKeys"></select>
+    <button class="btn btn-secondary w-100" ng-click="vm.addLowerKey()">+</button>
 </div>
 
-<piano id="{{vm.pianoId}}" play-key-when-pressed="vm.playKeyWhenPressed" key-selection="vm.keySelection" begin-key="{{vm.beginKey}}" end-key="{{vm.endKey}}" onchange="vm.changed()"></piano>
+<piano id="{{vm.pianoId}}" chord-type="vm.chordType" play-key-when-pressed="vm.playKeyWhenPressed" key-selection="vm.keySelection"
+    begin-key="{{vm.beginKey}}" end-key="{{vm.endKey}}" onchange="vm.changed()"></piano>
 
-<div class="add-button-container">
-    <button ng-click="vm.addHigherKey()">+</button>
+<div class="add-button-container high">
+    <select class="mb-2 form-control p-0" ng-model="vm.endKey" ng-options="key as key for key in vm.getRemainingKeys(vm.beginKey)"></select>
+    <button class="btn btn-secondary w-100" ng-click="vm.addHigherKey()">+</button>
 </div>
 <div class="clearfix"></div>

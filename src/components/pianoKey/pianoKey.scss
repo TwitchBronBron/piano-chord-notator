@@ -17,11 +17,17 @@ piano-key {
             }
         }
     }
-    &.white-key.selected {
+    &.white-key.major.selected {
         background: linear-gradient(-30deg, #5ef9fc, #40f9fc, #9cfcff);
     }
-    &.black-key.selected {
+    &.black-key.major.selected {
         background: linear-gradient(-20deg, #5ef9fc, #0077a1, #5ef9fc);
+    }
+    &.white-key.minor.selected {
+        background: linear-gradient(-30deg, #fc5e5e, #fc4040, #ff9c9c);
+    }
+    &.black-key.minor.selected {
+        background: linear-gradient(-20deg, #fc5e5e, #a10000, #fc5e5e);
     }
     &.black-key {
         content: "";

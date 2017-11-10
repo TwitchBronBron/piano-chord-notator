@@ -18,7 +18,8 @@ module app.components {
         public beginKey = Key.c3;
         public endKey = Key.c4;
         public playKeyWhenPressed = false;
-
+        public chordType: 'major' | 'minor' = 'major';
+        
         public getRemainingKeys(key: Key) {
             let index = WhiteKeys.indexOf(key);
             if (index === -1) {
