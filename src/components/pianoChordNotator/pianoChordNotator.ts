@@ -10,16 +10,21 @@ module app.components {
         }
 
         $onInit() {
+            this.reset();
             this.changed();
         }
 
         public pianoId: string;
         public whiteKeys = WhiteKeys;
-        public beginKey = Key.c3;
-        public endKey = Key.c4;
+        public defaultBeginKey = Key.c3;
+        public defaultEndKey = Key.b5;
+
+        public beginKey: Key;
+        public endKey: Key;
+
         public playKeyWhenPressed = false;
         public chordType: 'major' | 'minor' = 'major';
-        
+
         public getRemainingKeys(key: Key) {
             let index = WhiteKeys.indexOf(key);
             if (index === -1) {
@@ -31,8 +36,14 @@ module app.components {
         public downloadUrl: string | undefined;
         public keySelection: { [key: string]: KeySelection } = {};
 
-        public reset() {
+        public clearSelection() {
             this.keySelection = {};
+        }
+
+        public reset() {
+            this.beginKey = this.defaultBeginKey;
+            this.endKey = this.defaultEndKey;
+            this.clearSelection();
         }
 
         private timeoutHandle: Promise<void>;

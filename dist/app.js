@@ -696,14 +696,15 @@ var app;
                 this.$timeout = $timeout;
                 this.audioService = audioService;
                 this.whiteKeys = app.WhiteKeys;
-                this.beginKey = app.Key.c3;
-                this.endKey = app.Key.c4;
+                this.defaultBeginKey = app.Key.c3;
+                this.defaultEndKey = app.Key.b5;
                 this.playKeyWhenPressed = false;
                 this.chordType = 'major';
                 this.keySelection = {};
                 this.pianoId = 'piano-' + pianoIdCounter++;
             }
             PianoChordNotatorComponent.prototype.$onInit = function () {
+                this.reset();
                 this.changed();
             };
             PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
@@ -713,8 +714,13 @@ var app;
                 }
                 return app.WhiteKeys.slice(index);
             };
-            PianoChordNotatorComponent.prototype.reset = function () {
+            PianoChordNotatorComponent.prototype.clearSelection = function () {
                 this.keySelection = {};
+            };
+            PianoChordNotatorComponent.prototype.reset = function () {
+                this.beginKey = this.defaultBeginKey;
+                this.endKey = this.defaultEndKey;
+                this.clearSelection();
             };
             /**
              * Called every time the piano changes

@@ -1,4 +1,8 @@
 piano-key {
+    $majorWhiteSelectedColor: #5ef9fc;
+    $majorBlackSelectedColor: darken($majorWhiteSelectedColor, 20%);
+    $minorWhiteSelectedColor: #f15555;
+    $minorBlackSelectedColor: darken($minorWhiteSelectedColor, 20%);
     display: inline-block;
     position: relative;
     &.white-key {
@@ -18,16 +22,16 @@ piano-key {
         }
     }
     &.white-key.major.selected {
-        background: linear-gradient(-30deg, #5ef9fc, #40f9fc, #9cfcff);
+        background: linear-gradient(-30deg, $majorWhiteSelectedColor, darken($majorWhiteSelectedColor, 20%), $majorWhiteSelectedColor);
     }
     &.black-key.major.selected {
-        background: linear-gradient(-20deg, #5ef9fc, #0077a1, #5ef9fc);
+        background: linear-gradient(-20deg, $majorBlackSelectedColor, lighten($majorBlackSelectedColor, 10%), $majorBlackSelectedColor);
     }
     &.white-key.minor.selected {
-        background: linear-gradient(-30deg, #fc5e5e, #fc4040, #ff9c9c);
+        background: linear-gradient(-30deg, $minorWhiteSelectedColor, darken($minorWhiteSelectedColor, 10%), $minorWhiteSelectedColor);
     }
     &.black-key.minor.selected {
-        background: linear-gradient(-20deg, #fc5e5e, #a10000, #fc5e5e);
+        background: linear-gradient(-20deg, $minorBlackSelectedColor, lighten($minorBlackSelectedColor, 10%), $minorBlackSelectedColor);
     }
     &.black-key {
         content: "";
@@ -48,31 +52,44 @@ piano-key {
                 left: -53px;
             }
         }
-        .selected-finger {
-            border-color: white;
-            color: white;
-            left: 7px;
-            bottom: 10px;
-        }
         .note {
-            bottom: -176px;
+            bottom: -190px;
         }
+    }
+    .note {
+        position: absolute;
+        bottom: -42px;
+        font-size: 30px;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        user-select: none;
+    }
+    .finger-number {
+        border-width: 3px;
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
     }
     /*
     * The number indicating what finger should be placed on this key
     */
     .selected-finger {
         position: absolute;
-        left: 20px;
+        left: 4px;
+        bottom: 20px;
+        box-shadow: 1px 2px 10px 1px #202020;
+    }
+    &.black-key .selected-finger {
+        border-color: black;
+        left: -7px;
         bottom: 20px;
     }
-    .note {
-        position: absolute;
-        bottom: -28px;
-        font-size: 1.2em;
-        width: 100%;
-        text-align: center;
-        font-weight: bold;
-        user-select: none;
+    &.black-key.major .selected-finger {
+        background-color: $majorWhiteSelectedColor;
+    }
+
+    &.black-key.minor .selected-finger {
+        background-color: $minorWhiteSelectedColor;
     }
 }
