@@ -90,12 +90,39 @@ module app {
         a5 = 'A5',
         bflat5 = 'Bb5',
         b5 = 'B5',
+
+        c6 = 'C6',
+        dflat6 = 'Db6',
+        d6 = 'D6',
+        eflat6 = 'Eb6',
+        e6 = 'E6',
+        f6 = 'F6',
+        gflat6 = 'Gb6',
+        g6 = 'G6',
+        aflat6 = 'Ab6',
+        a6 = 'A6',
+        bflat6 = 'Bb6',
+        b6 = 'B6',
+
+        c7 = 'C7',
+        dflat7 = 'Db7',
+        d7 = 'D7',
+        eflat7 = 'Eb7',
+        e7 = 'E7',
+        f7 = 'F7',
+        gflat7 = 'Gb7',
+        g7 = 'G7',
+        aflat7 = 'Ab7',
+        a7 = 'A7',
+        bflat7 = 'Bb7',
+        b7 = 'B7',
     }
 
     export const AllKeys = [
         Key.a0,
         Key.bflat0,
         Key.b0,
+
         Key.c1,
         Key.dflat1,
         Key.d1,
@@ -108,6 +135,7 @@ module app {
         Key.a1,
         Key.bflat1,
         Key.b1,
+
         Key.c2,
         Key.dflat2,
         Key.d2,
@@ -120,6 +148,7 @@ module app {
         Key.a2,
         Key.bflat2,
         Key.b2,
+
         Key.c3,
         Key.dflat3,
         Key.d3,
@@ -132,6 +161,7 @@ module app {
         Key.a3,
         Key.bflat3,
         Key.b3,
+
         Key.c4,
         Key.dflat4,
         Key.d4,
@@ -144,6 +174,7 @@ module app {
         Key.a4,
         Key.bflat4,
         Key.b4,
+
         Key.c5,
         Key.dflat5,
         Key.d5,
@@ -156,6 +187,33 @@ module app {
         Key.a5,
         Key.bflat5,
         Key.b5,
+
+        
+        Key.c6,
+        Key.dflat6,
+        Key.d6,
+        Key.eflat6,
+        Key.e6,
+        Key.f6,
+        Key.gflat6,
+        Key.g6,
+        Key.aflat6,
+        Key.a6,
+        Key.bflat6,
+        Key.b6,
+
+        Key.c7,
+        Key.dflat7,
+        Key.d7,
+        Key.eflat7,
+        Key.e7,
+        Key.f7,
+        Key.gflat7,
+        Key.g7,
+        Key.aflat7,
+        Key.a7,
+        Key.bflat7,
+        Key.b7,
     ];
 
     export const WhiteNotes = [

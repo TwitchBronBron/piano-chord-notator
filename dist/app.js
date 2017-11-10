@@ -213,6 +213,30 @@ var app;
         Key["a5"] = "A5";
         Key["bflat5"] = "Bb5";
         Key["b5"] = "B5";
+        Key["c6"] = "C6";
+        Key["dflat6"] = "Db6";
+        Key["d6"] = "D6";
+        Key["eflat6"] = "Eb6";
+        Key["e6"] = "E6";
+        Key["f6"] = "F6";
+        Key["gflat6"] = "Gb6";
+        Key["g6"] = "G6";
+        Key["aflat6"] = "Ab6";
+        Key["a6"] = "A6";
+        Key["bflat6"] = "Bb6";
+        Key["b6"] = "B6";
+        Key["c7"] = "C7";
+        Key["dflat7"] = "Db7";
+        Key["d7"] = "D7";
+        Key["eflat7"] = "Eb7";
+        Key["e7"] = "E7";
+        Key["f7"] = "F7";
+        Key["gflat7"] = "Gb7";
+        Key["g7"] = "G7";
+        Key["aflat7"] = "Ab7";
+        Key["a7"] = "A7";
+        Key["bflat7"] = "Bb7";
+        Key["b7"] = "B7";
     })(Key = app.Key || (app.Key = {}));
     app.AllKeys = [
         Key.a0,
@@ -278,6 +302,30 @@ var app;
         Key.a5,
         Key.bflat5,
         Key.b5,
+        Key.c6,
+        Key.dflat6,
+        Key.d6,
+        Key.eflat6,
+        Key.e6,
+        Key.f6,
+        Key.gflat6,
+        Key.g6,
+        Key.aflat6,
+        Key.a6,
+        Key.bflat6,
+        Key.b6,
+        Key.c7,
+        Key.dflat7,
+        Key.d7,
+        Key.eflat7,
+        Key.e7,
+        Key.f7,
+        Key.gflat7,
+        Key.g7,
+        Key.aflat7,
+        Key.a7,
+        Key.bflat7,
+        Key.b7,
     ];
     app.WhiteNotes = [
         Note.a,
@@ -327,6 +375,25 @@ var app;
         Finger.R5
     ];
 })(app || (app = {}));
+
+"use strict";
+angular.module('app').directive('debounceMouseenter', function ($timeout) {
+    return {
+        link: function ($scope, $element, $attributes) {
+            var timer;
+            $element.on('mouseenter', function () {
+                var timeoutSeconds = parseInt($attributes.debounceDuration);
+                timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
+                timer = $timeout(function () {
+                    $scope.$eval($attributes.debounceMouseenter);
+                }, timeoutSeconds);
+            });
+            $element.on('mouseleave', function () {
+                $timeout.cancel(timer);
+            });
+        }
+    };
+});
 
 "use strict";
 var app;
@@ -416,25 +483,6 @@ var app;
 })(app || (app = {}));
 
 "use strict";
-angular.module('app').directive('debounceMouseenter', function ($timeout) {
-    return {
-        link: function ($scope, $element, $attributes) {
-            var timer;
-            $element.on('mouseenter', function () {
-                var timeoutSeconds = parseInt($attributes.debounceDuration);
-                timeoutSeconds = !isNaN(timeoutSeconds) ? timeoutSeconds : 300;
-                timer = $timeout(function () {
-                    $scope.$eval($attributes.debounceMouseenter);
-                }, timeoutSeconds);
-            });
-            $element.on('mouseleave', function () {
-                $timeout.cancel(timer);
-            });
-        }
-    };
-});
-
-"use strict";
 var app;
 (function (app) {
     var components;
@@ -460,78 +508,6 @@ var app;
             bindings: {
                 onclose: '&',
                 onselect: '&'
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var pianoIdCounter = 1;
-        var PianoChordNotatorComponent = /** @class */ (function () {
-            function PianoChordNotatorComponent($timeout, audioService) {
-                this.$timeout = $timeout;
-                this.audioService = audioService;
-                this.whiteKeys = app.WhiteKeys;
-                this.beginKey = app.Key.c3;
-                this.endKey = app.Key.c4;
-                this.playKeyWhenPressed = false;
-                this.chordType = 'major';
-                this.keySelection = {};
-                this.pianoId = 'piano-' + pianoIdCounter++;
-            }
-            PianoChordNotatorComponent.prototype.$onInit = function () {
-                this.changed();
-            };
-            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
-                var index = app.WhiteKeys.indexOf(key);
-                if (index === -1) {
-                    throw new Error("Unknown key: '" + key);
-                }
-                return app.WhiteKeys.slice(index);
-            };
-            PianoChordNotatorComponent.prototype.reset = function () {
-                this.keySelection = {};
-            };
-            /**
-             * Called every time the piano changes
-             */
-            PianoChordNotatorComponent.prototype.changed = function () {
-                var _this = this;
-                this.downloadUrl = undefined;
-                //let the UI finish rendering
-                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
-                    if (timeoutHandle !== _this.timeoutHandle) {
-                        return Promise.reject(new Error('Another change has occurred since we started'));
-                    }
-                    var element = document.getElementById(_this.pianoId);
-                    return html2canvas(element);
-                }).then(function (canvas) {
-                    _this.downloadUrl = canvas.toDataURL('image/png');
-                }, function () {
-                });
-            };
-            PianoChordNotatorComponent.prototype.addLowerKey = function () {
-                var index = app.WhiteKeys.indexOf(this.beginKey);
-                this.beginKey = app.WhiteKeys[index - 1];
-            };
-            PianoChordNotatorComponent.prototype.addHigherKey = function () {
-                var index = app.WhiteKeys.indexOf(this.endKey);
-                this.endKey = app.WhiteKeys[index + 1];
-            };
-            PianoChordNotatorComponent.prototype.playChord = function () {
-                var keys = Object.keys(this.keySelection);
-                this.audioService.playKeys(keys);
-            };
-            return PianoChordNotatorComponent;
-        }());
-        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
-        angular.module('app').component('pianoChordNotator', {
-            bindings: {
-                key: '<'
             }
         });
     })(components = app.components || (app.components = {}));
@@ -704,6 +680,78 @@ var app;
                 keySelection: '=',
                 playKeyWhenPressed: '=',
                 chordType: '='
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var pianoIdCounter = 1;
+        var PianoChordNotatorComponent = /** @class */ (function () {
+            function PianoChordNotatorComponent($timeout, audioService) {
+                this.$timeout = $timeout;
+                this.audioService = audioService;
+                this.whiteKeys = app.WhiteKeys;
+                this.beginKey = app.Key.c3;
+                this.endKey = app.Key.c4;
+                this.playKeyWhenPressed = false;
+                this.chordType = 'major';
+                this.keySelection = {};
+                this.pianoId = 'piano-' + pianoIdCounter++;
+            }
+            PianoChordNotatorComponent.prototype.$onInit = function () {
+                this.changed();
+            };
+            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
+                var index = app.WhiteKeys.indexOf(key);
+                if (index === -1) {
+                    throw new Error("Unknown key: '" + key);
+                }
+                return app.WhiteKeys.slice(index);
+            };
+            PianoChordNotatorComponent.prototype.reset = function () {
+                this.keySelection = {};
+            };
+            /**
+             * Called every time the piano changes
+             */
+            PianoChordNotatorComponent.prototype.changed = function () {
+                var _this = this;
+                this.downloadUrl = undefined;
+                //let the UI finish rendering
+                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
+                    if (timeoutHandle !== _this.timeoutHandle) {
+                        return Promise.reject(new Error('Another change has occurred since we started'));
+                    }
+                    var element = document.getElementById(_this.pianoId);
+                    return html2canvas(element);
+                }).then(function (canvas) {
+                    _this.downloadUrl = canvas.toDataURL('image/png');
+                }, function () {
+                });
+            };
+            PianoChordNotatorComponent.prototype.addLowerKey = function () {
+                var index = app.WhiteKeys.indexOf(this.beginKey);
+                this.beginKey = app.WhiteKeys[index - 1];
+            };
+            PianoChordNotatorComponent.prototype.addHigherKey = function () {
+                var index = app.WhiteKeys.indexOf(this.endKey);
+                this.endKey = app.WhiteKeys[index + 1];
+            };
+            PianoChordNotatorComponent.prototype.playChord = function () {
+                var keys = Object.keys(this.keySelection);
+                this.audioService.playKeys(keys);
+            };
+            return PianoChordNotatorComponent;
+        }());
+        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
+        angular.module('app').component('pianoChordNotator', {
+            bindings: {
+                key: '<'
             }
         });
     })(components = app.components || (app.components = {}));
