@@ -32,56 +32,24 @@ piano-chord-notator {
   margin: auto;
   text-align: center; }
 
-finger-selector {
-  position: absolute;
-  bottom: 0px;
-  z-index: 1000;
-  background-color: white;
-  padding: 5px;
-  width: 150px;
-  height: 160px;
-  border-radius: 50%;
-  border: 2px solid black;
-  box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75); }
-  finger-selector .finger-number {
-    background-color: white;
-    position: absolute; }
-  finger-selector .close {
-    left: 58px;
-    top: 63px; }
-    finger-selector .close:hover {
-      background-color: red !important;
-      color: black; }
-  finger-selector .L1 {
-    top: 7px;
-    left: 42px; }
-  finger-selector .R1 {
-    top: 7px;
-    right: 42px; }
-  finger-selector .L2 {
-    top: 33px;
-    left: 22px; }
-  finger-selector .R2 {
-    top: 33px;
-    right: 22px; }
-  finger-selector .L3 {
-    top: 63px;
-    left: 2px; }
-  finger-selector .R3 {
-    top: 63px;
-    right: 2px; }
-  finger-selector .L4 {
-    top: 93px;
-    left: 22px; }
-  finger-selector .R4 {
-    top: 93px;
-    right: 22px; }
-  finger-selector .L5 {
-    top: 121px;
-    left: 42px; }
-  finger-selector .R5 {
-    top: 121px;
-    right: 42px; }
+piano {
+  display: block;
+  padding-bottom: 45px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  white-space: nowrap;
+  overflow: auto; }
+  piano piano-key {
+    display: inline-block;
+    vertical-align: top; }
+    piano piano-key.white-key {
+      margin: 0 1px; }
+    piano piano-key.black-key {
+      text-align: top;
+      margin-left: -25px;
+      margin-right: -25px;
+      position: absolute; }
 
 piano-chord-notator {
   display: block;
@@ -114,6 +82,10 @@ piano-chord-notator {
       color: lightskyblue; }
     piano-chord-notator .btn-toolbar .fa-download {
       color: white; }
+  piano-chord-notator .piano-container {
+    white-space: nowrap;
+    overflow: auto;
+    position: relative; }
 
 piano-key {
   display: inline-block;
@@ -185,21 +157,55 @@ piano-key {
   piano-key.black-key.minor .selected-finger {
     background-color: #f15555; }
 
-piano {
-  display: block;
-  padding-bottom: 45px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 5px; }
-  piano piano-key {
-    display: inline-block;
-    vertical-align: top; }
-    piano piano-key.white-key {
-      margin: 0 1px; }
-    piano piano-key.black-key {
-      text-align: top;
-      margin-left: -25px;
-      margin-right: -25px;
-      position: absolute; }
+finger-selector {
+  position: absolute;
+  bottom: 0px;
+  z-index: 1000;
+  background-color: white;
+  padding: 5px;
+  width: 150px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid black;
+  box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75); }
+  finger-selector .finger-number {
+    background-color: white;
+    position: absolute; }
+  finger-selector .close {
+    left: 58px;
+    top: 63px; }
+    finger-selector .close:hover {
+      background-color: red !important;
+      color: black; }
+  finger-selector .L1 {
+    top: 7px;
+    left: 42px; }
+  finger-selector .R1 {
+    top: 7px;
+    right: 42px; }
+  finger-selector .L2 {
+    top: 33px;
+    left: 22px; }
+  finger-selector .R2 {
+    top: 33px;
+    right: 22px; }
+  finger-selector .L3 {
+    top: 63px;
+    left: 2px; }
+  finger-selector .R3 {
+    top: 63px;
+    right: 2px; }
+  finger-selector .L4 {
+    top: 93px;
+    left: 22px; }
+  finger-selector .R4 {
+    top: 93px;
+    right: 22px; }
+  finger-selector .L5 {
+    top: 121px;
+    left: 42px; }
+  finger-selector .R5 {
+    top: 121px;
+    right: 42px; }
 
 /*# sourceMappingURL=app.css.map */

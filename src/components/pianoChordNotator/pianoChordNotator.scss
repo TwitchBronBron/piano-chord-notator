@@ -26,8 +26,8 @@ piano-chord-notator {
     .btn-toolbar {
         display: inline-block;
         padding: 5px 15px;
-        border-radius:5px;
-        margin-top:5px;
+        border-radius: 5px;
+        margin-top: 5px;
         .fa-refresh {
             color: lightgreen;
         }
@@ -37,5 +37,10 @@ piano-chord-notator {
         .fa-download {
             color: white;
         }
+    }
+    .piano-container {
+        white-space: nowrap;
+        overflow:auto;
+        position:relative;
     }
 }
