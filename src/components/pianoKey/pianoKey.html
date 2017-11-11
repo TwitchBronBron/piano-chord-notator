@@ -2,6 +2,6 @@
     {{vm.finger? vm.finger: '?'}}
 </div>
 <div class="key" ng-if="vm.showKey">{{vm.key}}</div>
-<div ng-if="vm.isSelected" class="note">
-    {{vm.note}}
+<div ng-if="vm.isSelected" class="note" ng-click="vm.toggleEnharmonic($event)">
+    {{vm.enharmonic}}
 </div>

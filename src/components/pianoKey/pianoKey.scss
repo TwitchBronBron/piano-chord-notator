@@ -48,17 +48,21 @@ piano-key {
             }
         }
         .note {
-            bottom: -6.01em;
+            bottom: -7.15em;
         }
     }
     .note {
         position: absolute;
         bottom: -1.4em;
-        font-size: 2em;
-        width: 100%; // border: .05em solid red;
+        font-size: 1.6em;
+        width: 100%; //border: .05em solid red;
         text-align: center;
         font-weight: bold;
         user-select: none;
+        cursor: pointer;
+    }
+    .note:hover {
+        text-shadow: 2px 2px 2px grey;
     }
     .finger-number {
         border-width: .1em;

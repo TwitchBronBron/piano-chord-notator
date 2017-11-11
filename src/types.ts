@@ -188,7 +188,7 @@ module app {
         Key.bflat5,
         Key.b5,
 
-        
+
         Key.c6,
         Key.dflat6,
         Key.d6,
@@ -269,4 +269,39 @@ module app {
         key: Key;
         finger: Finger
     }
+
+    export const NoteEnharmonics = <{ [key: string]: string }>{
+        'C': 'B#',
+        'B#': 'C',
+
+        'C#': 'Db',
+        'Db': 'C#',
+        
+        'D': 'D',
+        
+        'D#': 'Eb',
+        'Eb': 'D#',
+        
+        'E': 'Fb',
+        'Fb': 'E',
+        
+        'E#': 'F',
+        'F': 'E#',
+        
+        'F#': 'Gb',
+        'Gb': 'F#',
+        
+        'G': 'G',
+        
+        'G#': 'Ab',
+        'Ab': 'G#',
+        
+        'A': 'A',
+        
+        'A#': 'Bb',
+        'Bb': 'A#',
+        
+        'B': 'Cb',
+        'Cb': 'B'
+    };
 }

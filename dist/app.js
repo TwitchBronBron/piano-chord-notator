@@ -374,6 +374,29 @@ var app;
         Finger.R4,
         Finger.R5
     ];
+    app.NoteEnharmonics = {
+        'C': 'B#',
+        'B#': 'C',
+        'C#': 'Db',
+        'Db': 'C#',
+        'D': 'D',
+        'D#': 'Eb',
+        'Eb': 'D#',
+        'E': 'Fb',
+        'Fb': 'E',
+        'E#': 'F',
+        'F': 'E#',
+        'F#': 'Gb',
+        'Gb': 'F#',
+        'G': 'G',
+        'G#': 'Ab',
+        'Ab': 'G#',
+        'A': 'A',
+        'A#': 'Bb',
+        'Bb': 'A#',
+        'B': 'Cb',
+        'Cb': 'B'
+    };
 })(app || (app = {}));
 
 "use strict";
@@ -797,6 +820,7 @@ var app;
                 set: function (value) {
                     this._key = value;
                     this.updateElementClass();
+                    this.enharmonic = this.note;
                 },
                 enumerable: true,
                 configurable: true
@@ -855,6 +879,10 @@ var app;
                     this.onchange();
                 }
                 catch (e) { }
+            };
+            PianoKeyComponent.prototype.toggleEnharmonic = function (event) {
+                event.stopPropagation();
+                this.enharmonic = app.NoteEnharmonics[this.enharmonic];
             };
             return PianoKeyComponent;
         }());

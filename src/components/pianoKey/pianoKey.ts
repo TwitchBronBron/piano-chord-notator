@@ -15,7 +15,10 @@ module app.components {
         public set key(value) {
             this._key = value;
             this.updateElementClass();
+            this.enharmonic = this.note;
         }
+
+        public enharmonic: string;
 
         public get note() {
             return this.key.replace(/[1-7]/, '');
@@ -35,7 +38,7 @@ module app.components {
         private _isSelected: boolean = false;
 
         public showKey: boolean;
-        
+
         /**
          * @Input
          */
@@ -69,6 +72,11 @@ module app.components {
 
         private triggerChanged() {
             try { this.onchange(); } catch (e) { }
+        }
+
+        private toggleEnharmonic(event: Event) {
+            event.stopPropagation();
+            this.enharmonic = NoteEnharmonics[this.enharmonic];
         }
 
         public onchange: any = () => { };
