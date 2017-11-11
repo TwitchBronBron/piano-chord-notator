@@ -34,6 +34,8 @@ module app.components {
         }
         private _isSelected: boolean = false;
 
+        public showKey: boolean;
+        
         /**
          * @Input
          */
@@ -76,7 +78,8 @@ module app.components {
             key: '=',
             finger: '=',
             isSelected: '=',
-            onchange: '&'
+            onchange: '&',
+            showKey: '<'
         }
     });
 }

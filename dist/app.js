@@ -669,6 +669,18 @@ var app;
                     this.audioService.playKeys([key]);
                 }
             };
+            /**
+             * Determine whether the light-grey key should be displayed on the piano-key
+             * @param key
+             */
+            PianoComponent.prototype.shouldShowKey = function (key) {
+                if (/^C\d$/i.exec(key)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
             return PianoComponent;
         }());
         components.PianoComponent = PianoComponent;
@@ -852,7 +864,8 @@ var app;
                 key: '=',
                 finger: '=',
                 isSelected: '=',
-                onchange: '&'
+                onchange: '&',
+                showKey: '<'
             }
         });
     })(components = app.components || (app.components = {}));

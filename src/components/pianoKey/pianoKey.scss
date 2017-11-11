@@ -87,4 +87,17 @@ piano-key {
     &.black-key.minor .selected-finger {
         background-color: $minorWhiteSelectedColor;
     }
+    .key {
+        position: absolute;
+        display: block;
+        text-align: center;
+        width: 100%;
+        top: 8.5em;
+        color: grey;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    &.black-key .key {
+        top: 1em;
+    }
 }

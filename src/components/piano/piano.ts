@@ -142,6 +142,18 @@ module app.components {
             }
         }
 
+        /**
+         * Determine whether the light-grey key should be displayed on the piano-key
+         * @param key
+         */
+        public shouldShowKey(key: Key) {
+            if (/^C\d$/i.exec(key)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 
     angular.module('app').component('piano', {
