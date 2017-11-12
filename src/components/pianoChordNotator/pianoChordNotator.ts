@@ -17,7 +17,7 @@ module app.components {
         public pianoId: string;
         public whiteKeys = WhiteKeys;
         public defaultBeginKey = Key.c3;
-        public defaultEndKey = Key.b4;
+        public defaultEndKey = Key.b5;
 
         public beginKey: Key;
         public endKey: Key;

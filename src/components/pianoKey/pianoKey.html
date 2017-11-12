@@ -1,5 +1,7 @@
 <div class="finger-number selected-finger" ng-if="vm.isSelected" debounce-mouseenter="vm.showFingerSelector()" ng-click="vm.showFingerSelector();$event.stopPropagation()">
-    {{vm.finger? vm.finger: '?'}}
+    <span class="finter-number-value">
+        {{vm.finger? vm.finger: '?'}}
+    </span>
 </div>
 <div class="key" ng-if="vm.showKey">{{vm.key}}</div>
 <div ng-if="vm.isSelected" class="note" ng-click="vm.toggleEnharmonic($event)">

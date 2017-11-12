@@ -1,4 +1,8 @@
 piano-key {
+    $whiteKeyWidth: 5.01em;
+    $blackKeyWidth: $whiteKeyWidth * (2/3);
+    $whiteKeyHeight: 19em;
+    $blackKeyHeight: $whiteKeyHeight * .657;
     $majorWhiteSelectedColor: #5ef9fc;
     $majorBlackSelectedColor: darken($majorWhiteSelectedColor, 20%);
     $minorWhiteSelectedColor: #f15555;
@@ -7,12 +11,12 @@ piano-key {
     position: relative;
     &.white-key {
         display: inline-block;
-        width: 4.38em;
+        width: $whiteKeyWidth;
+        height: $whiteKeyHeight;
         background: linear-gradient(-30deg, #f8f8f8, #ffffff);
-        box-shadow: inset 0 .05em 0 #ffffff, inset 0 -.05em 0 #ffffff, inset .05em 0 0 #ffffff, inset -.06em 0 0 #ffffff, 0 .25em .2em rgba(0, 0, 0, 0.7), inset 0 -.05em 0 #ffffff, inset -.05em 0 0 #ffffff, inset -.09em -.07em 1em rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5);
-        height: 18.72em;
+        box-shadow: inset 0 .05em 0 #ffffff, inset 0 -.05em 0 #ffffff, inset .05em 0 0 #ffffff, inset -.06em 0 0 #ffffff, 0 .25em .2em rgba(0, 0, 0, 0.7), inset 0 -.05em 0 #ffffff, inset -.05em 0 0 #ffffff, inset -.09em -.07em 1em rgba(0, 0, 0, 0.5), -.2em .3em .5em rgba(0, 0, 0, 0.5);
         &:active {
-            box-shadow: inset 0 .05em 0 #ffffff, inset 0 -.05em 0 #fffffff1, inset 1px 0 0 #ffffff, inset -1px 0 0 #ffffff, 0 .25em .2em rgba(0, 0, 0, 0.7), inset 0 -.05em 0 #ffffff, inset 1px 0 0 #ffffff, inset -.09em -.07em 1em #000000, -3px 4px 6px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 .05em 0 #ffffff, inset 0 -.05em 0 #fffffff1, inset .05em 0 0 #ffffff, inset -.05em 0 0 #ffffff, 0 .25em .2em rgba(0, 0, 0, 0.7), inset 0 -.05em 0 #ffffff, inset .05em 0 0 #ffffff, inset -.09em -.07em 1em #000000, -.2em .3em .5em rgba(0, 0, 0, 0.5);
             position: relative;
             height: 18.5em;
         }
@@ -31,13 +35,13 @@ piano-key {
     }
     &.black-key {
         content: "";
-        box-shadow: inset 0 -.1em .35em rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);
+        box-shadow: inset 0 -.1em .35em rgba(255, 255, 255, 0.4), 0 .2em .2em rgba(0, 0, 0, 0.4);
         background: linear-gradient(-20deg, #222222, #000000, #222222);
         border-width: .05em .2em .5em;
         border-style: solid;
         border-color: #666 #222 #111 #555;
-        height: 10em;
-        width: 3.12em;
+        width: $blackKeyWidth;
+        height: $blackKeyHeight;
         z-index: 1;
         &:active {
             border-left-width: .12em;
@@ -53,31 +57,31 @@ piano-key {
     }
     .note {
         position: absolute;
-        bottom: -1.4em;
-        font-size: 1.6em;
+        bottom: -1.3em;
+        font-size: 5em;
         width: 100%; //border: .05em solid red;
         text-align: center;
         font-weight: bold;
         user-select: none;
         cursor: pointer;
     }
-    .note:hover {
-        text-shadow: 2px 2px 2px grey;
-    }
     .finger-number {
-        border-width: .1em;
-        width: 2em;
-        height: 2em;
-        font-size: 1.9em;
-        padding-top: .07em;
+        border-width: .08em;
+        width: 1.7em;
+        height: 1.5em;
+        font-size: 3.5em;
+        font-weight:bold;
+        z-index:1;
+        background-color: $majorWhiteSelectedColor;
     }
     /*
     * The number indicating what finger should be placed on this key
     */
     .selected-finger {
         position: absolute;
-        left: .14em;
-        bottom: .7em;
+        display:block;
+        bottom: .2em;
+        left:-.15em;
         box-shadow: .08em .08em .4em .02em #202020;
     }
     &.black-key .selected-finger {

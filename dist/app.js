@@ -732,7 +732,7 @@ var app;
                 this.audioService = audioService;
                 this.whiteKeys = app.WhiteKeys;
                 this.defaultBeginKey = app.Key.c3;
-                this.defaultEndKey = app.Key.b4;
+                this.defaultEndKey = app.Key.b5;
                 this.playKeyWhenPressed = false;
                 this.chordType = 'major';
                 this.keySelection = {};
