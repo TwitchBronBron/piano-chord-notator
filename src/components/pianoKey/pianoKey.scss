@@ -45,7 +45,8 @@ piano-key {
             border-bottom-width: .2em;
         }
         .note {
-            bottom: -7.15em;
+            bottom: -2.7em;
+            left: -.33em;
         }
     }
     .note {
@@ -90,10 +91,11 @@ piano-key {
         display: block;
         text-align: center;
         width: 100%;
-        top: 8.5em;
+        padding-right:.5em;
+        top: 5.5em;
         color: grey;
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.7em;
     }
     &.black-key .key {
         top: 1em;

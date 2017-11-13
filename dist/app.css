@@ -41,6 +41,57 @@ piano-chord-notator {
 .dropdown-menu {
   box-shadow: 4px 4px 14px 1px #444444; }
 
+finger-selector {
+  position: absolute;
+  bottom: 0px;
+  z-index: 1000;
+  background-color: white;
+  padding: 5px;
+  width: 150px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid black;
+  box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75); }
+  finger-selector .finger-number {
+    background-color: white;
+    position: absolute; }
+  finger-selector .close {
+    left: 58px;
+    top: 63px; }
+    finger-selector .close:hover {
+      background-color: red !important;
+      color: black; }
+  finger-selector .L1 {
+    top: 7px;
+    left: 42px; }
+  finger-selector .R1 {
+    top: 7px;
+    right: 42px; }
+  finger-selector .L2 {
+    top: 33px;
+    left: 22px; }
+  finger-selector .R2 {
+    top: 33px;
+    right: 22px; }
+  finger-selector .L3 {
+    top: 63px;
+    left: 2px; }
+  finger-selector .R3 {
+    top: 63px;
+    right: 2px; }
+  finger-selector .L4 {
+    top: 93px;
+    left: 22px; }
+  finger-selector .R4 {
+    top: 93px;
+    right: 22px; }
+  finger-selector .L5 {
+    top: 121px;
+    left: 42px; }
+  finger-selector .R5 {
+    top: 121px;
+    right: 42px; }
+
 piano {
   display: block;
   padding-bottom: 120px;
@@ -135,7 +186,8 @@ piano-key {
       border-right-width: .12em;
       border-bottom-width: .2em; }
     piano-key.black-key .note {
-      bottom: -7.15em; }
+      bottom: -2.7em;
+      left: -.33em; }
   piano-key .note {
     position: absolute;
     bottom: -1.3em;
@@ -170,62 +222,12 @@ piano-key {
     display: block;
     text-align: center;
     width: 100%;
-    top: 8.5em;
+    padding-right: .5em;
+    top: 5.5em;
     color: grey;
     font-weight: bold;
-    font-size: 1.2em; }
+    font-size: 1.7em; }
   piano-key.black-key .key {
     top: 1em; }
-
-finger-selector {
-  position: absolute;
-  bottom: 0px;
-  z-index: 1000;
-  background-color: white;
-  padding: 5px;
-  width: 150px;
-  height: 160px;
-  border-radius: 50%;
-  border: 2px solid black;
-  box-shadow: 6px 10px 38px 0px rgba(0, 0, 0, 0.75); }
-  finger-selector .finger-number {
-    background-color: white;
-    position: absolute; }
-  finger-selector .close {
-    left: 58px;
-    top: 63px; }
-    finger-selector .close:hover {
-      background-color: red !important;
-      color: black; }
-  finger-selector .L1 {
-    top: 7px;
-    left: 42px; }
-  finger-selector .R1 {
-    top: 7px;
-    right: 42px; }
-  finger-selector .L2 {
-    top: 33px;
-    left: 22px; }
-  finger-selector .R2 {
-    top: 33px;
-    right: 22px; }
-  finger-selector .L3 {
-    top: 63px;
-    left: 2px; }
-  finger-selector .R3 {
-    top: 63px;
-    right: 2px; }
-  finger-selector .L4 {
-    top: 93px;
-    left: 22px; }
-  finger-selector .R4 {
-    top: 93px;
-    right: 22px; }
-  finger-selector .L5 {
-    top: 121px;
-    left: 42px; }
-  finger-selector .R5 {
-    top: 121px;
-    right: 42px; }
 
 /*# sourceMappingURL=app.css.map */
