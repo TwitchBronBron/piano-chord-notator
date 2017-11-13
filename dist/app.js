@@ -486,8 +486,8 @@ var app;
                 var id = 'finger-selector-' + idCounter++;
                 var coordinates = $(element).offset();
                 //adjust the coordinates so that the item is centered 
-                coordinates.top -= 95;
-                coordinates.left -= 60;
+                coordinates.top -= 65;
+                coordinates.left -= 30;
                 $scope.onclose = function () {
                     fingerSelectorElement.remove();
                     reject();

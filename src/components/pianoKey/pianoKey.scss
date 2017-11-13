@@ -19,6 +19,10 @@ piano-key {
             height: 18.5em;
         }
     }
+    .finger-number-value {
+        position: relative;
+        top: -.15em;
+    }
     &.white-key.selected {
         background: linear-gradient(-30deg, $WhiteSelectedColor, darken($WhiteSelectedColor, 20%), $WhiteSelectedColor);
     }
@@ -39,9 +43,6 @@ piano-key {
             border-left-width: .12em;
             border-right-width: .12em;
             border-bottom-width: .2em;
-            .finger-number {
-                margin-left: .05em;
-            }
         }
         .note {
             bottom: -7.15em;
@@ -62,8 +63,8 @@ piano-key {
         width: 1.7em;
         height: 1.5em;
         font-size: 3.5em;
-        font-weight:bold;
-        z-index:1;
+        font-weight: bold;
+        z-index: 1;
         background-color: $WhiteSelectedColor;
     }
     /*
@@ -71,14 +72,14 @@ piano-key {
     */
     .selected-finger {
         position: absolute;
-        display:block;
+        display: block;
         bottom: .2em;
-        left:-.15em;
-        box-shadow: .08em .08em .4em .02em #202020;
+        left: -.15em;
+        box-shadow: 0.03em 0.07em 0.2em 0.02em #202020
     }
     &.black-key .selected-finger {
         border-color: black;
-        left: -.3em;
+        left: -.5em;
         bottom: .7em;
     }
     &.black-key .selected-finger {
