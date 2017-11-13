@@ -12,6 +12,7 @@ var glob = require('glob');
 var tsProject = ts.createProject('tsconfig.json');
 var path = require('path');
 var fs = require('fs');
+var Q = require('q');
 
 gulp.task('audio', function (done) {
     let files = glob.sync('audio/**/*.aac');
@@ -85,9 +86,17 @@ gulp.task('lib-assets', function () {
         .pipe(gulp.dest('dist/fonts'));
 });
 
+gulp.task('prevent-cache', function (done) {
+    Q.nfcall(fs.readFile, './index.html').then(function (buffer) {
+        var fileContents = buffer.toString();
+        fileContents = fileContents.replace(/\?t=\d+/g, '?t=' + new Date().getTime());
+        return Q.nfcall(fs.writeFile, './index.html', fileContents);
+    }).then(done, done);
+});
+
 gulp.task('default',
     gulp.parallel([
-        'js', 'templates', 'css',
+        'js', 'templates', 'css', 'prevent-cache',
         'lib-js', 'lib-css', 'lib-assets'
     ])
 );
