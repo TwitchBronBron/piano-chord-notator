@@ -4,6 +4,7 @@ piano-chord-notator {
     piano {
         display: inline-block;
     }
+    position:relative;
     .add-button-container {
         height: 300px;
         width: 50px;
@@ -40,7 +41,7 @@ piano-chord-notator {
     }
     .piano-container {
         white-space: nowrap;
-        overflow:auto;
-        position:relative;
+        overflow: auto;
+        position: relative;
     }
 }

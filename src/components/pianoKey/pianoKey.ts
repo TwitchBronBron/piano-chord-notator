@@ -60,14 +60,22 @@ module app.components {
             return WhiteKeys.indexOf(this.key) > -1;
         }
 
+        private fingerSelectorIsVisible = false;
         public showFingerSelector() {
+            //don't show the finger selector more than once at a time per key
+            if (this.fingerSelectorIsVisible) {
+                return;
+            }
             let element = this.$element.find('.selected-finger')[0];
+            this.fingerSelectorIsVisible = true;
             this.fingerSelectorService.selectFinger(element).then((finger: Finger) => {
                 this.finger = finger;
                 this.triggerChanged();
+                this.fingerSelectorIsVisible = false;
             }, () => {
                 //do nothing with the rejection: user canceled.
-            });
+                this.fingerSelectorIsVisible = false;
+            })
         }
 
         private triggerChanged() {

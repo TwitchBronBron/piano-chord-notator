@@ -8,9 +8,24 @@
             <i class="fa fa-play mr-1"></i>
             Play Chord
         </button>
-        <a class="btn btn-secondary mr-2 mt-2" target="_self" download="export.png" ng-href="{{vm.downloadUrl}}" ng-class="{'disabled': !vm.downloadUrl}">
-            <i class="fa fa-download mr-1"></i>Download
-        </a>
+        <div class="btn-group mr-2 mt-2" role="group">
+            <button id="btnGroupDrop1" ng-click="vm.generateImage()" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Generate Image
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" download="export.png" ng-href="{{vm.downloadUrl}}">
+                    <div ng-if="!vm.downloadUrl">
+                        <img src="content/ajax-loader.giv" /> Generating Image
+                    </div>
+                    <span class="btn btn-secondary mr-2 mt-2" target="_self" ng-if="vm.downloadUrl">
+                        <i class="fa fa-download mr-1"></i>Download
+                    </span>
+                    <img ng-src="{{vm.downloadUrl}}" class="block w-100 mt-2" />
+                </a>
+            </div>
+        </div>
+
         <div class="btn-group mr-2 mt-2" role="group">
             <button id="btnGroupDrop1" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Chord Theme
@@ -29,6 +44,16 @@
                 <input type="checkbox" name="play-key-when-pressed" ng-model="vm.playKeyWhenPressed" />&nbsp;Play key when pressed
             </label>
         </button>
+        <div class="btn-group mr-2 mt-2" role="group">
+            <button id="btnGroupDrop1" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Share
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <label class="dropdown-item">
+                    <a ng-href="{{vm.shareUrl}}" target="_blank">Share Link</a>
+                </label>
+            </div>
+        </div>
     </div>
 </div>
 

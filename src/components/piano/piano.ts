@@ -5,11 +5,11 @@ module app.components {
             public $scope: ng.IScope,
             public audioService: AudioService
         ) {
-            $scope.$watchCollection(() => {
+            $scope.$watch(() => {
                 return this.keySelection;
             }, () => {
                 this.triggerChanged();
-            });
+            }, true);
         }
 
         public get playKeyWhenPressed() {

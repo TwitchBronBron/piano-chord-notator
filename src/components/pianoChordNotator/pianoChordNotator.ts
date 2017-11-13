@@ -4,7 +4,9 @@ module app.components {
     export class PianoChordNotatorComponent {
         constructor(
             public $timeout: ng.ITimeoutService,
-            public audioService: AudioService
+            public audioService: AudioService,
+            public $location: ng.ILocationService,
+            public $element: ng.IAugmentedJQuery
         ) {
             this.pianoId = 'piano-' + pianoIdCounter++;
         }
@@ -12,6 +14,18 @@ module app.components {
         $onInit() {
             this.reset();
             this.changed();
+            this.loadDeepLinks();
+        }
+
+        loadDeepLinks() {
+            var params = app.parseQueryString(location.search);
+
+            this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
+
+            this.endKey = params.endKey ? params.endKey : this.endKey;
+
+            let keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
+            this.keySelection = keySelection ? keySelection : this.keySelection;
         }
 
         public pianoId: string;
@@ -25,6 +39,11 @@ module app.components {
         public playKeyWhenPressed = false;
         public chordType: 'major' | 'minor' = 'major';
 
+        public downloadUrl: string | undefined;
+        public keySelection: { [key: string]: KeySelection } = {};
+
+        public shareUrl: string;
+
         public getRemainingKeys(key: Key) {
             let index = WhiteKeys.indexOf(key);
             if (index === -1) {
@@ -32,9 +51,6 @@ module app.components {
             }
             return WhiteKeys.slice(index);
         }
-
-        public downloadUrl: string | undefined;
-        public keySelection: { [key: string]: KeySelection } = {};
 
         public clearSelection() {
             this.keySelection = {};
@@ -51,19 +67,60 @@ module app.components {
          * Called every time the piano changes
          */
         public changed() {
+            this.calculateShareUrl();
+        }
+
+        public generateImage() {
             this.downloadUrl = undefined;
             //let the UI finish rendering
             let timeoutHandle = this.timeoutHandle = this.$timeout(100).then(() => {
                 if (timeoutHandle !== this.timeoutHandle) {
                     return Promise.reject(new Error('Another change has occurred since we started'));
                 }
-                let element = document.getElementById(this.pianoId);
-                return html2canvas(element);
+                let element = <HTMLElement>document.getElementById(this.pianoId);
+                let parent = <HTMLElement>element.parentElement;
+                let scrollAmount = parent.scrollLeft;
+                parent.scrollLeft = 0;
+                //temporarily force a width for the toolbar
+                let toolbarContainer = $('.toolbar-container');
+                let toolbarWidth = (toolbarContainer.width() as any);
+                toolbarContainer.css({
+                    position: 'relative',
+                    width: toolbarWidth,
+                    left: `${scrollAmount}px`
+                });
+                $('body').addClass('very-wide')
+                document.body.scrollLeft = scrollAmount;
+                this.$element.addClass('text-left');
+
+                return html2canvas(element, {
+                    onrendered: (canvas: HTMLCanvasElement) => {
+                        this.$element.removeClass('text-left');
+                        $('body').removeClass('very-wide')
+                        parent.scrollLeft = scrollAmount;
+                        toolbarContainer.css({
+                            position: '',
+                            width: '',
+                            left: ''
+                        });
+                        document.body.scrollLeft = 0;
+                    }
+                });
             }).then((canvas: HTMLCanvasElement) => {
                 this.downloadUrl = canvas.toDataURL('image/png');
             }, () => {
 
             });
+        }
+
+        calculateShareUrl() {
+            let params = {
+                beginKey: this.beginKey,
+                endKey: this.endKey,
+                keySelection: JSON.stringify(this.keySelection)
+            };
+            this.$location.search(params);
+            this.shareUrl = this.$location.absUrl();
         }
 
         public addLowerKey() {

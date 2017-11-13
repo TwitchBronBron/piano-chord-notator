@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+.block {
+    display: block;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -16,6 +20,10 @@ label {
 
 .clearfix {
     clear: both;
+}
+
+.very-wide {
+    width: 2000px;
 }
 
 .finger-number {

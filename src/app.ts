@@ -24,6 +24,10 @@ module app {
     module.config(function ($compileProvider: any) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|data):/);
         // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
-    }
-    );
+    });
+
+    //enable html5 url mode
+    module.config(function ($locationProvider: any) {
+        $locationProvider.html5Mode(true);
+    })
 }
