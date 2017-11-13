@@ -92,62 +92,6 @@ finger-selector {
     top: 121px;
     right: 42px; }
 
-piano {
-  display: block;
-  padding-bottom: 120px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 5px;
-  white-space: nowrap;
-  overflow: auto; }
-  piano piano-key {
-    display: inline-block;
-    vertical-align: top; }
-    piano piano-key.white-key {
-      margin: 0 1px; }
-    piano piano-key.black-key {
-      text-align: top;
-      margin-left: -25px;
-      margin-right: -25px;
-      position: absolute; }
-
-piano-chord-notator {
-  display: block;
-  padding-bottom: 5px;
-  position: relative; }
-  piano-chord-notator piano {
-    display: inline-block; }
-  piano-chord-notator .add-button-container {
-    height: 300px;
-    width: 50px;
-    padding-top: 135px;
-    vertical-align: middle;
-    display: inline-block;
-    vertical-align: top;
-    text-align: center; }
-    piano-chord-notator .add-button-container.low {
-      text-align: right; }
-    piano-chord-notator .add-button-container.high {
-      text-align: left; }
-  piano-chord-notator .download-button {
-    text-decoration-line: unset !important;
-    border: 0; }
-  piano-chord-notator .btn-toolbar {
-    display: inline-block;
-    padding: 5px 15px;
-    border-radius: 5px;
-    margin-top: 5px; }
-    piano-chord-notator .btn-toolbar .fa-refresh {
-      color: lightgreen; }
-    piano-chord-notator .btn-toolbar .fa-play {
-      color: lightskyblue; }
-    piano-chord-notator .btn-toolbar .fa-download {
-      color: white; }
-  piano-chord-notator .piano-container {
-    white-space: nowrap;
-    overflow: auto;
-    position: relative; }
-
 piano-key {
   display: inline-block;
   position: relative;
@@ -229,5 +173,77 @@ piano-key {
     font-size: 1.7em; }
   piano-key.black-key .key {
     top: 1em; }
+
+piano {
+  display: block;
+  padding-bottom: 120px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  white-space: nowrap;
+  overflow: auto; }
+  piano piano-key {
+    display: inline-block;
+    vertical-align: top; }
+    piano piano-key.white-key {
+      margin: 0 1px; }
+    piano piano-key.black-key {
+      text-align: top;
+      margin-left: -25px;
+      margin-right: -25px;
+      position: absolute; }
+
+piano-chord-notator {
+  display: block;
+  padding-bottom: 5px;
+  position: relative; }
+  piano-chord-notator piano {
+    display: inline-block; }
+  piano-chord-notator .add-button-container {
+    height: 300px;
+    width: 50px;
+    padding-top: 135px;
+    vertical-align: middle;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center; }
+    piano-chord-notator .add-button-container.low {
+      text-align: right; }
+    piano-chord-notator .add-button-container.high {
+      text-align: left; }
+  piano-chord-notator .download-button {
+    text-decoration-line: unset !important;
+    border: 0; }
+  piano-chord-notator .btn-toolbar {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-top: 5px; }
+    piano-chord-notator .btn-toolbar .fa-refresh {
+      color: lightgreen; }
+    piano-chord-notator .btn-toolbar .fa-play {
+      color: lightskyblue; }
+    piano-chord-notator .btn-toolbar .fa-download {
+      color: white; }
+  piano-chord-notator .piano-container {
+    white-space: nowrap;
+    overflow: auto;
+    position: relative; }
+  piano-chord-notator .inner-piano-container {
+    position: relative;
+    display: inline-block; }
+  piano-chord-notator .chord-name {
+    display: block;
+    font-size: 5em;
+    color: black;
+    text-align: center;
+    margin: auto;
+    padding: 0;
+    margin-bottom: -.22em;
+    margin-top: -.22em;
+    border: 0;
+    background-color: transparent; }
+    piano-chord-notator .chord-name:focus, piano-chord-notator .chord-name:focus {
+      outline: none; }
 
 /*# sourceMappingURL=app.css.map */

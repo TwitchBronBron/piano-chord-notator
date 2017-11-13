@@ -759,6 +759,7 @@ var app;
                 this.defaultEndKey = app.Key.b5;
                 this.playKeyWhenPressed = false;
                 this.keySelection = {};
+                this._chordName = 'Chord Name';
                 this.pianoId = 'piano-' + pianoIdCounter++;
             }
             PianoChordNotatorComponent.prototype.$onInit = function () {
@@ -770,8 +771,19 @@ var app;
                 var params = app.parseQueryString(location.search);
                 this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
                 this.endKey = params.endKey ? params.endKey : this.endKey;
+                this.chordName = params.chordName ? params.chordName : this.chordName;
                 var keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
                 this.keySelection = keySelection ? keySelection : this.keySelection;
+            };
+            PianoChordNotatorComponent.prototype.calculateShareUrl = function () {
+                var params = {
+                    beginKey: this.beginKey,
+                    endKey: this.endKey,
+                    keySelection: JSON.stringify(this.keySelection),
+                    chordName: this.chordName
+                };
+                this.$location.search(params);
+                this.shareUrl = this.$location.absUrl();
             };
             PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
                 var index = app.WhiteKeys.indexOf(key);
@@ -788,6 +800,17 @@ var app;
                 this.endKey = this.defaultEndKey;
                 this.clearSelection();
             };
+            Object.defineProperty(PianoChordNotatorComponent.prototype, "chordName", {
+                get: function () {
+                    return this._chordName;
+                },
+                set: function (value) {
+                    this._chordName = value;
+                    this.changed();
+                },
+                enumerable: true,
+                configurable: true
+            });
             /**
              * Called every time the piano changes
              */
@@ -834,15 +857,6 @@ var app;
                     _this.downloadUrl = canvas.toDataURL('image/png');
                 }, function () {
                 });
-            };
-            PianoChordNotatorComponent.prototype.calculateShareUrl = function () {
-                var params = {
-                    beginKey: this.beginKey,
-                    endKey: this.endKey,
-                    keySelection: JSON.stringify(this.keySelection)
-                };
-                this.$location.search(params);
-                this.shareUrl = this.$location.absUrl();
             };
             PianoChordNotatorComponent.prototype.addLowerKey = function () {
                 var index = app.WhiteKeys.indexOf(this.beginKey);

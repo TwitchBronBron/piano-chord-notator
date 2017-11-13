@@ -17,17 +17,6 @@ module app.components {
             this.loadDeepLinks();
         }
 
-        loadDeepLinks() {
-            var params = app.parseQueryString(location.search);
-
-            this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
-
-            this.endKey = params.endKey ? params.endKey : this.endKey;
-
-            let keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
-            this.keySelection = keySelection ? keySelection : this.keySelection;
-        }
-
         public pianoId: string;
         public whiteKeys = WhiteKeys;
         public defaultBeginKey = Key.c3;
@@ -42,6 +31,30 @@ module app.components {
         public keySelection: { [key: string]: KeySelection } = {};
 
         public shareUrl: string;
+
+        loadDeepLinks() {
+            var params = app.parseQueryString(location.search);
+
+            this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
+
+            this.endKey = params.endKey ? params.endKey : this.endKey;
+
+            this.chordName = params.chordName ? params.chordName : this.chordName;
+
+            let keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
+            this.keySelection = keySelection ? keySelection : this.keySelection;
+        }
+
+        calculateShareUrl() {
+            let params = {
+                beginKey: this.beginKey,
+                endKey: this.endKey,
+                keySelection: JSON.stringify(this.keySelection),
+                chordName: this.chordName
+            };
+            this.$location.search(params);
+            this.shareUrl = this.$location.absUrl();
+        }
 
         public getRemainingKeys(key: Key) {
             let index = WhiteKeys.indexOf(key);
@@ -62,6 +75,16 @@ module app.components {
         }
 
         private timeoutHandle: Promise<void>;
+
+        private get chordName() {
+            return this._chordName;
+        }
+        private set chordName(value) {
+            this._chordName = value;
+            this.changed();
+        }
+        private _chordName = 'Chord Name';
+
         /**
          * Called every time the piano changes
          */
@@ -112,16 +135,6 @@ module app.components {
             });
         }
 
-        calculateShareUrl() {
-            let params = {
-                beginKey: this.beginKey,
-                endKey: this.endKey,
-                keySelection: JSON.stringify(this.keySelection)
-            };
-            this.$location.search(params);
-            this.shareUrl = this.$location.absUrl();
-        }
-
         public addLowerKey() {
             let index = WhiteKeys.indexOf(this.beginKey);
             this.beginKey = WhiteKeys[index - 1];
@@ -136,6 +149,7 @@ module app.components {
             let keys = <Key[]>Object.keys(this.keySelection);
             this.audioService.playKeys(keys);
         }
+
     }
     angular.module('app').component('pianoChordNotator', {
         bindings: {
