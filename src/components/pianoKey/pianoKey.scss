@@ -1,8 +1,8 @@
 piano-key {
     $whiteKeyWidth: 5.01em;
     $blackKeyWidth: $whiteKeyWidth * (2/3);
-    $whiteKeyHeight: 19em;
-    $blackKeyHeight: $whiteKeyHeight * .657;
+    $whiteKeyHeight: 19.3em;
+    $blackKeyHeight: $whiteKeyHeight * .6;
     $WhiteSelectedColor: #5ef9fc;
     $BlackSelectedColor: darken($WhiteSelectedColor, 20%);
     display: inline-block;
@@ -45,7 +45,7 @@ piano-key {
             border-bottom-width: .2em;
         }
         .note {
-            bottom: -2.7em;
+            bottom: -2.95em;
             left: -.33em;
         }
     }
@@ -74,14 +74,14 @@ piano-key {
     .selected-finger {
         position: absolute;
         display: block;
-        bottom: .2em;
+        bottom: .1em;
         left: -.15em;
         box-shadow: 0.03em 0.07em 0.2em 0.02em #202020
     }
     &.black-key .selected-finger {
         border-color: black;
         left: -.5em;
-        bottom: .7em;
+        bottom: .2em;
     }
     &.black-key .selected-finger {
         background-color: $WhiteSelectedColor;
@@ -89,10 +89,10 @@ piano-key {
     .key {
         position: absolute;
         display: block;
-        text-align: center;
         width: 100%;
-        padding-right:.5em;
-        top: 5.5em;
+        text-align: center;
+        padding-left: .1em;
+        top: 6.66em;
         color: grey;
         font-weight: bold;
         font-size: 1.7em;
