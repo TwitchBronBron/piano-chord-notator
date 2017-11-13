@@ -3,10 +3,8 @@ piano-key {
     $blackKeyWidth: $whiteKeyWidth * (2/3);
     $whiteKeyHeight: 19em;
     $blackKeyHeight: $whiteKeyHeight * .657;
-    $majorWhiteSelectedColor: #5ef9fc;
-    $majorBlackSelectedColor: darken($majorWhiteSelectedColor, 20%);
-    $minorWhiteSelectedColor: #f15555;
-    $minorBlackSelectedColor: darken($minorWhiteSelectedColor, 20%);
+    $WhiteSelectedColor: #5ef9fc;
+    $BlackSelectedColor: darken($WhiteSelectedColor, 20%);
     display: inline-block;
     position: relative;
     &.white-key {
@@ -21,17 +19,11 @@ piano-key {
             height: 18.5em;
         }
     }
-    &.white-key.major.selected {
-        background: linear-gradient(-30deg, $majorWhiteSelectedColor, darken($majorWhiteSelectedColor, 20%), $majorWhiteSelectedColor);
+    &.white-key.selected {
+        background: linear-gradient(-30deg, $WhiteSelectedColor, darken($WhiteSelectedColor, 20%), $WhiteSelectedColor);
     }
-    &.black-key.major.selected {
-        background: linear-gradient(-20deg, $majorBlackSelectedColor, lighten($majorBlackSelectedColor, 10%), $majorBlackSelectedColor);
-    }
-    &.white-key.minor.selected {
-        background: linear-gradient(-30deg, $minorWhiteSelectedColor, darken($minorWhiteSelectedColor, 10%), $minorWhiteSelectedColor);
-    }
-    &.black-key.minor.selected {
-        background: linear-gradient(-20deg, $minorBlackSelectedColor, lighten($minorBlackSelectedColor, 10%), $minorBlackSelectedColor);
+    &.black-key.selected {
+        background: linear-gradient(-20deg, $BlackSelectedColor, lighten($BlackSelectedColor, 10%), $BlackSelectedColor);
     }
     &.black-key {
         content: "";
@@ -72,7 +64,7 @@ piano-key {
         font-size: 3.5em;
         font-weight:bold;
         z-index:1;
-        background-color: $majorWhiteSelectedColor;
+        background-color: $WhiteSelectedColor;
     }
     /*
     * The number indicating what finger should be placed on this key
@@ -89,11 +81,8 @@ piano-key {
         left: -.3em;
         bottom: .7em;
     }
-    &.black-key.major .selected-finger {
-        background-color: $majorWhiteSelectedColor;
-    }
-    &.black-key.minor .selected-finger {
-        background-color: $minorWhiteSelectedColor;
+    &.black-key .selected-finger {
+        background-color: $WhiteSelectedColor;
     }
     .key {
         position: absolute;

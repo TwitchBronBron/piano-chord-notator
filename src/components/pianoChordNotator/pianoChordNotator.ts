@@ -37,7 +37,6 @@ module app.components {
         public endKey: Key;
 
         public playKeyWhenPressed = false;
-        public chordType: 'major' | 'minor' = 'major';
 
         public downloadUrl: string | undefined;
         public keySelection: { [key: string]: KeySelection } = {};
@@ -89,7 +88,7 @@ module app.components {
                     width: toolbarWidth,
                     left: `${scrollAmount}px`
                 });
-                $('body').css({ width: `${$(parent).innerWidth()}px` });
+                $('body').css({ width: `${parent.scrollWidth}px` });
                 document.body.scrollLeft = scrollAmount;
                 // this.$element.addClass('text-left');
 

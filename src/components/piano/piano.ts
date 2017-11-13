@@ -20,15 +20,6 @@ module app.components {
         }
         private _playKeyWhenPressed: boolean;
 
-        public get chordType() {
-            return this._chordType ? this._chordType : 'major';
-        }
-        public set chordType(value) {
-            this._chordType = value === 'minor' ? 'minor' : 'major';
-            this.triggerChanged();
-        }
-        private _chordType: 'major' | 'minor';
-
         /**
          * The key the piano should begin at (including this key)
          * @Input
@@ -163,7 +154,6 @@ module app.components {
             onchange: '&',
             keySelection: '=',
             playKeyWhenPressed: '=',
-            chordType: '='
         }
     });
 }

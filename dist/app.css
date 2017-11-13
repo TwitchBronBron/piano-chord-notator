@@ -89,25 +89,6 @@ finger-selector {
     top: 121px;
     right: 42px; }
 
-piano {
-  display: block;
-  padding-bottom: 120px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 5px;
-  white-space: nowrap;
-  overflow: auto; }
-  piano piano-key {
-    display: inline-block;
-    vertical-align: top; }
-    piano piano-key.white-key {
-      margin: 0 1px; }
-    piano piano-key.black-key {
-      text-align: top;
-      margin-left: -25px;
-      margin-right: -25px;
-      position: absolute; }
-
 piano-chord-notator {
   display: block;
   padding-bottom: 5px;
@@ -161,14 +142,10 @@ piano-key {
       box-shadow: inset 0 0.05em 0 #ffffff, inset 0 -0.05em 0 #fffffff1, inset 0.05em 0 0 #ffffff, inset -0.05em 0 0 #ffffff, 0 0.25em 0.2em rgba(0, 0, 0, 0.7), inset 0 -0.05em 0 #ffffff, inset 0.05em 0 0 #ffffff, inset -0.09em -0.07em 1em #000000, -0.2em 0.3em 0.5em rgba(0, 0, 0, 0.5);
       position: relative;
       height: 18.5em; }
-  piano-key.white-key.major.selected {
+  piano-key.white-key.selected {
     background: linear-gradient(-30deg, #5ef9fc, #04ebf0, #5ef9fc); }
-  piano-key.black-key.major.selected {
+  piano-key.black-key.selected {
     background: linear-gradient(-20deg, #04ebf0, #2cf7fb, #04ebf0); }
-  piano-key.white-key.minor.selected {
-    background: linear-gradient(-30deg, #f15555, #ed2626, #f15555); }
-  piano-key.black-key.minor.selected {
-    background: linear-gradient(-20deg, #cf1111, #ed2626, #cf1111); }
   piano-key.black-key {
     content: "";
     box-shadow: inset 0 -0.1em 0.35em rgba(255, 255, 255, 0.4), 0 0.2em 0.2em rgba(0, 0, 0, 0.4);
@@ -214,10 +191,8 @@ piano-key {
     border-color: black;
     left: -.3em;
     bottom: .7em; }
-  piano-key.black-key.major .selected-finger {
+  piano-key.black-key .selected-finger {
     background-color: #5ef9fc; }
-  piano-key.black-key.minor .selected-finger {
-    background-color: #f15555; }
   piano-key .key {
     position: absolute;
     display: block;
@@ -229,5 +204,24 @@ piano-key {
     font-size: 1.2em; }
   piano-key.black-key .key {
     top: 1em; }
+
+piano {
+  display: block;
+  padding-bottom: 120px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  white-space: nowrap;
+  overflow: auto; }
+  piano piano-key {
+    display: inline-block;
+    vertical-align: top; }
+    piano piano-key.white-key {
+      margin: 0 1px; }
+    piano piano-key.black-key {
+      text-align: top;
+      margin-left: -25px;
+      margin-right: -25px;
+      position: absolute; }
 
 /*# sourceMappingURL=app.css.map */

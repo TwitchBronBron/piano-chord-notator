@@ -544,132 +544,6 @@ var app;
 (function (app) {
     var components;
     (function (components) {
-        var pianoIdCounter = 1;
-        var PianoChordNotatorComponent = /** @class */ (function () {
-            function PianoChordNotatorComponent($timeout, audioService, $location, $element) {
-                this.$timeout = $timeout;
-                this.audioService = audioService;
-                this.$location = $location;
-                this.$element = $element;
-                this.whiteKeys = app.WhiteKeys;
-                this.defaultBeginKey = app.Key.c3;
-                this.defaultEndKey = app.Key.b5;
-                this.playKeyWhenPressed = false;
-                this.chordType = 'major';
-                this.keySelection = {};
-                this.pianoId = 'piano-' + pianoIdCounter++;
-            }
-            PianoChordNotatorComponent.prototype.$onInit = function () {
-                this.reset();
-                this.changed();
-                this.loadDeepLinks();
-            };
-            PianoChordNotatorComponent.prototype.loadDeepLinks = function () {
-                var params = app.parseQueryString(location.search);
-                this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
-                this.endKey = params.endKey ? params.endKey : this.endKey;
-                var keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
-                this.keySelection = keySelection ? keySelection : this.keySelection;
-            };
-            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
-                var index = app.WhiteKeys.indexOf(key);
-                if (index === -1) {
-                    throw new Error("Unknown key: '" + key);
-                }
-                return app.WhiteKeys.slice(index);
-            };
-            PianoChordNotatorComponent.prototype.clearSelection = function () {
-                this.keySelection = {};
-            };
-            PianoChordNotatorComponent.prototype.reset = function () {
-                this.beginKey = this.defaultBeginKey;
-                this.endKey = this.defaultEndKey;
-                this.clearSelection();
-            };
-            /**
-             * Called every time the piano changes
-             */
-            PianoChordNotatorComponent.prototype.changed = function () {
-                this.calculateShareUrl();
-            };
-            PianoChordNotatorComponent.prototype.generateImage = function () {
-                var _this = this;
-                this.downloadUrl = undefined;
-                //let the UI finish rendering
-                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
-                    if (timeoutHandle !== _this.timeoutHandle) {
-                        return Promise.reject(new Error('Another change has occurred since we started'));
-                    }
-                    var element = document.getElementById(_this.pianoId);
-                    var parent = element.parentElement;
-                    var scrollAmount = parent.scrollLeft;
-                    parent.scrollLeft = 0;
-                    //temporarily force a width for the toolbar
-                    var toolbarContainer = $('.toolbar-container');
-                    var toolbarWidth = toolbarContainer.width();
-                    toolbarContainer.css({
-                        position: 'relative',
-                        width: toolbarWidth,
-                        left: scrollAmount + "px"
-                    });
-                    $('body').css({ width: $(parent).innerWidth() + "px" });
-                    document.body.scrollLeft = scrollAmount;
-                    // this.$element.addClass('text-left');
-                    return html2canvas(element, {
-                        onrendered: function (canvas) {
-                            _this.$element.removeClass('text-left');
-                            $('body').css({ width: '' });
-                            parent.scrollLeft = scrollAmount;
-                            toolbarContainer.css({
-                                position: '',
-                                width: '',
-                                left: ''
-                            });
-                            document.body.scrollLeft = 0;
-                        }
-                    });
-                }).then(function (canvas) {
-                    _this.downloadUrl = canvas.toDataURL('image/png');
-                }, function () {
-                });
-            };
-            PianoChordNotatorComponent.prototype.calculateShareUrl = function () {
-                var params = {
-                    beginKey: this.beginKey,
-                    endKey: this.endKey,
-                    keySelection: JSON.stringify(this.keySelection)
-                };
-                this.$location.search(params);
-                this.shareUrl = this.$location.absUrl();
-            };
-            PianoChordNotatorComponent.prototype.addLowerKey = function () {
-                var index = app.WhiteKeys.indexOf(this.beginKey);
-                this.beginKey = app.WhiteKeys[index - 1];
-            };
-            PianoChordNotatorComponent.prototype.addHigherKey = function () {
-                var index = app.WhiteKeys.indexOf(this.endKey);
-                this.endKey = app.WhiteKeys[index + 1];
-            };
-            PianoChordNotatorComponent.prototype.playChord = function () {
-                var keys = Object.keys(this.keySelection);
-                this.audioService.playKeys(keys);
-            };
-            return PianoChordNotatorComponent;
-        }());
-        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
-        angular.module('app').component('pianoChordNotator', {
-            bindings: {
-                key: '<'
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
         var FingerSelectorComponent = /** @class */ (function () {
             function FingerSelectorComponent($element) {
                 this.$element = $element;
@@ -701,115 +575,6 @@ var app;
 (function (app) {
     var components;
     (function (components) {
-        var PianoKeyComponent = /** @class */ (function () {
-            function PianoKeyComponent($element, fingerSelectorService) {
-                this.$element = $element;
-                this.fingerSelectorService = fingerSelectorService;
-                this._isSelected = false;
-                this.fingerSelectorIsVisible = false;
-                this.onchange = function () { };
-            }
-            Object.defineProperty(PianoKeyComponent.prototype, "key", {
-                /**
-                 * @Input
-                 */
-                get: function () {
-                    return this._key;
-                },
-                set: function (value) {
-                    this._key = value;
-                    this.updateElementClass();
-                    this.enharmonic = this.note;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoKeyComponent.prototype, "note", {
-                get: function () {
-                    return this.key.replace(/[1-7]/, '');
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoKeyComponent.prototype, "isSelected", {
-                /**
-                 * @Input
-                 */
-                get: function () {
-                    return this._isSelected;
-                },
-                set: function (value) {
-                    this._isSelected = value;
-                    this.updateElementClass();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoKeyComponent.prototype.updateElementClass = function () {
-                this.$element.removeClass('white-key').removeClass('black-key');
-                this.$element.addClass(this.isWhiteKey ? 'white-key' : 'black-key');
-                this.$element.removeClass('selected');
-                if (this.isSelected) {
-                    this.$element.addClass('selected');
-                }
-            };
-            Object.defineProperty(PianoKeyComponent.prototype, "isWhiteKey", {
-                /**
-                 * Is this key a white key. If not, it is a black key
-                 */
-                get: function () {
-                    return app.WhiteKeys.indexOf(this.key) > -1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoKeyComponent.prototype.showFingerSelector = function () {
-                var _this = this;
-                //don't show the finger selector more than once at a time per key
-                if (this.fingerSelectorIsVisible) {
-                    return;
-                }
-                var element = this.$element.find('.selected-finger')[0];
-                this.fingerSelectorIsVisible = true;
-                this.fingerSelectorService.selectFinger(element).then(function (finger) {
-                    _this.finger = finger;
-                    _this.triggerChanged();
-                    _this.fingerSelectorIsVisible = false;
-                }, function () {
-                    //do nothing with the rejection: user canceled.
-                    _this.fingerSelectorIsVisible = false;
-                });
-            };
-            PianoKeyComponent.prototype.triggerChanged = function () {
-                try {
-                    this.onchange();
-                }
-                catch (e) { }
-            };
-            PianoKeyComponent.prototype.toggleEnharmonic = function (event) {
-                event.stopPropagation();
-                this.enharmonic = app.NoteEnharmonics[this.enharmonic];
-            };
-            return PianoKeyComponent;
-        }());
-        components.PianoKeyComponent = PianoKeyComponent;
-        angular.module('app').component('pianoKey', {
-            bindings: {
-                key: '=',
-                finger: '=',
-                isSelected: '=',
-                onchange: '&',
-                showKey: '<'
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
         var PianoComponent = /** @class */ (function () {
             function PianoComponent($element, $scope, audioService) {
                 var _this = this;
@@ -830,17 +595,6 @@ var app;
                 },
                 set: function (value) {
                     this._playKeyWhenPressed = value ? true : false;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "chordType", {
-                get: function () {
-                    return this._chordType ? this._chordType : 'major';
-                },
-                set: function (value) {
-                    this._chordType = value === 'minor' ? 'minor' : 'major';
-                    this.triggerChanged();
                 },
                 enumerable: true,
                 configurable: true
@@ -983,7 +737,240 @@ var app;
                 onchange: '&',
                 keySelection: '=',
                 playKeyWhenPressed: '=',
-                chordType: '='
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var pianoIdCounter = 1;
+        var PianoChordNotatorComponent = /** @class */ (function () {
+            function PianoChordNotatorComponent($timeout, audioService, $location, $element) {
+                this.$timeout = $timeout;
+                this.audioService = audioService;
+                this.$location = $location;
+                this.$element = $element;
+                this.whiteKeys = app.WhiteKeys;
+                this.defaultBeginKey = app.Key.c3;
+                this.defaultEndKey = app.Key.b5;
+                this.playKeyWhenPressed = false;
+                this.keySelection = {};
+                this.pianoId = 'piano-' + pianoIdCounter++;
+            }
+            PianoChordNotatorComponent.prototype.$onInit = function () {
+                this.reset();
+                this.changed();
+                this.loadDeepLinks();
+            };
+            PianoChordNotatorComponent.prototype.loadDeepLinks = function () {
+                var params = app.parseQueryString(location.search);
+                this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
+                this.endKey = params.endKey ? params.endKey : this.endKey;
+                var keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
+                this.keySelection = keySelection ? keySelection : this.keySelection;
+            };
+            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
+                var index = app.WhiteKeys.indexOf(key);
+                if (index === -1) {
+                    throw new Error("Unknown key: '" + key);
+                }
+                return app.WhiteKeys.slice(index);
+            };
+            PianoChordNotatorComponent.prototype.clearSelection = function () {
+                this.keySelection = {};
+            };
+            PianoChordNotatorComponent.prototype.reset = function () {
+                this.beginKey = this.defaultBeginKey;
+                this.endKey = this.defaultEndKey;
+                this.clearSelection();
+            };
+            /**
+             * Called every time the piano changes
+             */
+            PianoChordNotatorComponent.prototype.changed = function () {
+                this.calculateShareUrl();
+            };
+            PianoChordNotatorComponent.prototype.generateImage = function () {
+                var _this = this;
+                this.downloadUrl = undefined;
+                //let the UI finish rendering
+                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
+                    if (timeoutHandle !== _this.timeoutHandle) {
+                        return Promise.reject(new Error('Another change has occurred since we started'));
+                    }
+                    var element = document.getElementById(_this.pianoId);
+                    var parent = element.parentElement;
+                    var scrollAmount = parent.scrollLeft;
+                    parent.scrollLeft = 0;
+                    //temporarily force a width for the toolbar
+                    var toolbarContainer = $('.toolbar-container');
+                    var toolbarWidth = toolbarContainer.width();
+                    toolbarContainer.css({
+                        position: 'relative',
+                        width: toolbarWidth,
+                        left: scrollAmount + "px"
+                    });
+                    $('body').css({ width: parent.scrollWidth + "px" });
+                    document.body.scrollLeft = scrollAmount;
+                    // this.$element.addClass('text-left');
+                    return html2canvas(element, {
+                        onrendered: function (canvas) {
+                            _this.$element.removeClass('text-left');
+                            $('body').css({ width: '' });
+                            parent.scrollLeft = scrollAmount;
+                            toolbarContainer.css({
+                                position: '',
+                                width: '',
+                                left: ''
+                            });
+                            document.body.scrollLeft = 0;
+                        }
+                    });
+                }).then(function (canvas) {
+                    _this.downloadUrl = canvas.toDataURL('image/png');
+                }, function () {
+                });
+            };
+            PianoChordNotatorComponent.prototype.calculateShareUrl = function () {
+                var params = {
+                    beginKey: this.beginKey,
+                    endKey: this.endKey,
+                    keySelection: JSON.stringify(this.keySelection)
+                };
+                this.$location.search(params);
+                this.shareUrl = this.$location.absUrl();
+            };
+            PianoChordNotatorComponent.prototype.addLowerKey = function () {
+                var index = app.WhiteKeys.indexOf(this.beginKey);
+                this.beginKey = app.WhiteKeys[index - 1];
+            };
+            PianoChordNotatorComponent.prototype.addHigherKey = function () {
+                var index = app.WhiteKeys.indexOf(this.endKey);
+                this.endKey = app.WhiteKeys[index + 1];
+            };
+            PianoChordNotatorComponent.prototype.playChord = function () {
+                var keys = Object.keys(this.keySelection);
+                this.audioService.playKeys(keys);
+            };
+            return PianoChordNotatorComponent;
+        }());
+        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
+        angular.module('app').component('pianoChordNotator', {
+            bindings: {
+                key: '<'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var PianoKeyComponent = /** @class */ (function () {
+            function PianoKeyComponent($element, fingerSelectorService) {
+                this.$element = $element;
+                this.fingerSelectorService = fingerSelectorService;
+                this._isSelected = false;
+                this.fingerSelectorIsVisible = false;
+                this.onchange = function () { };
+            }
+            Object.defineProperty(PianoKeyComponent.prototype, "key", {
+                /**
+                 * @Input
+                 */
+                get: function () {
+                    return this._key;
+                },
+                set: function (value) {
+                    this._key = value;
+                    this.updateElementClass();
+                    this.enharmonic = this.note;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoKeyComponent.prototype, "note", {
+                get: function () {
+                    return this.key.replace(/[1-7]/, '');
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoKeyComponent.prototype, "isSelected", {
+                /**
+                 * @Input
+                 */
+                get: function () {
+                    return this._isSelected;
+                },
+                set: function (value) {
+                    this._isSelected = value;
+                    this.updateElementClass();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoKeyComponent.prototype.updateElementClass = function () {
+                this.$element.removeClass('white-key').removeClass('black-key');
+                this.$element.addClass(this.isWhiteKey ? 'white-key' : 'black-key');
+                this.$element.removeClass('selected');
+                if (this.isSelected) {
+                    this.$element.addClass('selected');
+                }
+            };
+            Object.defineProperty(PianoKeyComponent.prototype, "isWhiteKey", {
+                /**
+                 * Is this key a white key. If not, it is a black key
+                 */
+                get: function () {
+                    return app.WhiteKeys.indexOf(this.key) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoKeyComponent.prototype.showFingerSelector = function () {
+                var _this = this;
+                //don't show the finger selector more than once at a time per key
+                if (this.fingerSelectorIsVisible) {
+                    return;
+                }
+                var element = this.$element.find('.selected-finger')[0];
+                this.fingerSelectorIsVisible = true;
+                this.fingerSelectorService.selectFinger(element).then(function (finger) {
+                    _this.finger = finger;
+                    _this.triggerChanged();
+                    _this.fingerSelectorIsVisible = false;
+                }, function () {
+                    //do nothing with the rejection: user canceled.
+                    _this.fingerSelectorIsVisible = false;
+                });
+            };
+            PianoKeyComponent.prototype.triggerChanged = function () {
+                try {
+                    this.onchange();
+                }
+                catch (e) { }
+            };
+            PianoKeyComponent.prototype.toggleEnharmonic = function (event) {
+                event.stopPropagation();
+                this.enharmonic = app.NoteEnharmonics[this.enharmonic];
+            };
+            return PianoKeyComponent;
+        }());
+        components.PianoKeyComponent = PianoKeyComponent;
+        angular.module('app').component('pianoKey', {
+            bindings: {
+                key: '=',
+                finger: '=',
+                isSelected: '=',
+                onchange: '&',
+                showKey: '<'
             }
         });
     })(components = app.components || (app.components = {}));
