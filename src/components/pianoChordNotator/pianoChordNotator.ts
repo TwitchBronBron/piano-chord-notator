@@ -89,14 +89,14 @@ module app.components {
                     width: toolbarWidth,
                     left: `${scrollAmount}px`
                 });
-                $('body').addClass('very-wide')
+                $('body').css({ width: `${$(parent).innerWidth()}px` });
                 document.body.scrollLeft = scrollAmount;
-                this.$element.addClass('text-left');
+                // this.$element.addClass('text-left');
 
                 return html2canvas(element, {
                     onrendered: (canvas: HTMLCanvasElement) => {
                         this.$element.removeClass('text-left');
-                        $('body').removeClass('very-wide')
+                        $('body').css({ width: '' });
                         parent.scrollLeft = scrollAmount;
                         toolbarContainer.css({
                             position: '',
