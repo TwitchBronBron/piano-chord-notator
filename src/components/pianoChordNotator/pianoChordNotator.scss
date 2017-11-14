@@ -1,7 +1,7 @@
 piano-chord-notator {
     display: block;
     padding-bottom: 5px;
-    font-size:13px;
+    font-size: 13px;
     piano {
         display: inline-block;
     }
@@ -64,5 +64,9 @@ piano-chord-notator {
         &:focus {
             outline: none;
         }
+    }
+
+    &.hide-octave-indicator .key {
+        display: none !important;
     }
 }

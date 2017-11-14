@@ -758,6 +758,7 @@ var app;
                 this.defaultBeginKey = app.Key.c3;
                 this.defaultEndKey = app.Key.b5;
                 this.playKeyWhenPressed = false;
+                this._showOctaveIndicator = false;
                 this.keySelection = {};
                 this._chordName = 'Chord Name';
                 this.pianoId = 'piano-' + pianoIdCounter++;
@@ -767,11 +768,28 @@ var app;
                 this.changed();
                 this.loadDeepLinks();
             };
+            Object.defineProperty(PianoChordNotatorComponent.prototype, "showOctaveIndicator", {
+                get: function () {
+                    return this._showOctaveIndicator;
+                },
+                set: function (value) {
+                    this._showOctaveIndicator = value;
+                    if (this.showOctaveIndicator === false) {
+                        this.$element.addClass('hide-octave-indicator');
+                    }
+                    else {
+                        this.$element.removeClass('hide-octave-indicator');
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
             PianoChordNotatorComponent.prototype.loadDeepLinks = function () {
                 var params = app.parseQueryString(location.search);
                 this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
                 this.endKey = params.endKey ? params.endKey : this.endKey;
                 this.chordName = params.chordName ? params.chordName : this.chordName;
+                this.showOctaveIndicator = params.showOctaveIndicator ? params.showOctaveIndicator : this.showOctaveIndicator;
                 var keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
                 this.keySelection = keySelection ? keySelection : this.keySelection;
             };
@@ -780,7 +798,8 @@ var app;
                     beginKey: this.beginKey,
                     endKey: this.endKey,
                     keySelection: JSON.stringify(this.keySelection),
-                    chordName: this.chordName
+                    chordName: this.chordName,
+                    showOctaveIndicator: this.showOctaveIndicator
                 };
                 this.$location.search(params);
                 this.shareUrl = this.$location.absUrl();

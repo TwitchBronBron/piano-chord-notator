@@ -164,6 +164,8 @@ piano-chord-notator {
     background-color: transparent; }
     piano-chord-notator .chord-name:focus, piano-chord-notator .chord-name:focus {
       outline: none; }
+  piano-chord-notator.hide-octave-indicator .key {
+    display: none !important; }
 
 piano-key {
   display: inline-block;

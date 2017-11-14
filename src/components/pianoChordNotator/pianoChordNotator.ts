@@ -26,6 +26,18 @@ module app.components {
         public endKey: Key;
 
         public playKeyWhenPressed = false;
+        private _showOctaveIndicator = false;
+        public get showOctaveIndicator() {
+            return this._showOctaveIndicator;
+        }
+        public set showOctaveIndicator(value) {
+            this._showOctaveIndicator = value;
+            if (this.showOctaveIndicator === false) {
+                this.$element.addClass('hide-octave-indicator');
+            } else {
+                this.$element.removeClass('hide-octave-indicator');
+            }
+        }
 
         public downloadUrl: string | undefined;
         public keySelection: { [key: string]: KeySelection } = {};
@@ -41,6 +53,8 @@ module app.components {
 
             this.chordName = params.chordName ? params.chordName : this.chordName;
 
+            this.showOctaveIndicator = params.showOctaveIndicator ? params.showOctaveIndicator : this.showOctaveIndicator;
+
             let keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
             this.keySelection = keySelection ? keySelection : this.keySelection;
         }
@@ -50,7 +64,8 @@ module app.components {
                 beginKey: this.beginKey,
                 endKey: this.endKey,
                 keySelection: JSON.stringify(this.keySelection),
-                chordName: this.chordName
+                chordName: this.chordName,
+                showOctaveIndicator: this.showOctaveIndicator
             };
             this.$location.search(params);
             this.shareUrl = this.$location.absUrl();
@@ -112,6 +127,7 @@ module app.components {
                     left: `${scrollAmount}px`
                 });
                 $('body').css({ width: `${parent.scrollWidth}px` });
+
                 document.body.scrollLeft = scrollAmount;
                 // this.$element.addClass('text-left');
 
