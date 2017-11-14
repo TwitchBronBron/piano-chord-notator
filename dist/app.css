@@ -41,25 +41,6 @@ piano-chord-notator {
 .dropdown-menu {
   box-shadow: 4px 4px 14px 1px #444444; }
 
-piano {
-  display: block;
-  padding-bottom: 120px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 5px;
-  white-space: nowrap;
-  overflow: auto; }
-  piano piano-key {
-    display: inline-block;
-    vertical-align: top; }
-    piano piano-key.white-key {
-      margin: 0 1px; }
-    piano piano-key.black-key {
-      text-align: top;
-      margin-left: -25px;
-      margin-right: -25px;
-      position: absolute; }
-
 finger-selector {
   position: absolute;
   bottom: 0px;
@@ -110,6 +91,25 @@ finger-selector {
   finger-selector .R5 {
     top: 121px;
     right: 42px; }
+
+piano {
+  display: block;
+  padding-bottom: 120px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  white-space: nowrap;
+  overflow: auto; }
+  piano piano-key {
+    display: inline-block;
+    vertical-align: top; }
+    piano piano-key.white-key {
+      margin: 0 1px; }
+    piano piano-key.black-key {
+      text-align: top;
+      margin-left: -25px;
+      margin-right: -25px;
+      position: absolute; }
 
 piano-chord-notator {
   display: block;

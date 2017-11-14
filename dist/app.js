@@ -780,6 +780,7 @@ var app;
                     else {
                         this.$element.removeClass('hide-octave-indicator');
                     }
+                    this.changed();
                 },
                 enumerable: true,
                 configurable: true
@@ -789,7 +790,9 @@ var app;
                 this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
                 this.endKey = params.endKey ? params.endKey : this.endKey;
                 this.chordName = params.chordName ? params.chordName : this.chordName;
-                this.showOctaveIndicator = params.showOctaveIndicator ? params.showOctaveIndicator : this.showOctaveIndicator;
+                this.showOctaveIndicator = params.showOctaveIndicator ?
+                    (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
+                    this.showOctaveIndicator;
                 var keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
                 this.keySelection = keySelection ? keySelection : this.keySelection;
             };

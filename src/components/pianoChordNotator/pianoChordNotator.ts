@@ -37,6 +37,7 @@ module app.components {
             } else {
                 this.$element.removeClass('hide-octave-indicator');
             }
+            this.changed();
         }
 
         public downloadUrl: string | undefined;
@@ -53,7 +54,9 @@ module app.components {
 
             this.chordName = params.chordName ? params.chordName : this.chordName;
 
-            this.showOctaveIndicator = params.showOctaveIndicator ? params.showOctaveIndicator : this.showOctaveIndicator;
+            this.showOctaveIndicator = params.showOctaveIndicator ?
+                (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
+                this.showOctaveIndicator;
 
             let keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
             this.keySelection = keySelection ? keySelection : this.keySelection;
