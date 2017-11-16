@@ -35,16 +35,25 @@
                 </label>
             </div>
         </div>
-        <div class="btn-group mr-2 mt-2" role="group">
+        <div class="btn-group mr-2 mt-2 options-dropdown" role="group">
             <button id="btnGroupDrop1" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-cog mr-2"></i>Options
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <label class="dropdown-item" onclick="event.stopPropagation()">
-                    <input type="checkbox" ng-model="vm.playKeyWhenPressed" />&nbsp;Play key when pressed
+                    <input type="checkbox" ng-model="vm.showOctaveIndicator" ng-model-options="{getterSetter: true}" />&nbsp;Show octave indicator
                 </label>
                 <label class="dropdown-item" onclick="event.stopPropagation()">
-                    <input type="checkbox" ng-model="vm.showOctaveIndicator" ng-model-options="{getterSetter: true}" />&nbsp;Show octave indicator
+                    <input type="checkbox" ng-model="vm.playKeyWhenPressed" />&nbsp;Play key when pressed
+                </label>
+                <label class="dropdown-item volume-dropdown-item" onclick="event.stopPropagation()">
+                    <b class="block">Volume</b>
+                    <span class="inline-block" style="width:90%">
+                        <input type="range" min="0" max="100" ng-model="vm.volume" id="myRange">
+                    </span>
+                    <span class="inline-block">
+                        <span>{{vm.volume}}</span>
+                    </span>
                 </label>
             </div>
         </div>

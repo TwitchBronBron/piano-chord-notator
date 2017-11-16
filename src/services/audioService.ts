@@ -6,6 +6,20 @@ module app {
 
         }
 
+        public get volume() {
+            return this._volume;
+        }
+        public set volume(value) {
+            var intval = parseInt(value + '');
+            var volume = isNaN(intval) ? 100 : intval;
+            volume = volume < 0 ? 0 : volume;
+            volume = volume > 100 ? 100 : volume;
+            this._volume = value;
+
+            Howler.volume(this._volume / 100);
+        }
+        private _volume: number = 100;
+
         playKeys(keys: Key[]) {
             let urls = this.getKeyUrls(keys);
             for (let url of urls) {

@@ -427,7 +427,23 @@ var app;
 (function (app) {
     var AudioService = /** @class */ (function () {
         function AudioService() {
+            this._volume = 100;
         }
+        Object.defineProperty(AudioService.prototype, "volume", {
+            get: function () {
+                return this._volume;
+            },
+            set: function (value) {
+                var intval = parseInt(value + '');
+                var volume = isNaN(intval) ? 100 : intval;
+                volume = volume < 0 ? 0 : volume;
+                volume = volume > 100 ? 100 : volume;
+                this._volume = value;
+                Howler.volume(this._volume / 100);
+            },
+            enumerable: true,
+            configurable: true
+        });
         AudioService.prototype.playKeys = function (keys) {
             var urls = this.getKeyUrls(keys);
             for (var _i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
@@ -565,6 +581,183 @@ var app;
             bindings: {
                 onclose: '&',
                 onselect: '&'
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
+        var pianoIdCounter = 1;
+        var PianoChordNotatorComponent = /** @class */ (function () {
+            function PianoChordNotatorComponent($timeout, audioService, $location, $element) {
+                this.$timeout = $timeout;
+                this.audioService = audioService;
+                this.$location = $location;
+                this.$element = $element;
+                this.whiteKeys = app.WhiteKeys;
+                this.defaultBeginKey = app.Key.c3;
+                this.defaultEndKey = app.Key.g5;
+                this.playKeyWhenPressed = false;
+                this._showOctaveIndicator = false;
+                this._volume = 50;
+                this.keySelection = {};
+                this._chordName = 'Chord Name';
+                this.pianoId = 'piano-' + pianoIdCounter++;
+            }
+            PianoChordNotatorComponent.prototype.$onInit = function () {
+                this.reset();
+                this.changed();
+                this.loadDeepLinks();
+            };
+            Object.defineProperty(PianoChordNotatorComponent.prototype, "showOctaveIndicator", {
+                get: function () {
+                    return this._showOctaveIndicator;
+                },
+                set: function (value) {
+                    this._showOctaveIndicator = value;
+                    if (this.showOctaveIndicator === false) {
+                        this.$element.addClass('hide-octave-indicator');
+                    }
+                    else {
+                        this.$element.removeClass('hide-octave-indicator');
+                    }
+                    this.changed();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoChordNotatorComponent.prototype, "volume", {
+                get: function () {
+                    return this._volume;
+                },
+                set: function (value) {
+                    var intval = parseInt(value + '');
+                    this._volume = isNaN(intval) ? this._volume : intval;
+                    this.audioService.volume = this._volume;
+                    this.changed();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoChordNotatorComponent.prototype.loadDeepLinks = function () {
+                var params = app.parseQueryString(location.search);
+                this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
+                this.endKey = params.endKey ? params.endKey : this.endKey;
+                this.chordName = params.chordName ? params.chordName : this.chordName;
+                this.volume = params.volume ? params.volume : this.volume;
+                this.showOctaveIndicator = params.showOctaveIndicator ?
+                    (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
+                    this.showOctaveIndicator;
+                var keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
+                this.keySelection = keySelection ? keySelection : this.keySelection;
+            };
+            PianoChordNotatorComponent.prototype.calculateShareUrl = function () {
+                var params = {
+                    beginKey: this.beginKey,
+                    endKey: this.endKey,
+                    keySelection: JSON.stringify(this.keySelection),
+                    chordName: this.chordName,
+                    showOctaveIndicator: this.showOctaveIndicator,
+                    volume: this.volume
+                };
+                this.$location.search(params);
+                this.shareUrl = this.$location.absUrl();
+            };
+            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
+                var index = app.WhiteKeys.indexOf(key);
+                if (index === -1) {
+                    throw new Error("Unknown key: '" + key);
+                }
+                return app.WhiteKeys.slice(index);
+            };
+            PianoChordNotatorComponent.prototype.clearSelection = function () {
+                this.keySelection = {};
+            };
+            PianoChordNotatorComponent.prototype.reset = function () {
+                this.beginKey = this.defaultBeginKey;
+                this.endKey = this.defaultEndKey;
+                this.clearSelection();
+            };
+            Object.defineProperty(PianoChordNotatorComponent.prototype, "chordName", {
+                get: function () {
+                    return this._chordName;
+                },
+                set: function (value) {
+                    this._chordName = value;
+                    this.changed();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Called every time the piano changes
+             */
+            PianoChordNotatorComponent.prototype.changed = function () {
+                this.calculateShareUrl();
+            };
+            PianoChordNotatorComponent.prototype.generateImage = function () {
+                var _this = this;
+                this.downloadUrl = undefined;
+                //let the UI finish rendering
+                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
+                    if (timeoutHandle !== _this.timeoutHandle) {
+                        return Promise.reject(new Error('Another change has occurred since we started'));
+                    }
+                    var element = document.getElementById(_this.pianoId);
+                    var parent = element.parentElement;
+                    var scrollAmount = parent.scrollLeft;
+                    parent.scrollLeft = 0;
+                    //temporarily force a width for the toolbar
+                    var toolbarContainer = $('.toolbar-container');
+                    var toolbarWidth = toolbarContainer.width();
+                    toolbarContainer.css({
+                        position: 'relative',
+                        width: toolbarWidth,
+                        left: scrollAmount + "px"
+                    });
+                    $('body').css({ width: parent.scrollWidth + "px" });
+                    document.body.scrollLeft = scrollAmount;
+                    // this.$element.addClass('text-left');
+                    return html2canvas(element, {
+                        onrendered: function (canvas) {
+                            _this.$element.removeClass('text-left');
+                            $('body').css({ width: '' });
+                            parent.scrollLeft = scrollAmount;
+                            toolbarContainer.css({
+                                position: '',
+                                width: '',
+                                left: ''
+                            });
+                            document.body.scrollLeft = 0;
+                        }
+                    });
+                }).then(function (canvas) {
+                    _this.downloadUrl = canvas.toDataURL('image/png');
+                }, function () {
+                });
+            };
+            PianoChordNotatorComponent.prototype.addLowerKey = function () {
+                var index = app.WhiteKeys.indexOf(this.beginKey);
+                this.beginKey = app.WhiteKeys[index - 1];
+            };
+            PianoChordNotatorComponent.prototype.addHigherKey = function () {
+                var index = app.WhiteKeys.indexOf(this.endKey);
+                this.endKey = app.WhiteKeys[index + 1];
+            };
+            PianoChordNotatorComponent.prototype.playChord = function () {
+                var keys = Object.keys(this.keySelection);
+                this.audioService.playKeys(keys);
+            };
+            return PianoChordNotatorComponent;
+        }());
+        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
+        angular.module('app').component('pianoChordNotator', {
+            bindings: {
+                key: '<'
             }
         });
     })(components = app.components || (app.components = {}));
@@ -737,167 +930,6 @@ var app;
                 onchange: '&',
                 keySelection: '=',
                 playKeyWhenPressed: '=',
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var pianoIdCounter = 1;
-        var PianoChordNotatorComponent = /** @class */ (function () {
-            function PianoChordNotatorComponent($timeout, audioService, $location, $element) {
-                this.$timeout = $timeout;
-                this.audioService = audioService;
-                this.$location = $location;
-                this.$element = $element;
-                this.whiteKeys = app.WhiteKeys;
-                this.defaultBeginKey = app.Key.c3;
-                this.defaultEndKey = app.Key.g5;
-                this.playKeyWhenPressed = false;
-                this._showOctaveIndicator = false;
-                this.keySelection = {};
-                this._chordName = 'Chord Name';
-                this.pianoId = 'piano-' + pianoIdCounter++;
-            }
-            PianoChordNotatorComponent.prototype.$onInit = function () {
-                this.reset();
-                this.changed();
-                this.loadDeepLinks();
-            };
-            Object.defineProperty(PianoChordNotatorComponent.prototype, "showOctaveIndicator", {
-                get: function () {
-                    return this._showOctaveIndicator;
-                },
-                set: function (value) {
-                    this._showOctaveIndicator = value;
-                    if (this.showOctaveIndicator === false) {
-                        this.$element.addClass('hide-octave-indicator');
-                    }
-                    else {
-                        this.$element.removeClass('hide-octave-indicator');
-                    }
-                    this.changed();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoChordNotatorComponent.prototype.loadDeepLinks = function () {
-                var params = app.parseQueryString(location.search);
-                this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
-                this.endKey = params.endKey ? params.endKey : this.endKey;
-                this.chordName = params.chordName ? params.chordName : this.chordName;
-                this.showOctaveIndicator = params.showOctaveIndicator ?
-                    (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
-                    this.showOctaveIndicator;
-                var keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
-                this.keySelection = keySelection ? keySelection : this.keySelection;
-            };
-            PianoChordNotatorComponent.prototype.calculateShareUrl = function () {
-                var params = {
-                    beginKey: this.beginKey,
-                    endKey: this.endKey,
-                    keySelection: JSON.stringify(this.keySelection),
-                    chordName: this.chordName,
-                    showOctaveIndicator: this.showOctaveIndicator
-                };
-                this.$location.search(params);
-                this.shareUrl = this.$location.absUrl();
-            };
-            PianoChordNotatorComponent.prototype.getRemainingKeys = function (key) {
-                var index = app.WhiteKeys.indexOf(key);
-                if (index === -1) {
-                    throw new Error("Unknown key: '" + key);
-                }
-                return app.WhiteKeys.slice(index);
-            };
-            PianoChordNotatorComponent.prototype.clearSelection = function () {
-                this.keySelection = {};
-            };
-            PianoChordNotatorComponent.prototype.reset = function () {
-                this.beginKey = this.defaultBeginKey;
-                this.endKey = this.defaultEndKey;
-                this.clearSelection();
-            };
-            Object.defineProperty(PianoChordNotatorComponent.prototype, "chordName", {
-                get: function () {
-                    return this._chordName;
-                },
-                set: function (value) {
-                    this._chordName = value;
-                    this.changed();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Called every time the piano changes
-             */
-            PianoChordNotatorComponent.prototype.changed = function () {
-                this.calculateShareUrl();
-            };
-            PianoChordNotatorComponent.prototype.generateImage = function () {
-                var _this = this;
-                this.downloadUrl = undefined;
-                //let the UI finish rendering
-                var timeoutHandle = this.timeoutHandle = this.$timeout(100).then(function () {
-                    if (timeoutHandle !== _this.timeoutHandle) {
-                        return Promise.reject(new Error('Another change has occurred since we started'));
-                    }
-                    var element = document.getElementById(_this.pianoId);
-                    var parent = element.parentElement;
-                    var scrollAmount = parent.scrollLeft;
-                    parent.scrollLeft = 0;
-                    //temporarily force a width for the toolbar
-                    var toolbarContainer = $('.toolbar-container');
-                    var toolbarWidth = toolbarContainer.width();
-                    toolbarContainer.css({
-                        position: 'relative',
-                        width: toolbarWidth,
-                        left: scrollAmount + "px"
-                    });
-                    $('body').css({ width: parent.scrollWidth + "px" });
-                    document.body.scrollLeft = scrollAmount;
-                    // this.$element.addClass('text-left');
-                    return html2canvas(element, {
-                        onrendered: function (canvas) {
-                            _this.$element.removeClass('text-left');
-                            $('body').css({ width: '' });
-                            parent.scrollLeft = scrollAmount;
-                            toolbarContainer.css({
-                                position: '',
-                                width: '',
-                                left: ''
-                            });
-                            document.body.scrollLeft = 0;
-                        }
-                    });
-                }).then(function (canvas) {
-                    _this.downloadUrl = canvas.toDataURL('image/png');
-                }, function () {
-                });
-            };
-            PianoChordNotatorComponent.prototype.addLowerKey = function () {
-                var index = app.WhiteKeys.indexOf(this.beginKey);
-                this.beginKey = app.WhiteKeys[index - 1];
-            };
-            PianoChordNotatorComponent.prototype.addHigherKey = function () {
-                var index = app.WhiteKeys.indexOf(this.endKey);
-                this.endKey = app.WhiteKeys[index + 1];
-            };
-            PianoChordNotatorComponent.prototype.playChord = function () {
-                var keys = Object.keys(this.keySelection);
-                this.audioService.playKeys(keys);
-            };
-            return PianoChordNotatorComponent;
-        }());
-        components.PianoChordNotatorComponent = PianoChordNotatorComponent;
-        angular.module('app').component('pianoChordNotator', {
-            bindings: {
-                key: '<'
             }
         });
     })(components = app.components || (app.components = {}));

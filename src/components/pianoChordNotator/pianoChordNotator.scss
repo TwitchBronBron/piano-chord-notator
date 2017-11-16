@@ -65,8 +65,19 @@ piano-chord-notator {
             outline: none;
         }
     }
-
     &.hide-octave-indicator .key {
         display: none !important;
+    }
+    .options-dropdown {
+        user-select: none;
+        .dropdown-item:focus,
+        .dropdown-item:hover,
+        .dropdown-item.active,
+        .dropdown-item:active {
+            /* color: #16181b; */
+            text-decoration: none;
+            background-color: initial;
+            color:black;
+        }
     }
 }

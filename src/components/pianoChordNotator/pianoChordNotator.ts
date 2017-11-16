@@ -40,6 +40,17 @@ module app.components {
             this.changed();
         }
 
+        public get volume() {
+            return this._volume;
+        }
+        public set volume(value) {
+            var intval = parseInt(value + '');
+            this._volume = isNaN(intval) ? this._volume : intval;
+            this.audioService.volume = this._volume;
+            this.changed();
+        }
+        private _volume: number = 50;
+
         public downloadUrl: string | undefined;
         public keySelection: { [key: string]: KeySelection } = {};
 
@@ -53,6 +64,8 @@ module app.components {
             this.endKey = params.endKey ? params.endKey : this.endKey;
 
             this.chordName = params.chordName ? params.chordName : this.chordName;
+
+            this.volume = params.volume ? params.volume : this.volume;
 
             this.showOctaveIndicator = params.showOctaveIndicator ?
                 (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
@@ -68,7 +81,8 @@ module app.components {
                 endKey: this.endKey,
                 keySelection: JSON.stringify(this.keySelection),
                 chordName: this.chordName,
-                showOctaveIndicator: this.showOctaveIndicator
+                showOctaveIndicator: this.showOctaveIndicator,
+                volume: this.volume
             };
             this.$location.search(params);
             this.shareUrl = this.$location.absUrl();
