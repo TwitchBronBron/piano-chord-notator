@@ -756,7 +756,7 @@ var app;
                 this.$element = $element;
                 this.whiteKeys = app.WhiteKeys;
                 this.defaultBeginKey = app.Key.c3;
-                this.defaultEndKey = app.Key.b5;
+                this.defaultEndKey = app.Key.g5;
                 this.playKeyWhenPressed = false;
                 this._showOctaveIndicator = false;
                 this.keySelection = {};
