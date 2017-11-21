@@ -591,6 +591,178 @@ var app;
 (function (app) {
     var components;
     (function (components) {
+        var PianoComponent = /** @class */ (function () {
+            function PianoComponent($element, $scope, audioService) {
+                var _this = this;
+                this.$element = $element;
+                this.$scope = $scope;
+                this.audioService = audioService;
+                this.keySelection = {};
+                this.onchange = function () { };
+                $scope.$watch(function () {
+                    return _this.keySelection;
+                }, function () {
+                    _this.triggerChanged();
+                }, true);
+            }
+            Object.defineProperty(PianoComponent.prototype, "playKeyWhenPressed", {
+                get: function () {
+                    return this._playKeyWhenPressed ? true : false;
+                },
+                set: function (value) {
+                    this._playKeyWhenPressed = value ? true : false;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "beginKey", {
+                get: function () {
+                    return this._beginKey;
+                },
+                /**
+                 * The key the piano should begin at (including this key)
+                 * @Input
+                 */
+                set: function (value) {
+                    this._beginKey = value;
+                    this.tryCalculateKeyRange();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "endKey", {
+                get: function () {
+                    return this._endKey;
+                },
+                /**
+                 * The key the piano should end at (including this key)
+                 */
+                set: function (value) {
+                    this._endKey = value;
+                    this.tryCalculateKeyRange();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "keyRange", {
+                /**
+                 * The list of all keys (in order) to display on the piano
+                 */
+                get: function () {
+                    return this._keyRange;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "beginsWithBlackKey", {
+                get: function () {
+                    return app.BlackKeys.indexOf(this.beginKey) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "endsWithBlackKey", {
+                get: function () {
+                    return app.BlackKeys.indexOf(this.endKey) > -1;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PianoComponent.prototype.keyClick = function (key) {
+                this.toggleKeySelection(key);
+                this.playKey(key);
+            };
+            PianoComponent.prototype.toggleKeySelection = function (key) {
+                if (this.keySelection[key]) {
+                    delete this.keySelection[key];
+                }
+                else {
+                    this.keySelection[key] = {
+                        key: key,
+                        finger: undefined,
+                        hand: undefined
+                    };
+                }
+                this.triggerChanged();
+            };
+            PianoComponent.prototype.keyIsSelected = function (key) {
+                return this.keySelection[key] !== undefined;
+            };
+            /**
+             * Try to calculate the key range. Otherwise set to undefined
+             */
+            PianoComponent.prototype.tryCalculateKeyRange = function () {
+                if (this._beginKey && this._endKey) {
+                    this._keyRange = this.getKeyRange(this._beginKey, this._endKey);
+                }
+                else {
+                    this._keyRange = undefined;
+                }
+                this.triggerChanged();
+            };
+            /**
+             * Given a begin and end key, get the list of keys that fall between (including the provided keys)
+             * @param beginKey
+             * @param endKey
+             */
+            PianoComponent.prototype.getKeyRange = function (beginKey, endKey) {
+                //sanity checks
+                if (!beginKey || !endKey) {
+                    throw new Error('beginKey and endKey must both be specified');
+                }
+                var beginIndex = app.AllKeys.indexOf(beginKey);
+                if (beginIndex === -1) {
+                    throw new Error("Unknown begin key '" + beginKey + "'");
+                }
+                var endIndex = app.AllKeys.indexOf(endKey);
+                if (endIndex === -1) {
+                    throw new Error("Unknown end key '" + endKey + "'");
+                }
+                if (beginIndex > endIndex) {
+                    throw new Error('begin key must be lower than end key');
+                }
+                return app.AllKeys.slice(beginIndex, endIndex + 1);
+            };
+            PianoComponent.prototype.triggerChanged = function () {
+                this.onchange();
+            };
+            PianoComponent.prototype.playKey = function (key) {
+                if (this.playKeyWhenPressed) {
+                    this.audioService.playKeys([key]);
+                }
+            };
+            /**
+             * Determine whether the light-grey key should be displayed on the piano-key
+             * @param key
+             */
+            PianoComponent.prototype.shouldShowKey = function (key) {
+                if (/^C\d$/i.exec(key)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+            return PianoComponent;
+        }());
+        components.PianoComponent = PianoComponent;
+        angular.module('app').component('piano', {
+            bindings: {
+                beginKey: '@',
+                endKey: '@',
+                onchange: '&',
+                keySelection: '=',
+                playKeyWhenPressed: '=',
+            }
+        });
+    })(components = app.components || (app.components = {}));
+})(app || (app = {}));
+
+"use strict";
+var app;
+(function (app) {
+    var components;
+    (function (components) {
         var pianoIdCounter = 1;
         var PianoChordNotatorComponent = /** @class */ (function () {
             function PianoChordNotatorComponent($timeout, audioService, $location, $element) {
@@ -758,178 +930,6 @@ var app;
         angular.module('app').component('pianoChordNotator', {
             bindings: {
                 key: '<'
-            }
-        });
-    })(components = app.components || (app.components = {}));
-})(app || (app = {}));
-
-"use strict";
-var app;
-(function (app) {
-    var components;
-    (function (components) {
-        var PianoComponent = /** @class */ (function () {
-            function PianoComponent($element, $scope, audioService) {
-                var _this = this;
-                this.$element = $element;
-                this.$scope = $scope;
-                this.audioService = audioService;
-                this.keySelection = {};
-                this.onchange = function () { };
-                $scope.$watch(function () {
-                    return _this.keySelection;
-                }, function () {
-                    _this.triggerChanged();
-                }, true);
-            }
-            Object.defineProperty(PianoComponent.prototype, "playKeyWhenPressed", {
-                get: function () {
-                    return this._playKeyWhenPressed ? true : false;
-                },
-                set: function (value) {
-                    this._playKeyWhenPressed = value ? true : false;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "beginKey", {
-                get: function () {
-                    return this._beginKey;
-                },
-                /**
-                 * The key the piano should begin at (including this key)
-                 * @Input
-                 */
-                set: function (value) {
-                    this._beginKey = value;
-                    this.tryCalculateKeyRange();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "endKey", {
-                get: function () {
-                    return this._endKey;
-                },
-                /**
-                 * The key the piano should end at (including this key)
-                 */
-                set: function (value) {
-                    this._endKey = value;
-                    this.tryCalculateKeyRange();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "keyRange", {
-                /**
-                 * The list of all keys (in order) to display on the piano
-                 */
-                get: function () {
-                    return this._keyRange;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "beginsWithBlackKey", {
-                get: function () {
-                    return app.BlackKeys.indexOf(this.beginKey) > -1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PianoComponent.prototype, "endsWithBlackKey", {
-                get: function () {
-                    return app.BlackKeys.indexOf(this.endKey) > -1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            PianoComponent.prototype.keyClick = function (key) {
-                this.toggleKeySelection(key);
-                this.playKey(key);
-            };
-            PianoComponent.prototype.toggleKeySelection = function (key) {
-                if (this.keySelection[key]) {
-                    delete this.keySelection[key];
-                }
-                else {
-                    this.keySelection[key] = {
-                        key: key,
-                        finger: undefined,
-                        hand: undefined
-                    };
-                }
-                this.triggerChanged();
-            };
-            PianoComponent.prototype.keyIsSelected = function (key) {
-                return this.keySelection[key] !== undefined;
-            };
-            /**
-             * Try to calculate the key range. Otherwise set to undefined
-             */
-            PianoComponent.prototype.tryCalculateKeyRange = function () {
-                if (this._beginKey && this._endKey) {
-                    this._keyRange = this.getKeyRange(this._beginKey, this._endKey);
-                }
-                else {
-                    this._keyRange = undefined;
-                }
-                this.triggerChanged();
-            };
-            /**
-             * Given a begin and end key, get the list of keys that fall between (including the provided keys)
-             * @param beginKey
-             * @param endKey
-             */
-            PianoComponent.prototype.getKeyRange = function (beginKey, endKey) {
-                //sanity checks
-                if (!beginKey || !endKey) {
-                    throw new Error('beginKey and endKey must both be specified');
-                }
-                var beginIndex = app.AllKeys.indexOf(beginKey);
-                if (beginIndex === -1) {
-                    throw new Error("Unknown begin key '" + beginKey + "'");
-                }
-                var endIndex = app.AllKeys.indexOf(endKey);
-                if (endIndex === -1) {
-                    throw new Error("Unknown end key '" + endKey + "'");
-                }
-                if (beginIndex > endIndex) {
-                    throw new Error('begin key must be lower than end key');
-                }
-                return app.AllKeys.slice(beginIndex, endIndex + 1);
-            };
-            PianoComponent.prototype.triggerChanged = function () {
-                this.onchange();
-            };
-            PianoComponent.prototype.playKey = function (key) {
-                if (this.playKeyWhenPressed) {
-                    this.audioService.playKeys([key]);
-                }
-            };
-            /**
-             * Determine whether the light-grey key should be displayed on the piano-key
-             * @param key
-             */
-            PianoComponent.prototype.shouldShowKey = function (key) {
-                if (/^C\d$/i.exec(key)) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            };
-            return PianoComponent;
-        }());
-        components.PianoComponent = PianoComponent;
-        angular.module('app').component('piano', {
-            bindings: {
-                beginKey: '@',
-                endKey: '@',
-                onchange: '&',
-                keySelection: '=',
-                playKeyWhenPressed: '=',
             }
         });
     })(components = app.components || (app.components = {}));
