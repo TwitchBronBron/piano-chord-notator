@@ -264,8 +264,6 @@ piano-chord-notator {
       text-decoration: none;
       background-color: initial;
       color: black; }
-  piano-chord-notator .download-image {
-    border: 1px solid red; }
 
 piano-key {
   display: inline-block;
