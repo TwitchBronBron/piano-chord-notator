@@ -183,6 +183,12 @@ module app.components {
             });
         }
 
+        public get exportName() {
+            return this.chordName && this.chordName.trim().length > 0 ?
+                this.chordName :
+                'export.png';
+        }
+
         public addLowerKey() {
             let index = WhiteKeys.indexOf(this.beginKey);
             this.beginKey = WhiteKeys[index - 1];

@@ -14,7 +14,7 @@
                 Generate Image
             </button>
             <div class="dropdown-menu text-center" aria-labelledby="btnGroupDrop1" style="width:300px;">
-                <a class="dropdown-item" download="export.png" ng-href="{{vm.downloadUrl}}">
+                <a class="dropdown-item" download="{{vm.exportName}}" ng-href="{{vm.downloadUrl}}">
                     <div ng-if="!vm.downloadUrl">
                         <img src="content/ajax-loader.gif" /> Generating Image
                     </div>
