@@ -46,6 +46,9 @@
                 <label class="dropdown-item" onclick="event.stopPropagation()">
                     <input type="checkbox" ng-model="vm.playKeyWhenPressed" />&nbsp;Play key when pressed
                 </label>
+                <label class="dropdown-item" onclick="event.stopPropagation()">
+                    <input type="checkbox" ng-model="vm.showFingering" />&nbsp;Show Fingerings
+                </label>
                 <label class="dropdown-item volume-dropdown-item" onclick="event.stopPropagation()">
                     <b class="block">Volume</b>
                     <span class="inline-block" style="width:90%">
@@ -68,8 +71,14 @@
     <div class="inner-piano-container" id="{{vm.pianoId}}">
         <input type="text" class="chord-name" ng-model="vm.chordName" onclick="this.select()" ng-model-options="{getterSetter: true}"
         />
-        <piano play-key-when-pressed="vm.playKeyWhenPressed" key-selection="vm.keySelection" begin-key="{{vm.beginKey}}" end-key="{{vm.endKey}}"
-            onchange="vm.changed()"></piano>
+        <piano 
+            play-key-when-pressed="vm.playKeyWhenPressed" 
+            key-selection="vm.keySelection" 
+            begin-key="{{vm.beginKey}}" 
+            end-key="{{vm.endKey}}"
+            onchange="vm.changed()"
+            show-fingering="vm.showFingering"
+            ></piano>
     </div>
 
     <div class="add-button-container high">

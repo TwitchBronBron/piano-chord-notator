@@ -37,6 +37,14 @@ module app.components {
         }
         private _isSelected: boolean = false;
 
+        public get showFingering() {
+            return this._showFingering ? true : false;
+        }
+        public set showFingering(value) {
+            this._showFingering = value ? true : false;
+        }
+        private _showFingering = true;
+
         public showKey: boolean;
 
         /**
@@ -95,7 +103,8 @@ module app.components {
             finger: '=',
             isSelected: '=',
             onchange: '&',
-            showKey: '<'
+            showKey: '<',
+            showFingering: '='
         }
     });
 }

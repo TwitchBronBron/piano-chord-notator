@@ -597,6 +597,7 @@ var app;
                 this.$element = $element;
                 this.$scope = $scope;
                 this.audioService = audioService;
+                this._showFingering = true;
                 this.keySelection = {};
                 this.onchange = function () { };
                 $scope.$watch(function () {
@@ -640,6 +641,16 @@ var app;
                 set: function (value) {
                     this._endKey = value;
                     this.tryCalculateKeyRange();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoComponent.prototype, "showFingering", {
+                get: function () {
+                    return this._showFingering ? true : false;
+                },
+                set: function (value) {
+                    this._showFingering = value ? true : false;
                 },
                 enumerable: true,
                 configurable: true
@@ -753,6 +764,7 @@ var app;
                 onchange: '&',
                 keySelection: '=',
                 playKeyWhenPressed: '=',
+                showFingering: '='
             }
         });
     })(components = app.components || (app.components = {}));
@@ -776,6 +788,7 @@ var app;
                 this.playKeyWhenPressed = false;
                 this._showOctaveIndicator = false;
                 this._volume = 50;
+                this._showFingering = true;
                 this.keySelection = {};
                 this._chordName = 'Chord Name';
                 this.pianoId = 'piano-' + pianoIdCounter++;
@@ -815,12 +828,26 @@ var app;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(PianoChordNotatorComponent.prototype, "showFingering", {
+                get: function () {
+                    return this._showFingering ? true : false;
+                },
+                set: function (value) {
+                    this._showFingering = value ? true : false;
+                    this.changed();
+                },
+                enumerable: true,
+                configurable: true
+            });
             PianoChordNotatorComponent.prototype.loadDeepLinks = function () {
                 var params = app.parseQueryString(location.search);
                 this.beginKey = params.beginKey ? params.beginKey : this.beginKey;
                 this.endKey = params.endKey ? params.endKey : this.endKey;
                 this.chordName = params.chordName ? params.chordName : this.chordName;
                 this.volume = params.volume ? params.volume : this.volume;
+                this.showFingering = params.showFingering ?
+                    (params.showFingering === 'undefined' || params.showFingering === true ? true : false) :
+                    this.showFingering;
                 this.showOctaveIndicator = params.showOctaveIndicator ?
                     (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
                     this.showOctaveIndicator;
@@ -834,7 +861,8 @@ var app;
                     keySelection: JSON.stringify(this.keySelection),
                     chordName: this.chordName,
                     showOctaveIndicator: this.showOctaveIndicator,
-                    volume: this.volume
+                    volume: this.volume,
+                    showFingering: this.showFingering
                 };
                 this.$location.search(params);
                 this.shareUrl = this.$location.absUrl();
@@ -945,6 +973,7 @@ var app;
                 this.$element = $element;
                 this.fingerSelectorService = fingerSelectorService;
                 this._isSelected = false;
+                this._showFingering = true;
                 this.fingerSelectorIsVisible = false;
                 this.onchange = function () { };
             }
@@ -980,6 +1009,16 @@ var app;
                 set: function (value) {
                     this._isSelected = value;
                     this.updateElementClass();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PianoKeyComponent.prototype, "showFingering", {
+                get: function () {
+                    return this._showFingering ? true : false;
+                },
+                set: function (value) {
+                    this._showFingering = value ? true : false;
                 },
                 enumerable: true,
                 configurable: true
@@ -1038,7 +1077,8 @@ var app;
                 finger: '=',
                 isSelected: '=',
                 onchange: '&',
-                showKey: '<'
+                showKey: '<',
+                showFingering: '='
             }
         });
     })(components = app.components || (app.components = {}));

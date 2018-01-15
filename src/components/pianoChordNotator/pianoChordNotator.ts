@@ -26,7 +26,7 @@ module app.components {
         public endKey: Key;
 
         public playKeyWhenPressed = false;
-        private _showOctaveIndicator = false;
+
         public get showOctaveIndicator() {
             return this._showOctaveIndicator;
         }
@@ -39,6 +39,7 @@ module app.components {
             }
             this.changed();
         }
+        private _showOctaveIndicator = false;
 
         public get volume() {
             return this._volume;
@@ -50,6 +51,15 @@ module app.components {
             this.changed();
         }
         private _volume: number = 50;
+
+        public get showFingering() {
+            return this._showFingering ? true : false;
+        }
+        public set showFingering(value) {
+            this._showFingering = value ? true : false;
+            this.changed();
+        }
+        private _showFingering = true;
 
         public downloadUrl: string | undefined;
         public keySelection: { [key: string]: KeySelection } = {};
@@ -67,6 +77,10 @@ module app.components {
 
             this.volume = params.volume ? params.volume : this.volume;
 
+            this.showFingering = params.showFingering ?
+                (params.showFingering === 'undefined' || params.showFingering === true ? true : false) :
+                this.showFingering;
+
             this.showOctaveIndicator = params.showOctaveIndicator ?
                 (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
                 this.showOctaveIndicator;
@@ -82,7 +96,8 @@ module app.components {
                 keySelection: JSON.stringify(this.keySelection),
                 chordName: this.chordName,
                 showOctaveIndicator: this.showOctaveIndicator,
-                volume: this.volume
+                volume: this.volume,
+                showFingering: this.showFingering
             };
             this.$location.search(params);
             this.shareUrl = this.$location.absUrl();

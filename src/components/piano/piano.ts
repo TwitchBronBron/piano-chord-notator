@@ -45,6 +45,14 @@ module app.components {
         }
         private _endKey: Key;
 
+        public get showFingering() {
+            return this._showFingering ? true : false;
+        }
+        public set showFingering(value) {
+            this._showFingering = value ? true : false;
+        }
+        private _showFingering = true;
+
         /**
          * The list of all keys (in order) to display on the piano
          */
@@ -154,6 +162,7 @@ module app.components {
             onchange: '&',
             keySelection: '=',
             playKeyWhenPressed: '=',
+            showFingering: '='
         }
     });
 }

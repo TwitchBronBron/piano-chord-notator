@@ -105,9 +105,9 @@ gulp.task('watch', gulp.series([
     'default',
     function watch() {
         refresh.listen();
-        gulp.watch('src/**/*.ts', gulp.parallel(['js', 'prevent-cache']));
-        gulp.watch('src/**/*.scss', gulp.parallel(['css', 'prevent-cache']));
-        gulp.watch('src/**/*.html', gulp.parallel(['templates', 'prevent-cache']));
+        gulp.watch('src/**/*.ts', gulp.parallel(['js']));
+        gulp.watch('src/**/*.scss', gulp.parallel(['css']));
+        gulp.watch('src/**/*.html', gulp.parallel(['templates']));
 
         //refresh only the output files
         gulp.watch(['dist/**/*.js', 'dist/**/*.css']).on('change', function (path) {
