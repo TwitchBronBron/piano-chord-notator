@@ -85,6 +85,8 @@ module app.components {
                 (params.showOctaveIndicator === 'undefined' || params.showOctaveIndicator === true ? true : false) :
                 this.showOctaveIndicator;
 
+            this.enharmonicSelection = params.enharmonicSelection ? JSON.parse(params.enharmonicSelection) : this.enharmonicSelection;
+
             let keySelection = params.keySelection ? JSON.parse(params.keySelection) : undefined;
             this.keySelection = keySelection ? keySelection : this.keySelection;
         }
@@ -97,7 +99,8 @@ module app.components {
                 chordName: this.chordName,
                 showOctaveIndicator: this.showOctaveIndicator,
                 volume: this.volume,
-                showFingering: this.showFingering
+                showFingering: this.showFingering,
+                enharmonicSelection: JSON.stringify(this.enharmonicSelection)
             };
             this.$location.search(params);
             this.shareUrl = this.$location.absUrl();
@@ -182,6 +185,8 @@ module app.components {
 
             });
         }
+
+        public enharmonicSelection: { [note: string]: string } = {};
 
         public get exportName() {
             return this.chordName && this.chordName.trim().length > 0 ?

@@ -15,13 +15,29 @@ module app.components {
         public set key(value) {
             this._key = value;
             this.updateElementClass();
-            this.enharmonic = this.note;
+            //if the enharmonic is in the same range as the note, then keep the enharmonic
+            if (this.enharmonic && (this.enharmonic === this.note || this.enharmonic === NoteEnharmonics[this.note])) {
+                //leave the enharmonic alone
+            } else {
+                //override the enharmonic with the note
+                this.enharmonic = this.note;
+            }
         }
 
-        public enharmonic: string;
+        public get enharmonic() {
+            return this._enharmonic;
+        }
+        public set enharmonic(value) {
+            //never allow setting the enharmonic to undefined
+            if (value) {
+                this._enharmonic = value;
+            }
+        }
+        private _enharmonic: string;
 
         public get note() {
-            return this.key.replace(/[1-7]/, '');
+            var note = this.key.replace(/\d*/g, '');
+            return note;
         }
         private _key: Key;
 
@@ -93,18 +109,20 @@ module app.components {
         private toggleEnharmonic(event: Event) {
             event.stopPropagation();
             this.enharmonic = NoteEnharmonics[this.enharmonic];
+            this.triggerChanged();
         }
 
         public onchange: any = () => { };
     }
     angular.module('app').component('pianoKey', {
         bindings: {
+            enharmonic: '=?',
             key: '=',
             finger: '=',
             isSelected: '=',
             onchange: '&',
             showKey: '<',
-            showFingering: '='
+            showFingering: '=',
         }
     });
 }

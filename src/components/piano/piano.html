@@ -1,5 +1,10 @@
-<piano-key ng-click="vm.keyClick(key)" onchange="vm.triggerChanged()" ng-repeat="key in vm.keyRange" 
+<piano-key ng-repeat="key in vm.keyRange" 
+    ng-click="vm.keyClick(key)" 
+    onchange="vm.triggerChanged()" 
     show-key="vm.shouldShowKey(key)"
-    key="key" finger="vm.keySelection[key].finger"
+    enharmonic="vm.enharmonicSelection[vm.getNote(key)]"
+    key="key" 
+    finger="vm.keySelection[key].finger"
     is-selected="vm.keySelection[key] !== undefined"
-    show-fingering="vm.showFingering"></piano-key>
+    show-fingering="vm.showFingering"
+></piano-key>

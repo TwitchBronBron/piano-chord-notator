@@ -10,6 +10,12 @@ module app.components {
             }, () => {
                 this.triggerChanged();
             }, true);
+
+            $scope.$watch(() => {
+                return this.enharmonicSelection;
+            }, () => {
+                this.triggerChanged();
+            }, true)
         }
 
         public get playKeyWhenPressed() {
@@ -52,6 +58,14 @@ module app.components {
             this._showFingering = value ? true : false;
         }
         private _showFingering = true;
+
+        public get enharmonicSelection() {
+            return this._enharmonicSelection ? this._enharmonicSelection : {};
+        }
+        public set enharmonicSelection(value) {
+            this._enharmonicSelection = value;
+        }
+        private _enharmonicSelection: { [note: string]: string };;
 
         /**
          * The list of all keys (in order) to display on the piano
@@ -153,6 +167,10 @@ module app.components {
             }
         }
 
+        public getNote(key: Key) {
+            return key.replace(/\d*/g, '');
+        }
+
     }
 
     angular.module('app').component('piano', {
@@ -161,6 +179,7 @@ module app.components {
             endKey: '@',
             onchange: '&',
             keySelection: '=',
+            enharmonicSelection: '=',
             playKeyWhenPressed: '=',
             showFingering: '='
         }
