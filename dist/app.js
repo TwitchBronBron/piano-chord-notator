@@ -805,6 +805,8 @@ var app;
                 this.whiteKeys = app.WhiteKeys;
                 this.defaultBeginKey = app.Key.c3;
                 this.defaultEndKey = app.Key.g5;
+                this.beginKey = this.defaultBeginKey;
+                this.endKey = this.defaultEndKey;
                 this.playKeyWhenPressed = false;
                 this._showOctaveIndicator = false;
                 this._volume = 50;
@@ -899,6 +901,7 @@ var app;
             };
             PianoChordNotatorComponent.prototype.clearSelection = function () {
                 this.keySelection = {};
+                this._chordName = "Chord Name";
             };
             PianoChordNotatorComponent.prototype.reset = function () {
                 this.beginKey = this.defaultBeginKey;

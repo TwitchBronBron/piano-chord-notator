@@ -1,8 +1,8 @@
 <div class="toolbar-container">
     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-        <button class="btn btn-secondary mr-2 mt-2" ng-click="vm.clearSelection()">
+        <button class="btn btn-secondary mr-2 mt-2" ng-click="vm.clearSelection()" title="Reset the entire page to its defaults">
             <i class="fa fa-refresh mr-1"></i>
-            Clear Selection
+            Clear
         </button>
         <button class="btn btn-secondary  mr-2 mt-2" ng-click="vm.playChord()">
             <i class="fa fa-play mr-1"></i>
@@ -44,7 +44,7 @@
                     <input type="checkbox" ng-model="vm.showOctaveIndicator" ng-model-options="{getterSetter: true}" />&nbsp;Show octave indicator
                 </label>
                 <label class="dropdown-item" onclick="event.stopPropagation()">
-                    <input type="checkbox" ng-model="vm.playKeyWhenPressed" />&nbsp;Play key when pressed
+                    <input type="checkbox" ng-model="vm.playKeyWhenPressed" />&nbsp;Play note sound when key pressed
                 </label>
                 <label class="dropdown-item" onclick="event.stopPropagation()">
                     <input type="checkbox" ng-model="vm.showFingering" />&nbsp;Show Fingerings

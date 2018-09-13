@@ -12,12 +12,12 @@
         },
         {
             "type": "gulp",
-            "task": "run",
+            "task": "watch",
             "problemMatcher": []
         },
         {
-            "type": "gulp",
-            "task": "watch",
+            "type": "npm",
+            "script": "run",
             "problemMatcher": []
         }
     ]

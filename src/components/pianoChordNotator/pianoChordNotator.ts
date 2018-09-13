@@ -22,8 +22,8 @@ module app.components {
         public defaultBeginKey = Key.c3;
         public defaultEndKey = Key.g5;
 
-        public beginKey: Key;
-        public endKey: Key;
+        public beginKey: Key = this.defaultBeginKey;
+        public endKey: Key = this.defaultEndKey;
 
         public playKeyWhenPressed = false;
 
@@ -64,7 +64,7 @@ module app.components {
         public downloadUrl: string | undefined;
         public keySelection: { [key: string]: KeySelection } = {};
 
-        public shareUrl: string;
+        public shareUrl?: string;
 
         loadDeepLinks() {
             var params = app.parseQueryString(location.search);
@@ -116,6 +116,7 @@ module app.components {
 
         public clearSelection() {
             this.keySelection = {};
+            this._chordName = "Chord Name";
         }
 
         public reset() {
@@ -124,7 +125,7 @@ module app.components {
             this.clearSelection();
         }
 
-        private timeoutHandle: Promise<void>;
+        private timeoutHandle?: Promise<void>;
 
         private get chordName() {
             return this._chordName;
