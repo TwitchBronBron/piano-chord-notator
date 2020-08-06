@@ -13,7 +13,7 @@
     "@types/angular": "^1.6.38",
     "@types/howler": "^2.0.5",
     "@types/jquery": "^3.2.16",
-    "angular": "^1.6.6",
+    "angular": "^1.8.0",
     "bootstrap": "^4.0.0-beta.2",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.2",
